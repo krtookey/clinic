@@ -3,14 +3,20 @@
  * 2. How are we going to store doctors in Prescriptions and LabOrders, should their name be stored in a varchar(50) or 
  * should their id be stored as an int and refer to their name and other info which is stored in Users or a Practitioners table?
  * 3. Is MedicationList going to be updated by Pharmacy? Shouldn't it just pull from Prescriptions? We need to discuss this further.
+ *	- I think the MedicationList table can be managed by Medical Records - this table would also include over the counter-meds and vitamins. - Elizabeth
  * 4. How should we store the list of lab_id to order as part of a LabOrder? Should we have a separate table storing the ids for a single order, 
  * which would have the laborder_id as a FK and labor
  * 5. What is int status? I stole it from your old prescription table, as I thought that it was there for a reason that I didn't know about. Do we actually need it?
+ *	- From a Medical Records standpoint, I think we do.  We need to know if the lab has been ordered and if the lab results have come in, so that we can then pull the lab results into the note.
+ *	On second thought, though, it really depends on how we are storing the returned lab results?
  */
 
+CREATE DATABASE IF NOT EXISTS Clinic;
+USE Clinic;
 
+-- DROP DATABASE IF EXISTS Clinic;
 
-
+DROP TABLE IF EXISTS Patient;
 
 CREATE TABLE Patient (
 	patient_id	int NOT NULL,
@@ -18,7 +24,7 @@ CREATE TABLE Patient (
 	last_name	varchar(30) NOT NULL,
 	middle_name	varchar(30),
 	DOB	date NOT NULL,
-	sex	SMALLINT NOT NULL, -- Might want to store this as a char instead of an int
+	sex	CHAR(1) NOT NULL, 
 	gender SMALLINT,
 	primary_phone	int NOT NULL,
 	secondary_phone	int,
@@ -45,6 +51,9 @@ CREATE TABLE Patient (
  * Medical Records Stuff
  * 
  */
+ 
+DROP TABLE IF EXISTS MedicalRecord;
+
 CREATE TABLE MedicalRecord (
 	medicalrecord_id	int NOT NULL,
 	patient_id	int NOT NULL,
@@ -60,6 +69,7 @@ CREATE TABLE MedicalRecord (
 
 );
 
+DROP TABLE IF EXISTS ProblemList;
 
 CREATE TABLE ProblemList (
 	problem_id	int NOT NULL,
@@ -85,6 +95,8 @@ CREATE TABLE ProblemList (
 
 -- Pharmacy/Prescriptions
 
+DROP TABLE IF EXISTS Pharmacy;
+
 CREATE TABLE Pharmacy (
 	pharmacy_id	int NOT NULL,
 	patient_id	int NOT NULL,
@@ -98,6 +110,7 @@ CREATE TABLE Pharmacy (
 	FOREIGN KEY (address_id)
 );
 
+DROP TABLE IF EXISTS Prescriptions;
 
 CREATE TABLE Prescriptions (
 	prescription_id	int NOT NULL,
@@ -121,6 +134,8 @@ CREATE TABLE Prescriptions (
 
 -- Labs
 
+DROP TABLE IF EXISTS LabDest;
+
 CREATE TABLE LabDest (
 	labdest_id	int NOT NULL,
 	patient_id	int NOT NULL,
@@ -133,6 +148,7 @@ CREATE TABLE LabDest (
 	FOREIGN KEY (address_id)
 );
 
+DROP TABLE IF EXISTS LabOrders;
 
 CREATE TABLE LabOrders (
 	laborder_id	int NOT NULL,
@@ -148,6 +164,7 @@ CREATE TABLE LabOrders (
 	FOREIGN KEY (labdest_id)
 );
  
+DROP TABLE IF EXISTS LabList;
 
 CREATE TABLE LabList ( -- List OF ALL labs that can be ordered, pairs lab_id WITH the name OF the lab (similar to DrugList, except that druglist doesn't contain all drugs)
 	lab_id	int NOT NULL,
