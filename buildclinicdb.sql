@@ -9,6 +9,7 @@
  * 5. What is int status? I stole it from your old prescription table, as I thought that it was there for a reason that I didn't know about. Do we actually need it?
  *	- From a Medical Records standpoint, I think we do.  We need to know if the lab has been ordered and if the lab results have come in, so that we can then pull the lab results into the note.
  *	On second thought, though, it really depends on how we are storing the returned lab results?
+ * 6. Maria
  */
 
 CREATE DATABASE IF NOT EXISTS Clinic;
@@ -25,7 +26,7 @@ CREATE TABLE Patient (
 	middle_name	varchar(30),
 	DOB	date NOT NULL,
 	sex	CHAR(1) NOT NULL, 
-	gender SMALLINT,
+	gender TINYINT,
 	primary_phone	int NOT NULL,
 	secondary_phone	int,
 	email	varchar(40),
@@ -154,7 +155,7 @@ CREATE TABLE LabOrders (
 	laborder_id	int NOT NULL,
 	patient_id	int NOT NULL,
 	doctor	varchar(50) NOT NULL,
-	status	int NOT NULL,
+	status	TINYINT NOT NULL,
 	labdest_id	int NOT NULL,
 	cc_recipients	varchar(70),
 	labids_toorder	-- I have NO idea how TO store this correctly, maybe a seperate TABLE WITH laborder_id AS a FOREIGN KEY AND WITH lab_ids TO ORDER WITHIN it?
