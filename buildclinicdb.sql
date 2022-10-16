@@ -12,6 +12,8 @@
  * 6. Maria
  */
 
+-- $$ The comments I leave start with "$$" - Nick
+
 CREATE DATABASE IF NOT EXISTS Clinic;
 USE Clinic;
 
@@ -84,9 +86,115 @@ CREATE TABLE ProblemList (
 	FOREIGN KEY (patient_id)
 );
 
+DROP TABLE IF EXISTS MedicationList;
+
+CREATE TABLE MedicationList (
+	medlist_id	int NOT NULL,
+	patient_id	int NOT NULL,
+	medication_id	int NOT NULL,
+	status	boolean NOT NULL,
+	--
+	PRIMARY KEY (medlist_id),
+	FOREIGN KEY (patient_id),
+	FOREIGN KEY (medication_id)
+);
 
 
+DROP TABLE IF EXISTS Note;
 
+CREATE TABLE Note (
+	note_id	int NOT NULL,
+	patient_id	int NOT NULL,
+	appointment_id	int,
+	cc varchar(1000),
+	hist_illness	varchar(60000),
+	ros_id	int,
+	med_profile_id	int,
+	social_hist	varchar(60000),
+	med_hist	varchar(60000),
+	psych_hist	varchar(60000),
+	family_id	int,
+	assessment	varchar(60000),
+	plan	varchar(60000),
+	laborder_id	int,
+	lab_destid	int, -- $$ Is this meant to be labdist?
+	demographics_id	int,
+	comments	varchar(60000),
+	--
+	PRIMARY KEY (note_id),
+	FOREIGN KEY (patient_id), 
+	FOREIGN KEY (appointment_id),
+	FOREIGN KEY (ros_id),
+	FOREIGN KEY (med_profile_id),
+	FOREIGN KEY (family_id), 
+	FOREIGN KEY (laborder_id),
+	FOREIGN KEY (lab_destid),
+	FOREIGN KEY (demographics_id)
+);
+
+DROP TABLE IF EXISTS Demographics;
+
+CREATE TABLE Demographics (
+	demographics_id int NOT NULL,
+	patient_id	int NOT NULL,
+	emergency_contact1 int NOT NULL,
+	emergency_contact2 int,
+	comments varchar(60000),
+	--
+	PRIMARY KEY (demographics_id),
+	FOREIGN KEY (patient_id),
+	FOREIGN KEY (emergency_contact1),
+	FOREIGN KEY (emergency_contact2),
+);
+
+DROP TABLE IF EXISTS EmergencyContact;
+
+CREATE TABLE EmergencyContact (
+	contact_id	int NOT NULL,
+	name 	varchar(50) NOT NULL,
+	relationship	varchar(30) NOT NULL,
+	phone	int NOT NULL,
+	--
+	PRIMARY KEY (contact_id)
+
+);
+
+/*
+ * Appointments Stuff
+ *
+ */
+
+DROP TABLE IF EXISTS Appointment;
+
+CREATE TABLE Appointment (
+	appointment_id	int NOT NULL,
+	patient_id	int NOT NULL,
+	date_time 	date NOT NULL,
+	duration	int NOT NULL,
+	status	TINYINT NOT NULL,
+	doctor_id	int NOT NULL,
+	doctor_last_name	varchar(30) NOT NULL, -- $$ Don't we want to store the doctors first and last name in the Users table, and just refer to them with doctor_id?
+	doctor_first_name 	varcha(30) NOT NULL,
+	--
+	PRIMARY KEY (appointment_id),
+	FOREIGN KEY (patient_id),
+	FOREIGN KEY (doctor_id)
+);
+
+DROP TABLE IF EXISTS Billing;
+
+CREATE TABLE Billing (
+	billing_id	int NOT NULL,
+	patient_id	int NOT NULL,
+	appointment_id	int NOT NULL,
+	bill_statement	varchar(60000) NOT NULL,
+	amount_due	int,
+	payed	boolean NOT NULL,
+	--
+	PRIMARY KEY (billing_id),
+	FOREIGN KEY (patient_id),
+	FOREIGN KEY (appointment_id)
+);
 
 
 /*
@@ -176,12 +284,19 @@ DROP TABLE IF EXISTS OrderedLabs;
 CREATE TABLE OrderedLabs (
 	laborder_id	int NOT NULL,
 	lab_id	int NOT NULL,
-	results	varchar(5000)
+	results	varchar(5000),
 	-- 
-	PRIMARY KEY (laborder_id) -- $$ Should this be a Primary or Foreign key??
+	PRIMARY KEY (laborder_id), -- $$ Should this be a Primary or Foreign key??
 	FOREIGN KEY (lab_id)
-)
+);
 
+DROP TABLE IF EXISTS DrugList;
 
-CREATE TABLE 
+CREATE TABLE DrugList (
+	medication_id	int NOT NULL,
+	medication_name	varchar(50) NOT NULL,
+	generic_name 	varchar(50) NOT NULL,
+	--
+	PRIMARY KEY (medication_id)
+);
 
