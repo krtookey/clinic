@@ -70,6 +70,7 @@ CREATE TABLE MedicalRecord (
 
 );
 
+
 DROP TABLE IF EXISTS ProblemList;
 
 CREATE TABLE ProblemList (
@@ -100,14 +101,12 @@ DROP TABLE IF EXISTS Pharmacy;
 
 CREATE TABLE Pharmacy (
 	pharmacy_id	int NOT NULL,
-	patient_id	int NOT NULL,
 	name	varchar(50),
 	address_id	int,
 	phone	int,
 	email	varchar(50),
 	--
 	PRIMARY KEY (pharmacy_id),
-	FOREIGN KEY (patient_id),
 	FOREIGN KEY (address_id)
 );
 
@@ -139,13 +138,11 @@ DROP TABLE IF EXISTS LabDest;
 
 CREATE TABLE LabDest (
 	labdest_id	int NOT NULL,
-	patient_id	int NOT NULL,
 	name	varchar(50),
 	address_id	int,
 	phone	int,
 	--
 	PRIMARY KEY (labdest_id),
-	FOREIGN KEY (patient_id),
 	FOREIGN KEY (address_id)
 );
 
@@ -170,17 +167,21 @@ DROP TABLE IF EXISTS LabList;
 CREATE TABLE LabList ( -- List OF ALL labs that can be ordered, pairs lab_id WITH the name OF the lab (similar to DrugList, except that druglist doesn't contain all drugs)
 	lab_id	int NOT NULL,
 	lab_name	varchar(50) NOT NULL,
+	--
 	PRIMARY KEY (lab_id)
 );
-	
+
+DROP TABLE IF EXISTS OrderedLabs;
+
+CREATE TABLE OrderedLabs (
+	laborder_id	int NOT NULL,
+	lab_id	int NOT NULL,
+	results	varchar(5000)
+	-- 
+	PRIMARY KEY (laborder_id) -- $$ Should this be a Primary or Foreign key??
+	FOREIGN KEY (lab_id)
+)
 
 
 CREATE TABLE 
 
-
-CREATE TABLE Course (
-	Discipline	char(3),
-	CourseNum   char(4),
-	CourseName  varchar(80),
-	credits	    int
-);
