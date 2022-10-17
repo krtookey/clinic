@@ -32,7 +32,7 @@ CREATE TABLE Patient (
 	primary_phone	int NOT NULL,
 	secondary_phone	int,
 	email	varchar(40),
-	street_address	int, 
+	address_id	int, 
 	billing_id	int,
 	insurance_id	int,
 	pharmacy_id	int,
