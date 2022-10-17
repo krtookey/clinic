@@ -37,8 +37,12 @@ CREATE TABLE Patient (
 	insurance_id	int,
 	pharmacy_id	int,
 	labdest_id int,
-	medical_record_id int,
+	--medical_record_id int,
 	minor boolean,
+	pcp_id	int,
+	problems_id	int NOT NULL,
+	medlist_id	int NOT NULL,
+	prev_note_id	int NOT NULL,
 	--
 	PRIMARY KEY (patient_id),
 	FOREIGN KEY (street_address),
@@ -46,15 +50,42 @@ CREATE TABLE Patient (
 	FOREIGN KEY (insurance_id),
 	FOREIGN KEY (pharmacy_id),
 	FOREIGN KEY (labdest_id),
-	FOREIGN KEY (medical_record_id)
+	--FOREIGN KEY (medical_record_id),
+	FOREIGN KEY (pcp_id),
+	FOREIGN KEY (problem_id),
+	FOREIGN KEY (medlist_id),
+	FOREIGN KEY (prev_note_id)
 );
 
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users (
+	user_id	int NOT NULL,
+	user_name	varchar(50) NOT NULL,
+	permission	TINYINT NOT NULL,
+	job_title	varchar(50),
+	--
+	PRIMARY KEY (user_id)
+);
+
+DROP TABLE IF EXISTS Addresses;
+
+CREATE TABLE Addresses (
+	address_id	int NOT NULL,
+	street	varchar(40) NOT NULL,
+	city	varchar(30) NOT NULL,
+	state	char(2) NOT NULL,
+	zip	int NOT NULL,
+	--
+	PRIMARY KEY (address_id)
+);
 
 /*
  * Medical Records Stuff
  * 
  */
- 
+
+/* 
 DROP TABLE IF EXISTS MedicalRecord;
 
 CREATE TABLE MedicalRecord (
@@ -71,7 +102,7 @@ CREATE TABLE MedicalRecord (
 	FOREIGN KEY (medications_id) -- How ARE we storing medications FOR someone? would that be connected TO Prescriptions? Things TO consider #3
 
 );
-
+*/
 
 DROP TABLE IF EXISTS ProblemList;
 
@@ -147,16 +178,89 @@ CREATE TABLE Demographics (
 	FOREIGN KEY (emergency_contact2),
 );
 
+DROP TABLE IF EXISTS FamilyHistory;
+
+CREATE TABLE FamilyHistory (
+	family_id	int NOT NULL,
+	patient_id	int NOT NULL,
+	member_id	int NOT NULL,
+	--
+	PRIMARY KEY (family_id),
+	FOREIGN KEY (patient_id),
+	FOREIGN KEY (member_id)
+);
+
+DROP TABLE IF EXISTS FamilyMember;
+
+CREATE TABLE FamilyMember(
+	member_id	int NOT NULL,
+	member_name	varchar(50)	NOT NULL,
+	relationship	varchar(30)	NOT NULL,
+	birth_year	int NOT NULL,
+	history	varchar(60000),
+	--
+	PRIMARY KEY (member_id)
+);
+
+
 DROP TABLE IF EXISTS EmergencyContact;
 
 CREATE TABLE EmergencyContact (
 	contact_id	int NOT NULL,
-	name 	varchar(50) NOT NULL,
+	contact_name 	varchar(50) NOT NULL,
 	relationship	varchar(30) NOT NULL,
 	phone	int NOT NULL,
 	--
 	PRIMARY KEY (contact_id)
 
+);
+
+DROP TABLE IF EXISTS MedicalProfile;
+
+CREATE TABLE MedicalProfile (
+	med_profile_id	int NOT NULL,
+	bmi	float,
+	weight	float,
+	height	float,
+	blood_pressure	varchar(10),
+	pulse	int,
+	pulse_ox	int,
+	appointment_id	int NOT NULL,
+	--
+	PRIMARY KEY (med_profile_id),
+	FOREIGN KEY (appointment_id)
+);
+
+
+DROP TABLE IF EXISTS ReviewOfSystem;
+
+CREATE TABLE ReviewOfSystem (
+	ros_id	int NOT NULL,
+	condition1	boolean	NOT NULL,
+	comments	varchar(20000),
+	note_id	int NOT NULL,
+	condition2	boolean	NOT NULL,
+	condition3	boolean	NOT NULL,
+	condition4	boolean	NOT NULL,
+	condition5	boolean	NOT NULL,
+	condition6	boolean	NOT NULL,
+	condition7	boolean	NOT NULL,
+	condition8	boolean	NOT NULL,
+	condition9	boolean	NOT NULL,
+	condition10	boolean	NOT NULL,
+	condition11	boolean	NOT NULL,
+	condition12	boolean	NOT NULL,
+	condition13	boolean	NOT NULL,
+	condition14	boolean	NOT NULL,
+	condition15	boolean	NOT NULL,
+	condition16	boolean	NOT NULL,
+	condition17	boolean	NOT NULL,
+	condition18	boolean	NOT NULL,
+	condition19	boolean	NOT NULL,
+	condition20	boolean	NOT NULL,
+	condition21	boolean	NOT NULL,
+	--
+	PRIMARY KEY (ros_id)
 );
 
 /*
@@ -227,7 +331,7 @@ CREATE TABLE Prescriptions (
 	doctor	varchar(50) NOT NULL, -- Things to Consider #2
 	doctor_id int NOT NULL,	-- Things to Consider #2
 	pharmacy_id	int NOT NULL,
-	medication_name	varchar(50) NOT NULL,
+	medication_id	int NOT NULL,
 	dosage	varchar(50) NOT NULL,
 	quantity_total	int NOT NULL,
 	quantity_days	int NOT NULL,
@@ -259,14 +363,14 @@ DROP TABLE IF EXISTS LabOrders;
 CREATE TABLE LabOrders (
 	laborder_id	int NOT NULL,
 	patient_id	int NOT NULL,
-	doctor	varchar(50) NOT NULL,
+	doctor_id	int NOT NULL,
 	status	TINYINT NOT NULL,
 	labdest_id	int NOT NULL,
 	cc_recipients	varchar(70),
-	labids_toorder	-- I have NO idea how TO store this correctly, maybe a seperate TABLE WITH laborder_id AS a FOREIGN KEY AND WITH lab_ids TO ORDER WITHIN it?
 	--
 	PRIMARY KEY (laborder_id),
 	FOREIGN KEY (patient_id),
+	FOREIGN KEY (doctor_id),
 	FOREIGN KEY (labdest_id)
 );
  
