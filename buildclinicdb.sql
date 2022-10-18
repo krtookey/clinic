@@ -21,9 +21,9 @@ USE Clinic;
 DROP TABLE IF EXISTS Patient;
 
 CREATE TABLE Patient (
-	patient_id int NOT NULL AUTO_INCREMENT,
-	first_name varchar(30) NOT NULL,
-	last_name varchar(30) NOT NULL,
+	patient_id	int NOT NULL AUTO_INCREMENT,
+	first_name	varchar(30) NOT NULL,
+	last_name	varchar(30) NOT NULL,
 	middle_name	varchar(30),
 	DOB	date NOT NULL,
 	sex	CHAR(1) NOT NULL, 
@@ -54,6 +54,15 @@ CREATE TABLE Patient (
 	FOREIGN KEY (emergency_contact2)
 );
 
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
+VALUES ();
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
+VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10');
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id)
+VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10');
+
+
+
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
@@ -70,6 +79,8 @@ CREATE TABLE Users (
 	PRIMARY KEY (user_id)
 );
 
+INSERT INTO Users ()
+
 DROP TABLE IF EXISTS Addresses;
 
 CREATE TABLE Addresses (
@@ -81,6 +92,9 @@ CREATE TABLE Addresses (
 	--
 	PRIMARY KEY (address_id)
 );
+
+INSERT INTO Addresses () VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
+INSERT INTO Addresses () VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
 
 /*
  * Medical Records Stuff
@@ -127,7 +141,7 @@ CREATE TABLE MedicationList (
 	medlist_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	medication_id	int NOT NULL,
-	dosage 	varchar(50),
+	dosage	varchar(50),
 	status	boolean NOT NULL,
 	--
 	PRIMARY KEY (medlist_id),
@@ -140,8 +154,8 @@ DROP TABLE IF EXISTS Note;
 
 CREATE TABLE Note (
 	note_id	int NOT NULL AUTO_INCREMENT,
-	patient_id int NOT NULL,
-	appointment_id int,
+	patient_id	int NOT NULL,
+	appointment_id	int,
 	cc varchar(1000),
 	hist_illness varchar(60000),
 	ros_id int,
@@ -195,9 +209,9 @@ DROP TABLE IF EXISTS EmergencyContact;
 
 CREATE TABLE EmergencyContact (
 	contact_id	int NOT NULL AUTO_INCREMENT,
-	contact_name  varchar(50) NOT NULL,
-	relationship varchar(30) NOT NULL,
-	phone int NOT NULL,
+	contact_name 	varchar(50) NOT NULL,
+	relationship	varchar(30) NOT NULL,
+	phone	int NOT NULL,
 	--
 	PRIMARY KEY (contact_id)
 
@@ -360,7 +374,7 @@ DROP TABLE IF EXISTS Appointment;
 CREATE TABLE Appointment (
 	appointment_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
-	date_time 	date NOT NULL,
+	date_time 	datetime NOT NULL,
 	duration	int NOT NULL,
 	status	TINYINT NOT NULL,
 	doctor_id	int NOT NULL,
