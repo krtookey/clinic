@@ -270,7 +270,7 @@ CREATE TABLE Appointment (
 	status	TINYINT NOT NULL,
 	doctor_id	int NOT NULL,
 	doctor_last_name	varchar(30) NOT NULL, -- $$ Don't we want to store the doctors first and last name in the Users table, and just refer to them with doctor_id?
-	doctor_first_name 	varcha(30) NOT NULL,
+	doctor_first_name 	varchar(30) NOT NULL,
 	--
 	PRIMARY KEY (appointment_id),
 	FOREIGN KEY (patient_id),
