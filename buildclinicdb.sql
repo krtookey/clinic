@@ -298,13 +298,15 @@ CREATE TABLE Billing (
 	billing_id	int NOT NULL,
 	patient_id	int NOT NULL,
 	appointment_id	int NOT NULL,
+	note_id	int NOT NULL,
 	bill_statement	varchar(60000) NOT NULL,
 	amount_due	int,
 	payed	boolean NOT NULL,
 	--
 	PRIMARY KEY (billing_id),
 	FOREIGN KEY (patient_id),
-	FOREIGN KEY (appointment_id)
+	FOREIGN KEY (appointment_id),
+	FOREIGN KEY (note_id)
 );
 
 
