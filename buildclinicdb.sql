@@ -188,25 +188,11 @@ CREATE TABLE Demographics (
 DROP TABLE IF EXISTS FamilyHistory;
 
 CREATE TABLE FamilyHistory (
-	family_id	int NOT NULL,
 	patient_id	int NOT NULL,
-	member_id	int NOT NULL,
+	relationship	varchar(30) NOT NULL,
+	condition	varchar(60000),
 	--
-	PRIMARY KEY (family_id),
-	FOREIGN KEY (patient_id),
-	FOREIGN KEY (member_id)
-);
-
-DROP TABLE IF EXISTS FamilyMember;
-
-CREATE TABLE FamilyMember(
-	member_id	int NOT NULL,
-	member_name	varchar(50)	NOT NULL,
-	relationship	varchar(30)	NOT NULL,
-	birth_year	int NOT NULL,
-	history	varchar(60000),
-	--
-	PRIMARY KEY (member_id)
+	FOREIGN KEY (patient_id)
 );
 
 
