@@ -22,7 +22,7 @@ USE Clinic;
 DROP TABLE IF EXISTS Patient;
 
 CREATE TABLE Patient (
-	patient_id	int NOT NULL,
+	patient_id	int NOT NULL AUTO_INCREMENT,
 	first_name	varchar(30) NOT NULL,
 	last_name	varchar(30) NOT NULL,
 	middle_name	varchar(30),
@@ -57,7 +57,13 @@ CREATE TABLE Patient (
 	FOREIGN KEY (problem_id),
 	FOREIGN KEY (medlist_id),
 	FOREIGN KEY (prev_note_id)
+	AUTOINCREMENT ()
 );
+
+INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
+INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
+INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
+INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
 
 DROP TABLE IF EXISTS Users;
 
@@ -130,6 +136,7 @@ CREATE TABLE MedicationList (
 	medlist_id	int NOT NULL,
 	patient_id	int NOT NULL,
 	medication_id	int NOT NULL,
+	dosage	varchar(50),
 	status	boolean NOT NULL,
 	--
 	PRIMARY KEY (medlist_id),
