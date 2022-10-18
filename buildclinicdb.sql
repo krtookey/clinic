@@ -59,13 +59,12 @@ CREATE TABLE Patient (
 );
 
 INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
-VALUES ()
+VALUES ();
 INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
-VALUES ()
-INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
-VALUES ()
-INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
-VALUES ()
+VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10');
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id)
+VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10');
+
 
 
 DROP TABLE IF EXISTS Users;
@@ -84,6 +83,8 @@ CREATE TABLE Users (
 	PRIMARY KEY (user_id)
 );
 
+INSERT INTO Users ()
+
 DROP TABLE IF EXISTS Addresses;
 
 CREATE TABLE Addresses (
@@ -95,6 +96,9 @@ CREATE TABLE Addresses (
 	--
 	PRIMARY KEY (address_id)
 );
+
+INSERT INTO Addresses () VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
+INSERT INTO Addresses () VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
 
 /*
  * Medical Records Stuff
@@ -276,7 +280,7 @@ DROP TABLE IF EXISTS Appointment;
 CREATE TABLE Appointment (
 	appointment_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
-	date_time 	date NOT NULL,
+	date_time 	datetime NOT NULL,
 	duration	int NOT NULL,
 	status	TINYINT NOT NULL,
 	doctor_id	int NOT NULL,
