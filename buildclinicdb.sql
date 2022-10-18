@@ -39,6 +39,7 @@ CREATE TABLE Patient (
 	labdest_id int,
 	--medical_record_id int,
 	minor boolean,
+	guardian	int,
 	pcp_id	int,
 	problems_id	int NOT NULL,
 	medlist_id	int NOT NULL,
@@ -51,6 +52,7 @@ CREATE TABLE Patient (
 	FOREIGN KEY (pharmacy_id),
 	FOREIGN KEY (labdest_id),
 	--FOREIGN KEY (medical_record_id),
+	FOREIGN KEY (guardian),
 	FOREIGN KEY (pcp_id),
 	FOREIGN KEY (problem_id),
 	FOREIGN KEY (medlist_id),
@@ -64,6 +66,11 @@ CREATE TABLE Users (
 	user_name	varchar(50) NOT NULL,
 	permission	TINYINT NOT NULL,
 	job_title	varchar(50),
+	phone	int,
+	email	varchar(40),
+	first_name	varchar(40),
+	last_name	varchar(40),
+	pwd	varchar(),
 	--
 	PRIMARY KEY (user_id)
 );
@@ -74,7 +81,7 @@ CREATE TABLE Addresses (
 	address_id	int NOT NULL,
 	street	varchar(40) NOT NULL,
 	city	varchar(30) NOT NULL,
-	state	char(2) NOT NULL,
+	state_abbr	char(2) NOT NULL,
 	zip	int NOT NULL,
 	--
 	PRIMARY KEY (address_id)
@@ -220,7 +227,7 @@ DROP TABLE IF EXISTS MedicalProfile;
 CREATE TABLE MedicalProfile (
 	med_profile_id	int NOT NULL,
 	bmi	float,
-	weight	float,
+	p_weight	float,
 	height	float,
 	blood_pressure	varchar(10),
 	pulse	int,
@@ -313,7 +320,7 @@ DROP TABLE IF EXISTS Pharmacy;
 
 CREATE TABLE Pharmacy (
 	pharmacy_id	int NOT NULL,
-	name	varchar(50),
+	pharmacy_name	varchar(50),
 	address_id	int,
 	phone	int,
 	email	varchar(50),
@@ -350,7 +357,7 @@ DROP TABLE IF EXISTS LabDest;
 
 CREATE TABLE LabDest (
 	labdest_id	int NOT NULL,
-	name	varchar(50),
+	labdest_name	varchar(50),
 	address_id	int,
 	phone	int,
 	--
