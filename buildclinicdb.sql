@@ -9,7 +9,6 @@
  * 5. What is int status? I stole it from your old prescription table, as I thought that it was there for a reason that I didn't know about. Do we actually need it?
  *	- From a Medical Records standpoint, I think we do.  We need to know if the lab has been ordered and if the lab results have come in, so that we can then pull the lab results into the note.
  *	On second thought, though, it really depends on how we are storing the returned lab results?
- * 6. Maria
  */
 
 -- $$ The comments I leave start with "$$" - Nick
@@ -33,7 +32,6 @@ CREATE TABLE Patient (
 	secondary_phone	int,
 	email	varchar(40),
 	address_id	int, 
-	billing_id	int,
 	insurance_id	int,
 	pharmacy_id	int,
 	labdest_id int,
@@ -41,8 +39,8 @@ CREATE TABLE Patient (
 	minor boolean,
 	guardian	int,
 	pcp_id	int,
-	problems_id	int NOT NULL,
-	medlist_id	int NOT NULL,
+	emergency_contact1	int NOT NULL,
+	emergency_contact2	int NOT NULL,
 	prev_note_id	int NOT NULL,
 	--
 	PRIMARY KEY (patient_id),
@@ -127,7 +125,7 @@ CREATE TABLE ProblemList (
 	timeframe	varchar(12),
 	--
 	PRIMARY KEY (problem_id),
-	FOREIGN KEY (patient_id)
+	INDEX (patient_id)
 );
 
 DROP TABLE IF EXISTS MedicationList;
@@ -140,7 +138,7 @@ CREATE TABLE MedicationList (
 	status	boolean NOT NULL,
 	--
 	PRIMARY KEY (medlist_id),
-	FOREIGN KEY (patient_id),
+	INDEX (patient_id),
 	FOREIGN KEY (medication_id)
 );
 
@@ -163,11 +161,11 @@ CREATE TABLE Note (
 	plan	varchar(60000),
 	laborder_id	int,
 	lab_destid	int, -- $$ Is this meant to be labdist?
-	demographics_id	int,
+	demographics 	varchar(60000),
 	comments	varchar(60000),
 	--
 	PRIMARY KEY (note_id),
-	FOREIGN KEY (patient_id), 
+	INDEX (patient_id), 
 	FOREIGN KEY (appointment_id),
 	FOREIGN KEY (ros_id),
 	FOREIGN KEY (med_profile_id),
@@ -177,7 +175,7 @@ CREATE TABLE Note (
 	FOREIGN KEY (demographics_id)
 );
 
-DROP TABLE IF EXISTS Demographics;
+/*DROP TABLE IF EXISTS Demographics;
 
 CREATE TABLE Demographics (
 	demographics_id int NOT NULL,
@@ -191,6 +189,7 @@ CREATE TABLE Demographics (
 	FOREIGN KEY (emergency_contact1),
 	FOREIGN KEY (emergency_contact2),
 );
+*/
 
 DROP TABLE IF EXISTS FamilyHistory;
 
@@ -199,7 +198,7 @@ CREATE TABLE FamilyHistory (
 	relationship	varchar(30) NOT NULL,
 	condition	varchar(60000),
 	--
-	FOREIGN KEY (patient_id)
+	INDEX (patient_id)
 );
 
 
@@ -238,7 +237,6 @@ CREATE TABLE ReviewOfSystem (
 	ros_id	int NOT NULL,
 	condition1	boolean	NOT NULL,
 	comments	varchar(20000),
-	note_id	int NOT NULL,
 	condition2	boolean	NOT NULL,
 	condition3	boolean	NOT NULL,
 	condition4	boolean	NOT NULL,
@@ -278,7 +276,7 @@ CREATE TABLE Appointment (
 	status	TINYINT NOT NULL,
 	doctor_id	int NOT NULL,
 	doctor_last_name	varchar(30) NOT NULL, -- $$ Don't we want to store the doctors first and last name in the Users table, and just refer to them with doctor_id?
-	doctor_first_name 	varcha(30) NOT NULL,
+	doctor_first_name 	varchar(30) NOT NULL,
 	--
 	PRIMARY KEY (appointment_id),
 	FOREIGN KEY (patient_id),
