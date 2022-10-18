@@ -55,18 +55,23 @@ CREATE TABLE Patient (
 	FOREIGN KEY (problem_id),
 	FOREIGN KEY (medlist_id),
 	FOREIGN KEY (prev_note_id)
-	AUTOINCREMENT ()
+
 );
 
-INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
-INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
-INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
-INSERT INTO Patient (patient_id, first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) VALUES ()
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
+VALUES ()
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
+VALUES ()
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
+VALUES ()
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
+VALUES ()
+
 
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
-	user_id	int NOT NULL,
+	user_id	int NOT NULL AUTO_INCREMENT,
 	user_name	varchar(50) NOT NULL,
 	permission	TINYINT NOT NULL,
 	job_title	varchar(50),
@@ -82,7 +87,7 @@ CREATE TABLE Users (
 DROP TABLE IF EXISTS Addresses;
 
 CREATE TABLE Addresses (
-	address_id	int NOT NULL,
+	address_id	int NOT NULL AUTO_INCREMENT,
 	street	varchar(40) NOT NULL,
 	city	varchar(30) NOT NULL,
 	state_abbr	char(2) NOT NULL,
@@ -118,7 +123,7 @@ CREATE TABLE MedicalRecord (
 DROP TABLE IF EXISTS ProblemList;
 
 CREATE TABLE ProblemList (
-	problem_id	int NOT NULL,
+	problem_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL, 
 	problem	varchar(30) NOT NULL,
 	category	varchar(30),
@@ -131,7 +136,7 @@ CREATE TABLE ProblemList (
 DROP TABLE IF EXISTS MedicationList;
 
 CREATE TABLE MedicationList (
-	medlist_id	int NOT NULL,
+	medlist_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	medication_id	int NOT NULL,
 	dosage	varchar(50),
@@ -146,7 +151,7 @@ CREATE TABLE MedicationList (
 DROP TABLE IF EXISTS Note;
 
 CREATE TABLE Note (
-	note_id	int NOT NULL,
+	note_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	appointment_id	int,
 	cc varchar(1000),
@@ -205,7 +210,7 @@ CREATE TABLE FamilyHistory (
 DROP TABLE IF EXISTS EmergencyContact;
 
 CREATE TABLE EmergencyContact (
-	contact_id	int NOT NULL,
+	contact_id	int NOT NULL AUTO_INCREMENT,
 	contact_name 	varchar(50) NOT NULL,
 	relationship	varchar(30) NOT NULL,
 	phone	int NOT NULL,
@@ -217,7 +222,7 @@ CREATE TABLE EmergencyContact (
 DROP TABLE IF EXISTS MedicalProfile;
 
 CREATE TABLE MedicalProfile (
-	med_profile_id	int NOT NULL,
+	med_profile_id	int NOT NULL AUTO_INCREMENT,
 	bmi	float,
 	p_weight	float,
 	height	float,
@@ -234,7 +239,7 @@ CREATE TABLE MedicalProfile (
 DROP TABLE IF EXISTS ReviewOfSystem;
 
 CREATE TABLE ReviewOfSystem (
-	ros_id	int NOT NULL,
+	ros_id	int NOT NULL AUTO_INCREMENT,
 	condition1	boolean	NOT NULL,
 	comments	varchar(20000),
 	condition2	boolean	NOT NULL,
@@ -269,7 +274,7 @@ CREATE TABLE ReviewOfSystem (
 DROP TABLE IF EXISTS Appointment;
 
 CREATE TABLE Appointment (
-	appointment_id	int NOT NULL,
+	appointment_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	date_time 	date NOT NULL,
 	duration	int NOT NULL,
@@ -286,7 +291,7 @@ CREATE TABLE Appointment (
 DROP TABLE IF EXISTS Billing;
 
 CREATE TABLE Billing (
-	billing_id	int NOT NULL,
+	billing_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	appointment_id	int NOT NULL,
 	note_id	int NOT NULL,
@@ -312,7 +317,7 @@ CREATE TABLE Billing (
 DROP TABLE IF EXISTS Pharmacy;
 
 CREATE TABLE Pharmacy (
-	pharmacy_id	int NOT NULL,
+	pharmacy_id	int NOT NULL AUTO_INCREMENT,
 	pharmacy_name	varchar(50),
 	address_id	int,
 	phone	int,
@@ -325,7 +330,7 @@ CREATE TABLE Pharmacy (
 DROP TABLE IF EXISTS Prescriptions;
 
 CREATE TABLE Prescriptions (
-	prescription_id	int NOT NULL,
+	prescription_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	status	int NOT NULL, -- Things to Consider #5
 	doctor	varchar(50) NOT NULL, -- Things to Consider #2
@@ -349,7 +354,7 @@ CREATE TABLE Prescriptions (
 DROP TABLE IF EXISTS LabDest;
 
 CREATE TABLE LabDest (
-	labdest_id	int NOT NULL,
+	labdest_id	int NOT NULL AUTO_INCREMENT,
 	labdest_name	varchar(50),
 	address_id	int,
 	phone	int,
@@ -361,7 +366,7 @@ CREATE TABLE LabDest (
 DROP TABLE IF EXISTS LabOrders;
 
 CREATE TABLE LabOrders (
-	laborder_id	int NOT NULL,
+	laborder_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	doctor_id	int NOT NULL,
 	status	TINYINT NOT NULL,
@@ -377,7 +382,7 @@ CREATE TABLE LabOrders (
 DROP TABLE IF EXISTS LabList;
 
 CREATE TABLE LabList ( -- List OF ALL labs that can be ordered, pairs lab_id WITH the name OF the lab (similar to DrugList, except that druglist doesn't contain all drugs)
-	lab_id	int NOT NULL,
+	lab_id	int NOT NULL AUTO_INCREMENT,
 	lab_name	varchar(50) NOT NULL,
 	--
 	PRIMARY KEY (lab_id)
@@ -390,14 +395,14 @@ CREATE TABLE OrderedLabs (
 	lab_id	int NOT NULL,
 	results	varchar(5000),
 	-- 
-	PRIMARY KEY (laborder_id), -- $$ Should this be a Primary or Foreign key??
+	FOREIGN KEY (laborder_id), -- $$ Should this be a Primary or Foreign key??
 	FOREIGN KEY (lab_id)
 );
 
 DROP TABLE IF EXISTS DrugList;
 
 CREATE TABLE DrugList (
-	medication_id	int NOT NULL,
+	medication_id	int NOT NULL AUTO_INCREMENT,
 	medication_name	varchar(50) NOT NULL,
 	generic_name 	varchar(50) NOT NULL,
 	--
