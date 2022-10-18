@@ -21,46 +21,43 @@ USE Clinic;
 DROP TABLE IF EXISTS Patient;
 
 CREATE TABLE Patient (
-	patient_id	int NOT NULL,
-	first_name	varchar(30) NOT NULL,
-	last_name	varchar(30) NOT NULL,
+	patient_id int NOT NULL AUTO_INCREMENT,
+	first_name varchar(30) NOT NULL,
+	last_name varchar(30) NOT NULL,
 	middle_name	varchar(30),
 	DOB	date NOT NULL,
 	sex	CHAR(1) NOT NULL, 
 	gender TINYINT,
-	primary_phone	int NOT NULL,
+	primary_phone int NOT NULL,
 	secondary_phone	int,
-	email	varchar(40),
-	address_id	int, 
-	insurance_id	int,
+	email varchar(40),
+	address_id int, 
+	insurance_id int,
 	pharmacy_id	int,
 	labdest_id int,
-	--medical_record_id int,
 	minor boolean,
-	guardian	int,
-	pcp_id	int,
-	emergency_contact1	int NOT NULL,
-	emergency_contact2	int NOT NULL,
-	prev_note_id	int NOT NULL,
+	guardian int,
+	pcp_id int,
+	emergency_contact1 int NOT NULL,
+	emergency_contact2 int,
+	prev_note_id int NOT NULL,
 	--
 	PRIMARY KEY (patient_id),
-	FOREIGN KEY (street_address),
-	FOREIGN KEY (billing_id),
+	FOREIGN KEY (address_id),
 	FOREIGN KEY (insurance_id),
 	FOREIGN KEY (pharmacy_id),
 	FOREIGN KEY (labdest_id),
-	--FOREIGN KEY (medical_record_id),
 	FOREIGN KEY (guardian),
 	FOREIGN KEY (pcp_id),
-	FOREIGN KEY (problem_id),
-	FOREIGN KEY (medlist_id),
-	FOREIGN KEY (prev_note_id)
+	FOREIGN KEY (prev_note_id),
+	FOREIGN KEY (emergency_contact1),
+	FOREIGN KEY (emergency_contact2)
 );
 
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
-	user_id	int NOT NULL,
+	user_id	int NOT NULL AUTO_INCREMENT,
 	user_name	varchar(50) NOT NULL,
 	permission	TINYINT NOT NULL,
 	job_title	varchar(50),
@@ -68,7 +65,7 @@ CREATE TABLE Users (
 	email	varchar(40),
 	first_name	varchar(40),
 	last_name	varchar(40),
-	pwd	varchar(),
+	pwd	varchar(40),
 	--
 	PRIMARY KEY (user_id)
 );
@@ -76,7 +73,7 @@ CREATE TABLE Users (
 DROP TABLE IF EXISTS Addresses;
 
 CREATE TABLE Addresses (
-	address_id	int NOT NULL,
+	address_id	int NOT NULL AUTO_INCREMENT,
 	street	varchar(40) NOT NULL,
 	city	varchar(30) NOT NULL,
 	state_abbr	char(2) NOT NULL,
@@ -112,27 +109,29 @@ CREATE TABLE MedicalRecord (
 DROP TABLE IF EXISTS ProblemList;
 
 CREATE TABLE ProblemList (
-	problem_id	int NOT NULL,
+	problem_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL, 
 	problem	varchar(30) NOT NULL,
 	category	varchar(30),
 	timeframe	varchar(12),
 	--
 	PRIMARY KEY (problem_id),
-	INDEX (patient_id)
+	FOREIGN KEY (patient_id)
 );
+
+CREATE INDEX patient_id_idx ON ProblemList (patient_id);
 
 DROP TABLE IF EXISTS MedicationList;
 
 CREATE TABLE MedicationList (
-	medlist_id	int NOT NULL,
+	medlist_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	medication_id	int NOT NULL,
 	dosage 	varchar(50),
 	status	boolean NOT NULL,
 	--
 	PRIMARY KEY (medlist_id),
-	INDEX (patient_id),
+	FOREIGN KEY (patient_id),
 	FOREIGN KEY (medication_id)
 );
 
@@ -140,33 +139,29 @@ CREATE TABLE MedicationList (
 DROP TABLE IF EXISTS Note;
 
 CREATE TABLE Note (
-	note_id	int NOT NULL,
-	patient_id	int NOT NULL,
-	appointment_id	int,
+	note_id	int NOT NULL AUTO_INCREMENT,
+	patient_id int NOT NULL,
+	appointment_id int,
 	cc varchar(1000),
-	hist_illness	varchar(60000),
-	ros_id	int,
-	med_profile_id	int,
+	hist_illness varchar(60000),
+	ros_id int,
+	med_profile_id int,
 	social_hist	varchar(60000),
-	med_hist	varchar(60000),
-	psych_hist	varchar(60000),
-	family_id	int,
-	assessment	varchar(60000),
-	plan	varchar(60000),
+	med_hist varchar(60000),
+	psych_hist varchar(60000),
+	assessment varchar(60000),
+	plan varchar(60000),
 	laborder_id	int,
-	lab_destid	int, -- $$ Is this meant to be labdist?
-	demographics 	varchar(60000),
-	comments	varchar(60000),
+	lab_dest_id int, -- $$ Is this meant to be labdist?
+	demographics  varchar(60000),
+	comments varchar(60000),
 	--
-	PRIMARY KEY (note_id),
-	INDEX (patient_id), 
+	PRIMARY KEY (note_id), 
 	FOREIGN KEY (appointment_id),
 	FOREIGN KEY (ros_id),
 	FOREIGN KEY (med_profile_id),
-	FOREIGN KEY (family_id), 
 	FOREIGN KEY (laborder_id),
-	FOREIGN KEY (lab_destid),
-	FOREIGN KEY (demographics_id)
+	FOREIGN KEY (lab_dest_id)
 );
 
 /*DROP TABLE IF EXISTS Demographics;
@@ -188,21 +183,21 @@ CREATE TABLE Demographics (
 DROP TABLE IF EXISTS FamilyHistory;
 
 CREATE TABLE FamilyHistory (
-	patient_id	int NOT NULL,
-	relationship	varchar(30) NOT NULL,
-	condition	varchar(60000),
+	patient_id int NOT NULL,
+	relationship varchar(30) NOT NULL,
+	condition varchar(60000),
 	--
-	INDEX (patient_id)
+	FOREIGN KEY (patient_id)
 );
 
 
 DROP TABLE IF EXISTS EmergencyContact;
 
 CREATE TABLE EmergencyContact (
-	contact_id	int NOT NULL,
-	contact_name 	varchar(50) NOT NULL,
-	relationship	varchar(30) NOT NULL,
-	phone	int NOT NULL,
+	contact_id	int NOT NULL AUTO_INCREMENT,
+	contact_name  varchar(50) NOT NULL,
+	relationship varchar(30) NOT NULL,
+	phone int NOT NULL,
 	--
 	PRIMARY KEY (contact_id)
 
@@ -211,13 +206,13 @@ CREATE TABLE EmergencyContact (
 DROP TABLE IF EXISTS MedicalProfile;
 
 CREATE TABLE MedicalProfile (
-	med_profile_id	int NOT NULL,
+	med_profile_id	int NOT NULL AUTO_INCREMENT,
 	bmi	float,
-	p_weight	float,
-	height	float,
-	blood_pressure	varchar(10),
-	pulse	int,
-	pulse_ox	int,
+	p_weight float,
+	height float,
+	blood_pressure varchar(10),
+	pulse int,
+	pulse_ox int,
 	appointment_id	int NOT NULL,
 	--
 	PRIMARY KEY (med_profile_id),
@@ -228,32 +223,132 @@ CREATE TABLE MedicalProfile (
 DROP TABLE IF EXISTS ReviewOfSystem;
 
 CREATE TABLE ReviewOfSystem (
-	ros_id	int NOT NULL,
-	condition1	boolean	NOT NULL,
-	comments	varchar(20000),
-	condition2	boolean	NOT NULL,
-	condition3	boolean	NOT NULL,
-	condition4	boolean	NOT NULL,
-	condition5	boolean	NOT NULL,
-	condition6	boolean	NOT NULL,
-	condition7	boolean	NOT NULL,
-	condition8	boolean	NOT NULL,
-	condition9	boolean	NOT NULL,
-	condition10	boolean	NOT NULL,
-	condition11	boolean	NOT NULL,
-	condition12	boolean	NOT NULL,
-	condition13	boolean	NOT NULL,
-	condition14	boolean	NOT NULL,
-	condition15	boolean	NOT NULL,
-	condition16	boolean	NOT NULL,
-	condition17	boolean	NOT NULL,
-	condition18	boolean	NOT NULL,
-	condition19	boolean	NOT NULL,
-	condition20	boolean	NOT NULL,
-	condition21	boolean	NOT NULL,
+	ros_id	int NOT NULL AUTO_INCREMENT,
+	comments varchar(20000),
+	rashes	boolean	NOT NULL,
+	itching	boolean	NOT NULL,
+	hair_nails	boolean	NOT NULL,
+	headaches	boolean	NOT NULL,
+	head_injury	boolean	NOT NULL,
+	glasses	boolean	NOT NULL,
+	change_vision	boolean	NOT NULL,
+	eye_pain	boolean	NOT NULL,
+	double_vision	boolean	NOT NULL,
+	flash_lgt	boolean	NOT NULL,
+	glaucoma	boolean	NOT NULL,
+	last_eye date,
+	hearing	boolean	NOT NULL,
+	ear_pain	boolean	NOT NULL,
+	ear_disch	boolean	NOT NULL,
+	ringing	boolean	NOT NULL,
+	dizziness	boolean	NOT NULL,
+	nose_bld	boolean	NOT NULL,
+	stuffiness	boolean	NOT NULL,
+	freq_colds	boolean	NOT NULL,
+	hives	boolean	NOT NULL,
+	swell_lip	boolean	NOT NULL,
+	hay_fever	boolean	NOT NULL,
+	asthma	boolean	NOT NULL,
+	eczema	boolean	NOT NULL,
+	sens_drg_food	boolean	NOT NULL,
+	bld_gums	boolean	NOT NULL,
+	sore_tongue	boolean	NOT NULL,
+	sore_throat	boolean	NOT NULL,
+	hoarseness	boolean	NOT NULL,
+	lumps	boolean	NOT NULL,
+	swoll_glands	boolean	NOT NULL,
+	goiter	boolean	NOT NULL,
+	neck_stiffness	boolean	NOT NULL,
+	breast_lumps	boolean	NOT NULL,
+	breast_pain	boolean	NOT NULL,
+	nipple_discharge	boolean	NOT NULL,
+	bse	boolean	NOT NULL,
+	short_of_brth	boolean	NOT NULL,
+	cough	boolean	NOT NULL,
+	phlem	boolean	NOT NULL,
+	wheezing	boolean	NOT NULL,
+	chough_bld	boolean	NOT NULL,
+	chest_pain	boolean	NOT NULL,
+	fever	boolean	NOT NULL,
+	night_sweats	boolean	NOT NULL,
+	swell_hands	boolean	NOT NULL,
+	blue_toes	boolean	NOT NULL,
+	high_blood	boolean	NOT NULL,
+	skipping_heart	boolean	NOT NULL,
+	heart_murmur	boolean	NOT NULL,
+	hx_of_heart_med	boolean	NOT NULL,
+	bronchitis	boolean	NOT NULL,
+	rheumatic_heart_dis	boolean	NOT NULL,
+	appetite	boolean	NOT NULL,
+	swallowing	boolean	NOT NULL,
+	nausea	boolean	NOT NULL,
+	heartburn	boolean	NOT NULL,
+	vomiting	boolean	NOT NULL,
+	vomit_blood	boolean	NOT NULL,
+	constipation	boolean	NOT NULL,
+	diarrhea	boolean	NOT NULL,
+	bowels	boolean	NOT NULL,
+	abdominal_pain	boolean	NOT NULL,
+	burping	boolean	NOT NULL,
+	farting	boolean	NOT NULL,
+	yellow_skin	boolean	NOT NULL,
+	food_intol	boolean	NOT NULL,
+	rectal_bleed	boolean	NOT NULL,
+	unination	boolean	NOT NULL,
+	urin_pain	boolean	NOT NULL,
+	freq_urin	boolean	NOT NULL,
+	urgent_urin	boolean	NOT NULL,
+	incontinence_urin	boolean	NOT NULL,
+	dribble	boolean	NOT NULL,
+	urin_stream	boolean	NOT NULL,
+	urin_blood	boolean	NOT NULL,
+	uti_stones	boolean	NOT NULL,
+	leg_cramp	boolean	NOT NULL,
+	varicose_vein	boolean	NOT NULL,
+	clot_vein	boolean	NOT NULL,
+	musc_pain	boolean	NOT NULL,
+	musc_swelling	boolean	NOT NULL,
+	musc_stiffness	boolean	NOT NULL,
+	joint_motion	boolean	NOT NULL,
+	broken_bone	boolean	NOT NULL,
+	sprains	boolean	NOT NULL,
+	arthritis	boolean	NOT NULL,
+	gout	boolean	NOT NULL,
+	--headache duplicate
+	seizures	boolean	NOT NULL,
+	fainting	boolean	NOT NULL,
+	paralysis	boolean	NOT NULL,
+	weakness	boolean	NOT NULL,
+	muscle_size	boolean	NOT NULL,
+	muscle_spasm	boolean	NOT NULL,
+	tremor	boolean	NOT NULL,
+	invol_move	boolean	NOT NULL,
+	incoordination	boolean	NOT NULL,
+	numbness	boolean	NOT NULL,
+	pins_needles	boolean	NOT NULL,
+	anemia	boolean	NOT NULL,
+	bruising_bleed	boolean	NOT NULL,
+	transfusions	boolean	NOT NULL,
+	growth	boolean	NOT NULL,
+	appetite	boolean	NOT NULL,
+	thirst	boolean	NOT NULL,
+	incre_urin	boolean	NOT NULL,
+	thyroid	boolean	NOT NULL,
+	head_cold	boolean	NOT NULL,
+	sweating	boolean	NOT NULL,
+	diabetes	boolean	NOT NULL,
+	anxiety	boolean	NOT NULL,
+	depression	boolean	NOT NULL,
+	memory	boolean	NOT NULL,
+	unusual_prob	boolean	NOT NULL,
+	sleep	boolean	NOT NULL,
+	psychiatrist	boolean	NOT NULL,
+	mood	boolean	NOT NULL
 	--
 	PRIMARY KEY (ros_id)
 );
+
+CREATE INDEX ros_id_idx ON ReviewOfSystem (ros_id);
 
 /*
  * Appointments Stuff
@@ -263,7 +358,7 @@ CREATE TABLE ReviewOfSystem (
 DROP TABLE IF EXISTS Appointment;
 
 CREATE TABLE Appointment (
-	appointment_id	int NOT NULL,
+	appointment_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	date_time 	date NOT NULL,
 	duration	int NOT NULL,
@@ -280,13 +375,13 @@ CREATE TABLE Appointment (
 DROP TABLE IF EXISTS Billing;
 
 CREATE TABLE Billing (
-	billing_id	int NOT NULL,
+	billing_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	appointment_id	int NOT NULL,
 	note_id	int NOT NULL,
 	bill_statement	varchar(60000) NOT NULL,
-	amount_due	int,
-	payed	boolean NOT NULL,
+	amount_due	float,
+	paid	boolean NOT NULL,
 	--
 	PRIMARY KEY (billing_id),
 	FOREIGN KEY (patient_id),
@@ -306,7 +401,7 @@ CREATE TABLE Billing (
 DROP TABLE IF EXISTS Pharmacy;
 
 CREATE TABLE Pharmacy (
-	pharmacy_id	int NOT NULL,
+	pharmacy_id	int NOT NULL AUTO_INCREMENT,
 	pharmacy_name	varchar(50),
 	address_id	int,
 	phone	int,
@@ -319,21 +414,21 @@ CREATE TABLE Pharmacy (
 DROP TABLE IF EXISTS Prescriptions;
 
 CREATE TABLE Prescriptions (
-	prescription_id	int NOT NULL,
+	prescription_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	status	int NOT NULL, -- Things to Consider #5
-	doctor	varchar(50) NOT NULL, -- Things to Consider #2
-	doctor_id int NOT NULL,	-- Things to Consider #2
-	pharmacy_id	int NOT NULL,
-	medication_id	int NOT NULL,
-	dosage	varchar(50) NOT NULL,
-	quantity_total	int NOT NULL,
-	quantity_days	int NOT NULL,
+	general_notes	varchar(5000),
 	refills	int NOT NULL,
-	general_notes	varchar(5000), 
+	quantity_days	int NOT NULL,
+	quantity_total	int NOT NULL,
+	dosage	varchar(50) NOT NULL,
+	medication_id	int NOT NULL,
+	pharmacy_id	int NOT NULL,
+	doctor_id int NOT NULL,	-- Things to Consider #2
 	--
 	PRIMARY KEY (prescription_id),
 	FOREIGN KEY (patient_id),
+	FOREIGN KEY (medication_id),
 	FOREIGN KEY (pharmacy_id),
 	FOREIGN KEY (doctor_id)
 );
@@ -343,7 +438,7 @@ CREATE TABLE Prescriptions (
 DROP TABLE IF EXISTS LabDest;
 
 CREATE TABLE LabDest (
-	labdest_id	int NOT NULL,
+	labdest_id	int NOT NULL AUTO_INCREMENT,
 	labdest_name	varchar(50),
 	address_id	int,
 	phone	int,
@@ -355,7 +450,7 @@ CREATE TABLE LabDest (
 DROP TABLE IF EXISTS LabOrders;
 
 CREATE TABLE LabOrders (
-	laborder_id	int NOT NULL,
+	laborder_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
 	doctor_id	int NOT NULL,
 	status	TINYINT NOT NULL,
@@ -371,7 +466,7 @@ CREATE TABLE LabOrders (
 DROP TABLE IF EXISTS LabList;
 
 CREATE TABLE LabList ( -- List OF ALL labs that can be ordered, pairs lab_id WITH the name OF the lab (similar to DrugList, except that druglist doesn't contain all drugs)
-	lab_id	int NOT NULL,
+	lab_id	int NOT NULL AUTO_INCREMENT,
 	lab_name	varchar(50) NOT NULL,
 	--
 	PRIMARY KEY (lab_id)
@@ -384,17 +479,22 @@ CREATE TABLE OrderedLabs (
 	lab_id	int NOT NULL,
 	results	varchar(5000),
 	-- 
-	PRIMARY KEY (laborder_id), -- $$ Should this be a Primary or Foreign key??
+	FOREIGN KEY (laborder_id),
 	FOREIGN KEY (lab_id)
 );
 
 DROP TABLE IF EXISTS DrugList;
 
 CREATE TABLE DrugList (
-	medication_id	int NOT NULL,
+	medication_id	int NOT NULL AUTO_INCREMENT,
 	medication_name	varchar(50) NOT NULL,
 	generic_name 	varchar(50) NOT NULL,
 	--
 	PRIMARY KEY (medication_id)
 );
 
+CREATE TABLE Insurance (
+	insurance_id int NOT NULL AUTO_INCREMENT,
+	--
+	PRIMARY KEY (insurance_id)
+);
