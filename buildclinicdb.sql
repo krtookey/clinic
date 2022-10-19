@@ -54,13 +54,10 @@ CREATE TABLE Patient (
 	FOREIGN KEY (emergency_contact2)
 );
 
-INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, ) 
-VALUES ();
-INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
-VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10');
-INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id)
-VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10');
-
+--// Sample Data
+--INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) 
+--VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
+INSERT INTO Patient VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
 
 
 DROP TABLE IF EXISTS Users;
@@ -79,7 +76,9 @@ CREATE TABLE Users (
 	PRIMARY KEY (user_id)
 );
 
-INSERT INTO Users ()
+--// Sample Data
+--INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, last_name, pwd) VALUES ('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger');
+INSERT INTO Users VALUES ('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger');
 
 DROP TABLE IF EXISTS Addresses;
 
@@ -93,8 +92,11 @@ CREATE TABLE Addresses (
 	PRIMARY KEY (address_id)
 );
 
-INSERT INTO Addresses () VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
-INSERT INTO Addresses () VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
+--// Sample Data
+--INSERT INTO Addresses (street, city, state_abbr, zip) VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
+INSERT INTO Addresses VALUES ('12 North Main St', 'Randolph', 'VT', '05060');
+INSERT INTO Addresses VALUES ('1390 Monti Rd', 'Northfield', 'VT', '05663');
+
 
 /*
  * Medical Records Stuff
@@ -437,6 +439,10 @@ CREATE TABLE Pharmacy (
 	FOREIGN KEY (address_id)
 );
 
+--// Sample Data
+INSERT INTO Pharmacy VALUES ('Rite Aid Randolph', '2', '18027283722', '05060@riteaid.com');
+
+
 DROP TABLE IF EXISTS Prescriptions;
 
 CREATE TABLE Prescriptions (
@@ -473,6 +479,9 @@ CREATE TABLE LabDest (
 	FOREIGN KEY (address_id)
 );
 
+--// Sample Data
+INSERT INTO LabDest VALUES ('A Shack In The Woods', '3', '18024853788');
+
 DROP TABLE IF EXISTS LabOrders;
 
 CREATE TABLE LabOrders (
@@ -488,6 +497,8 @@ CREATE TABLE LabOrders (
 	FOREIGN KEY (doctor_id),
 	FOREIGN KEY (labdest_id)
 );
+
+--// Sample Data 
  
 DROP TABLE IF EXISTS LabList;
 
@@ -518,6 +529,114 @@ CREATE TABLE DrugList (
 	--
 	PRIMARY KEY (medication_id)
 );
+
+--// Sample Data
+INSERT INTO DrugList VALUES ('Aspirin', 'acetylsalicylic acid');
+INSERT INTO DrugList Values ('Synthroid', 'Levothyroxine');
+INSERT INTO DrugList Values ('Vicodin', 'Hydrocodone/APAP');
+INSERT INTO DrugList Values ('Amoxil', 'Amoxicillin');
+INSERT INTO DrugList Values ('Prinivil',  'Lisinopril');
+INSERT INTO DrugList Values ('Nexium', 'Esomeprazole');
+INSERT INTO DrugList Values ('Lipitor', 'Atorvastatin');
+INSERT INTO DrugList Values ('Zocor', 'Simvastatin');
+INSERT INTO DrugList Values ('Plavix', 'Clopidogrel');
+INSERT INTO DrugList Values ('Singulair', 'Montelukast');
+INSERT INTO DrugList Values ('Crestor', 'Rosuvastatin');
+INSERT INTO DrugList Values ('Lopressor', 'Metoprolol');
+INSERT INTO DrugList Values ('Lexapro', 'Escitalopram');
+INSERT INTO DrugList Values ('Zithroma', 'Azithromycin');
+INSERT INTO DrugList Values ('ProAir HF',  'Albuterol');
+INSERT INTO DrugList Values ('HCTZ', 'Hydrochlorothiazide');
+INSERT INTO DrugList Values ('Glucophage', 'Metformin');
+INSERT INTO DrugList Values ('Zoloft', 'Sertraline');
+INSERT INTO DrugList Values ('Advil', 'Ibuprofen');
+INSERT INTO DrugList Values ('Ambien', 'Zolpidem');
+INSERT INTO DrugList Values ('Lasix', 'Furosemide');
+INSERT INTO DrugList Values ('Prilosec', 'Omeprazole');
+INSERT INTO DrugList Values ('Desyrel', 'Trazodone');
+INSERT INTO DrugList Values ('Diovan', 'Valsartan');
+INSERT INTO DrugList Values ('Ultram', 'Tramadol');
+INSERT INTO DrugList Values ('Cymbalta', 'Duloxetine');
+INSERT INTO DrugList Values ('Coumadin', 'Warfarin');
+INSERT INTO DrugList Values ('Norvasc', 'Amlodipine');
+INSERT INTO DrugList Values ('Percocet', 'Oxycodone/APAP');
+INSERT INTO DrugList Values ('Seroquel', 'Quetiapine');
+INSERT INTO DrugList Values ('Phenergan', 'Promethazine');
+INSERT INTO DrugList Values ('Flonase', 'Fluticasone');
+INSERT INTO DrugList Values ('Xanax', 'Alprazolam');
+INSERT INTO DrugList Values ('Klonopin', 'Clonazepam');
+INSERT INTO DrugList Values ('Lotensin', 'Benazepril');
+INSERT INTO DrugList Values ('Mobic', 'Meloxicam');
+INSERT INTO DrugList Values ('Celexa', 'Citalopram');
+INSERT INTO DrugList Values ('Keflex', 'Cephalexin');
+INSERT INTO DrugList Values ('Spiriva', 'Tiotropium');
+INSERT INTO DrugList Values ('Neurontin', 'Gabapentin');
+INSERT INTO DrugList Values ('Abilify', 'Aripiprazole');
+INSERT INTO DrugList Values ('K-Tab,' 'Potassium');
+INSERT INTO DrugList Values ('Flexeril', 'Cyclobenzaprine');
+INSERT INTO DrugList Values ('Medrol', 'Methylprednisolone');
+INSERT INTO DrugList Values ('Concerta', 'Methylphenidate');
+INSERT INTO DrugList Values ('Claritin', 'Loratadine');
+INSERT INTO DrugList Values ('Coreg', 'Carvedilol');
+INSERT INTO DrugList Values ('Soma', 'Carisoprodol');
+INSERT INTO DrugList Values ('Lanoxin', 'Digoxin');
+INSERT INTO DrugList Values ('Namenda', 'Memantine');
+INSERT INTO DrugList Values ('Tenormin', 'Atenolol');
+INSERT INTO DrugList Values ('Valium', 'Diazepam');
+INSERT INTO DrugList Values ('OxyContin', 'Oxycodone');
+INSERT INTO DrugList Values ('Actonel', 'Risedronate');
+INSERT INTO DrugList Values ('Folvite', 'Folic Acid');
+INSERT INTO DrugList Values ('Hyzaar', 'Losartan+HCTZ');
+INSERT INTO DrugList Values ('Deltasone', 'Prednisone');
+INSERT INTO DrugList Values ('Omnipred', 'Prednisolone');
+INSERT INTO DrugList Values ('Fosamax', 'Alendronate');
+INSERT INTO DrugList Values ('Protonix', 'Pantoprazole');
+INSERT INTO DrugList Values ('Flomax', 'Tamsulosin');
+INSERT INTO DrugList Values ('Dyazide', 'Triamterene+HCTZ');
+INSERT INTO DrugList Values ('Paxil', 'Paroxetine');
+INSERT INTO DrugList Values ('Suboxone', 'Buprenorphine+Naloxone');
+INSERT INTO DrugList Values ('Vasotec', 'Enalapril');
+INSERT INTO DrugList Values ('Mevacor', 'Lovastatin');
+INSERT INTO DrugList Values ('Actos', 'Pioglitazone');
+INSERT INTO DrugList Values ('Pravachol', 'Pravastatin');
+INSERT INTO DrugList Values ('Prozac', 'Fluoxetine');
+INSERT INTO DrugList Values ('Levemir', 'Insulin Detemir');
+INSERT INTO DrugList Values ('Diflucan', 'Fluconazole');
+INSERT INTO DrugList Values ('Levaquin', 'Levofloxacin');
+INSERT INTO DrugList Values ('Xarelto', 'Rivaroxaban');
+INSERT INTO DrugList Values ('Celebrex', 'Celecoxib');
+INSERT INTO DrugList Values ('Tylenol#2', 'Codeine/APAP' );
+INSERT INTO DrugList Values ('Nasonex', 'Mometasone');
+INSERT INTO DrugList Values ('Cipro', 'Ciprofloxacin');
+INSERT INTO DrugList Values ('Lyrica', 'Pregabalin');
+INSERT INTO DrugList Values ('Novolog', 'Insulin Aspart');
+INSERT INTO DrugList Values ('Effexor', 'Venlafaxine');
+INSERT INTO DrugList Values ('Ativan', 'Lorazepam');
+INSERT INTO DrugList Values ('Zetia', 'Ezetimibe');
+INSERT INTO DrugList Values ('Premarin', 'Estrogen');
+INSERT INTO DrugList Values ('Zyloprim', 'Allopurinol');
+INSERT INTO DrugList Values ('Pen VK,' 'Penicillin' );
+INSERT INTO DrugList Values ('Januvia', 'Sitagliptin');
+INSERT INTO DrugList Values ('Elavil', 'Amitriptyline');
+INSERT INTO DrugList Values ('Catapres', 'Clonidine');
+INSERT INTO DrugList Values ('Xalatan', 'Latanoprost');
+INSERT INTO DrugList Values ('Vyvanse', 'Lisdexamfetamine');
+INSERT INTO DrugList Values ('Advair', 'Fluticasone+Salmeterol');
+INSERT INTO DrugList Values ('Symbicort', 'Budesonide+Formoterol');
+INSERT INTO DrugList Values ('Dexilant', 'Dexlansoprazole');
+INSERT INTO DrugList Values ('Diabeta', 'Glyburide');
+INSERT INTO DrugList Values ('Zyprexa', 'Olanzapine');
+INSERT INTO DrugList Values ('Detrol', 'Tolterodine');
+INSERT INTO DrugList Values ('Zantac', 'Ranitidine');
+INSERT INTO DrugList Values ('Pepcid', 'Famotidine');
+INSERT INTO DrugList Values ('Cardizem', 'Diltiazem');
+INSERT INTO DrugList Values ('Lantus', 'Insulin Glargine');
+INSERT INTO DrugList Values ('Prinizide', 'Lisinopril+HCTZ');
+
+/*
+ * Insurance Stuff (this has no home apparantly, which is what it deserves!!)
+ * 
+ */
 
 CREATE TABLE Insurance (
 	insurance_id int NOT NULL AUTO_INCREMENT,
