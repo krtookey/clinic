@@ -198,3 +198,6 @@
 ('Amphetamine/Dextro-amphetamine',  'Adderall®')
 ('Amoxicillin+Clavulanate', 'Augmentin®')
 ('Ezetimibe+Simvastatin',   'Vytorin®')
+
+
+https://www.pharmacy-tech-test.com/top-200-drugs-to-memorize.html
