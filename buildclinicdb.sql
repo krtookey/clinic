@@ -37,10 +37,10 @@ CREATE TABLE Patient (
 	labdest_id int,
 	minor boolean,
 	guardian int,
-	pcp_id int,
+	pcp_id int, 
+	prev_note_id int NOT NULL,
 	emergency_contact1 int NOT NULL,
 	emergency_contact2 int,
-	prev_note_id int NOT NULL,
 	--
 	PRIMARY KEY (patient_id),
 	FOREIGN KEY (address_id),
@@ -54,7 +54,7 @@ CREATE TABLE Patient (
 	FOREIGN KEY (emergency_contact2)
 );
 
-INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, ) 
 VALUES ();
 INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, problems_id, medlist_id, prev_note_id) 
 VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10');
@@ -171,12 +171,15 @@ CREATE TABLE Note (
 	comments varchar(60000),
 	--
 	PRIMARY KEY (note_id), 
+	--FOREIGN KEY (patient_id)
 	FOREIGN KEY (appointment_id),
 	FOREIGN KEY (ros_id),
 	FOREIGN KEY (med_profile_id),
 	FOREIGN KEY (laborder_id),
 	FOREIGN KEY (lab_dest_id)
 );
+
+-- CREATE INDEX patient_id_idx ON Note (patient_id);   $$ Do we want patient_id to be an index within Note?
 
 /*DROP TABLE IF EXISTS Demographics;
 
@@ -244,6 +247,7 @@ CREATE TABLE ReviewOfSystem (
 	hair_nails	boolean	NOT NULL,
 	headaches	boolean	NOT NULL,
 	head_injury	boolean	NOT NULL,
+	-- Vision Stuff
 	glasses	boolean	NOT NULL,
 	change_vision	boolean	NOT NULL,
 	eye_pain	boolean	NOT NULL,
@@ -251,11 +255,13 @@ CREATE TABLE ReviewOfSystem (
 	flash_lgt	boolean	NOT NULL,
 	glaucoma	boolean	NOT NULL,
 	last_eye date,
+	-- Ear Stuff
 	hearing	boolean	NOT NULL,
 	ear_pain	boolean	NOT NULL,
 	ear_disch	boolean	NOT NULL,
 	ringing	boolean	NOT NULL,
 	dizziness	boolean	NOT NULL,
+	-- Nose/Sinus Stuff
 	nose_bld	boolean	NOT NULL,
 	stuffiness	boolean	NOT NULL,
 	freq_colds	boolean	NOT NULL,
@@ -265,6 +271,7 @@ CREATE TABLE ReviewOfSystem (
 	asthma	boolean	NOT NULL,
 	eczema	boolean	NOT NULL,
 	sens_drg_food	boolean	NOT NULL,
+	-- Mouth Stuff
 	bld_gums	boolean	NOT NULL,
 	sore_tongue	boolean	NOT NULL,
 	sore_throat	boolean	NOT NULL,
@@ -272,10 +279,12 @@ CREATE TABLE ReviewOfSystem (
 	lumps	boolean	NOT NULL,
 	swoll_glands	boolean	NOT NULL,
 	goiter	boolean	NOT NULL,
+	-- Neck and Breasts
 	neck_stiffness	boolean	NOT NULL,
 	breast_lumps	boolean	NOT NULL,
 	breast_pain	boolean	NOT NULL,
 	nipple_discharge	boolean	NOT NULL,
+	-- Cardiovascular/Lungs
 	bse	boolean	NOT NULL,
 	short_of_brth	boolean	NOT NULL,
 	cough	boolean	NOT NULL,
@@ -293,6 +302,7 @@ CREATE TABLE ReviewOfSystem (
 	hx_of_heart_med	boolean	NOT NULL,
 	bronchitis	boolean	NOT NULL,
 	rheumatic_heart_dis	boolean	NOT NULL,
+	-- Digestive
 	appetite	boolean	NOT NULL,
 	swallowing	boolean	NOT NULL,
 	nausea	boolean	NOT NULL,
@@ -317,6 +327,7 @@ CREATE TABLE ReviewOfSystem (
 	urin_stream	boolean	NOT NULL,
 	urin_blood	boolean	NOT NULL,
 	uti_stones	boolean	NOT NULL,
+	-- Circulation
 	leg_cramp	boolean	NOT NULL,
 	varicose_vein	boolean	NOT NULL,
 	clot_vein	boolean	NOT NULL,
@@ -327,7 +338,8 @@ CREATE TABLE ReviewOfSystem (
 	broken_bone	boolean	NOT NULL,
 	sprains	boolean	NOT NULL,
 	arthritis	boolean	NOT NULL,
-	gout	boolean	NOT NULL,
+	gout	boolean	NOT NULL, 
+	-- Neurological (kind of)
 	--headache duplicate
 	seizures	boolean	NOT NULL,
 	fainting	boolean	NOT NULL,
@@ -469,7 +481,7 @@ CREATE TABLE LabOrders (
 	doctor_id	int NOT NULL,
 	status	TINYINT NOT NULL,
 	labdest_id	int NOT NULL,
-	cc_recipients	varchar(70),
+	cc_recipients	varchar(70), --$$ Should this instead be a list of IDs stored in a seperate table that contains the ID's of the practitioners who were CC'd, or just keep it as a list of names?
 	--
 	PRIMARY KEY (laborder_id),
 	FOREIGN KEY (patient_id),
