@@ -3,15 +3,16 @@
  * 2. How are we going to store doctors in Prescriptions and LabOrders, should their name be stored in a varchar(50) or 
  * should their id be stored as an int and refer to their name and other info which is stored in Users or a Practitioners table?
  * 3. Is MedicationList going to be updated by Pharmacy? Shouldn't it just pull from Prescriptions? We need to discuss this further.
- *	- I think the MedicationList table can be managed by Medical Records - this table would also include over the counter-meds and vitamins. - Elizabeth
+ *	- I think the MedicationList table can be managed by Medical Records - this table would also include over the counter-meds and vitamins. - EN
  * 4. How should we store the list of lab_id to order as part of a LabOrder? Should we have a separate table storing the ids for a single order, 
  * which would have the laborder_id as a FK and labor
  * 5. What is int status? I stole it from your old prescription table, as I thought that it was there for a reason that I didn't know about. Do we actually need it?
  *	- From a Medical Records standpoint, I think we do.  We need to know if the lab has been ordered and if the lab results have come in, so that we can then pull the lab results into the note.
- *	On second thought, though, it really depends on how we are storing the returned lab results?
+ *	On second thought, though, it really depends on how we are storing the returned lab results? - EN
  */
 
 -- $$ The comments I leave start with "$$" - Nick
+-- EN comments from Elizabeth
 
 CREATE DATABASE IF NOT EXISTS Clinic;
 USE Clinic;
@@ -58,8 +59,9 @@ CREATE TABLE Patient (
 --INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) 
 --VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
 INSERT INTO Patient VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
-
-
+INSERT INTO Patient VALUES 	('John', 'Doe', 'Bob', '1945-06-04', 'M', '1', '12809993300', '18025553333', 'catsrule@gmail.com', '3', '3', '3', '1', '1', '0', '0', '1', '1', '0'),
+				('Jane', 'Dough', 'Jill', '1964-12-09', 'F', '2', '13014448998', '12409994444', 'dogsdrool@gmail.com', '4', '4', '4', '2', '2', '0', '0', '2', '0', '2', '0');
+				 
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
@@ -78,7 +80,8 @@ CREATE TABLE Users (
 
 --// Sample Data
 --INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, last_name, pwd) VALUES ('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger');
-INSERT INTO Users VALUES ('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger');
+INSERT INTO Users VALUES 	('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger'),
+				('CBrown', '1', 'NP', '18025556767', 'snoopyrules@aol.com', 'Charlie', 'Brown');
 
 DROP TABLE IF EXISTS Addresses;
 
@@ -95,7 +98,9 @@ CREATE TABLE Addresses (
 --// Sample Data
 --INSERT INTO Addresses (street, city, state_abbr, zip) VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
 INSERT INTO Addresses VALUES ('12 North Main St', 'Randolph', 'VT', '05060');
-INSERT INTO Addresses VALUES ('1390 Monti Rd', 'Northfield', 'VT', '05663');
+INSERT INTO Addresses VALUES 	('1390 Monti Rd', 'Northfield', 'VT', '05663'),
+				('3 Mt Philo Rd', 'Charlotte', 'VT', '05444'),
+				('26 South Rd', 'Williston', 'VT', '05495');
 
 
 /*
@@ -137,6 +142,10 @@ CREATE TABLE ProblemList (
 
 CREATE INDEX patient_id_idx ON ProblemList (patient_id);
 
+INSERT INTO ProblemList VALUES	('2', 'Cold Urticaria', 'allergy', 'present'), -- EN not sure if this is the right use of the timeframe field?
+				('2', 'Covid-19', 'virus', 'past'),
+				('3', 'Hypertension', 'cardiovascular', 'present');
+
 DROP TABLE IF EXISTS MedicationList;
 
 CREATE TABLE MedicationList (
@@ -151,6 +160,10 @@ CREATE TABLE MedicationList (
 	FOREIGN KEY (medication_id)
 );
 
+CREATE INDEX patient_id_idx ON MedicationList (patient_id);
+
+INSERT INTO MedicationList VALUES 	('3', '8', '50 ml', '1'),
+					('2', '4', '20 ml', '1');
 
 DROP TABLE IF EXISTS Note;
 
@@ -168,7 +181,7 @@ CREATE TABLE Note (
 	assessment varchar(60000),
 	plan varchar(60000),
 	laborder_id	int,
-	lab_dest_id int, -- $$ Is this meant to be labdist?
+	lab_id int, -- $$ Is this meant to be labdist? -- EN I checked the diagram, and I think we actually want it to be lab_id, so I went ahead and changed it.  Rational being that we are storing both lab_id and laborder_id in Note so that we can access the OrderedLabs table.  We probably need another work around for multiple labs, in which case we might be storing both as a varchar instead of an int.  
 	demographics  varchar(60000),
 	comments varchar(60000),
 	--
@@ -181,7 +194,10 @@ CREATE TABLE Note (
 	FOREIGN KEY (lab_dest_id)
 );
 
--- CREATE INDEX patient_id_idx ON Note (patient_id);   $$ Do we want patient_id to be an index within Note?
+-- CREATE INDEX patient_id_idx ON Note (patient_id);   $$ Do we want patient_id to be an index within Note? -- EN Yes.
+
+INSERT INTO Note VALUES ('2', '1', 'Headache', 'History of Illness: Has been getting bad headaches for a few weeks now.', '1', '1', 'Social History: former smoker.  Drink 8 cups of coffee a day.', 'Medical History: ...blah, blah, blah', 'Phych History: suffers from anxiety', 'Assessment: drinks too much coffee.', 'Plan: Reduce caffine intake. Return in a month if headaches have not subsided', '0', '0', 'Demographic: Married', 'Comments: Blah...'),
+			('1', '2', 'Annual Physical', 'Feels fine.', '2', '2', 'Social History: drinks socially. 2-3 beers a week', 'Medical History: partial fracture to left tibia in June 2016', 'Phych History: Blah', 'Assessment: Healthy for age, but blah, blah, blah', 'Plan: Eat health and get at least 8 hours of sleep a night. Annual lab tests ordered.', '0', '1', 'Demographic: Blah', 'Comments: view lab results.');
 
 /*DROP TABLE IF EXISTS Demographics;
 
@@ -209,6 +225,10 @@ CREATE TABLE FamilyHistory (
 	FOREIGN KEY (patient_id)
 );
 
+-- CREATE INDEX patient_id_idx ON FamilyHistory (patient_id);  -- EN I think we want to index the patient_id on this one too.
+
+INSERT INTO FamilyHistory VALUES 	('2', 'Father', 'Hypertension'),
+					('2', 'Mother', 'Type 2 Diabetes');
 
 DROP TABLE IF EXISTS EmergencyContact;
 
