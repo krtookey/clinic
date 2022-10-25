@@ -29,8 +29,8 @@ CREATE TABLE Patient (
 	DOB	date NOT NULL,
 	sex	CHAR(1) NOT NULL, 
 	gender TINYINT,
-	primary_phone int NOT NULL,
-	secondary_phone	int,
+	primary_phone varchar(20) NOT NULL,
+	secondary_phone	varchar(20),
 	email varchar(40),
 	address_id int, 
 	insurance_id int,
@@ -69,7 +69,7 @@ CREATE TABLE Users (
 	user_name	varchar(50) NOT NULL,
 	permission	TINYINT NOT NULL,
 	job_title	varchar(50),
-	phone	int,
+	phone	varchar(20),
 	email	varchar(40),
 	first_name	varchar(40),
 	last_name	varchar(40),
@@ -236,7 +236,7 @@ CREATE TABLE EmergencyContact (
 	contact_id	int NOT NULL AUTO_INCREMENT,
 	contact_name 	varchar(50) NOT NULL,
 	relationship	varchar(30) NOT NULL,
-	phone	int NOT NULL,
+	phone	varchar(20) NOT NULL,
 	--
 	PRIMARY KEY (contact_id)
 
@@ -452,7 +452,7 @@ CREATE TABLE Pharmacy (
 	pharmacy_id	int NOT NULL AUTO_INCREMENT,
 	pharmacy_name	varchar(50),
 	address_id	int,
-	phone	int,
+	phone	varchar(20),
 	email	varchar(50),
 	--
 	PRIMARY KEY (pharmacy_id),
@@ -493,7 +493,7 @@ CREATE TABLE LabDest (
 	labdest_id	int NOT NULL AUTO_INCREMENT,
 	labdest_name	varchar(50),
 	address_id	int,
-	phone	int,
+	phone	varchar(20),
 	--
 	PRIMARY KEY (labdest_id),
 	FOREIGN KEY (address_id)
