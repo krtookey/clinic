@@ -6,12 +6,6 @@
                 max-width: 40%;
                 margin: 2%;
             }
-            #prescriptionform{
-                
-            }
-            #labform{
-                
-            }
             #prescriptionform input, label {
                 margin:0.2em;
             }
@@ -36,15 +30,16 @@
         </style>
     </head>
     <body>
-        <form id="prescriptionform">
+        <form action="orders.php" method="post" id="prescriptionform">
             <b>Prescription Order Form</b>
             <br>
             <label for="doctorname">Doctor Name: </label>
-            <input type="text" id="doctorname"> 
+            <input type="text" id="doctorname" required> 
             <label for="pharmacy">Pharmacy: </label>
-            <input type="text" id="pharmacy" list="pharmacy_list">
+            <input type="text" id="pharmacy" list="pharmacy_list" required>
             <datalist id="pharmacy_list">
                 <?php 
+                /*
                     $servername = "localhost";
                     $username = "username";
                     $password = "password";
@@ -61,7 +56,6 @@
 
                     if ($result->num_rows > 0){
                         while($row = $result->fetch_assoc()){
-                            //This is what will create the checkboxes and labels, when it is set up correctly-->
                             $name = $row[pharmacy_name];
                             $text = <<<TEXT
                             <option value="$name">
@@ -72,6 +66,7 @@
                         echo "0 results";
                     }
                     $conn->close();
+                    */
                 ?>
                 <option value="Rite Aid Randolph"> <!-- This will be populated by the items in the SQL table Pharmacy, pharmacy_name-->
             </datalist>
@@ -82,6 +77,7 @@
                 <input type="text" list="druglist" id="drugname">
                 <datalist id="druglist">
                     <?php 
+                    /*
                         $servername = "localhost";
                         $username = "username";
                         $password = "password";
@@ -110,6 +106,7 @@
                             echo "0 results";
                         }
                         $conn->close();
+                        */
                     ?>
                     <option value="Valium (Diazepam)"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
@@ -127,25 +124,63 @@
             <label for="usage_info">Usage Info and General Notes: </label>
             <br>
             <textarea rows="10" cols="40" id="usage_info"></textarea>   
+            <br>
+            <input type="submit" value="Submit">
         </form>
 
         <br>
         <br>
 
-        <form id="labform">
+        <form action="orders.php" method="post" id="labform">
             <b>Lab Order Form</b>
             <br>
             <label for="doctorname">Doctor Name:</label>
-            <input type="text" id="doctorname">
+            <input type="text" id="doctorname" required>
             <br>
             <label for="labdest">Lab Destination:</label>
-            <input type="text" id="labdest">
+            <input type="text" id="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
+            <datalist id="labdestlist">
+                <?php 
+                /*
+                //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp
+
+                    $servername = "localhost";
+                    $username = "username";
+                    $password = "password";
+                    $dbname = "myDB";
+                    // Create connection
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    // Check connection
+                    if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                    }
+                
+                    $sql = "SELECT labdest_name FROM LabDest";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0){
+                        while($row = $result->fetch_assoc()){
+                            $name = $row[labdest_name];
+                            $text = <<<TEXT
+                            <option value="$name">
+                            TEXT;
+                            echo $text
+                        }
+                    } else {
+                        echo "0 results";
+                    }
+                    $conn->close();
+                    */
+                ?>
+                <option value="Gifford">
+            </datalist>
             <br>
             <label for="providers_to_cc">Providers to CC:</label>
             <input type="text" id="providers_to_cc">
             <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
                 <legend>Labs</legend>
                 <?php 
+                /*
                 //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp
 
                     $servername = "localhost";
@@ -178,6 +213,7 @@
                         echo "0 results";
                     }
                     $conn->close();
+                    */
                 ?>
                 <label for="lab1">CBC</label>
                 <input type="checkbox" id="cbc" name="cbc" value="cbc">
@@ -222,9 +258,8 @@
                     <label for="lab4">Syphilis</label>
                     <input type="checkbox" id="syphilis" name="syphilis" value="syphilis">
                 </fieldset>
-                
             </fieldset>
-
+            <input type="submit" value="Submit">
         </form>
     </body>
 </html>
