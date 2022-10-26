@@ -583,7 +583,10 @@
                 </div>
                 <br>
             </div>
-            <div></div>
+            <div class="commentBox">
+                <label>Comments:</label> <br> <br>
+                <textarea></textarea>
+            </div>
             <div></div>
             <div class="saveButton">
                 <input type="submit" value="Save" id="ProfileSave">
