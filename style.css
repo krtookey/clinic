@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter&family=Crimson+Text&display=swap');
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Crimson Text', serif;
+ }
+
+body {
+    background-color: #d8e0d7;
+}
+
+header {
+    position: fixed;
+    align-items: flex-start;
+    background-color: #27474E;
+    border: 0;
+    color:  #d89a47;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 2em;
+    gap: 3em;	
+    justify-content: flex-start;
+    padding: 1em;
+    width: 100%;
+}
+
+footer {
+    background-color: #27474E;
+    border: 0;
+    color:  #d89a47;
+    font-size: 1em;
+    padding: 1em;
+    width: 100%;
+}
+
+a:link, a:visited {
+    background-color: #d89a47;
+    color: #27474E;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.5em;
+    display: inline-block;
+  }
+  
+  a:hover, a:active {
+    background-color: #d8e0d7;
+  }
+
+h2 {
+    color: #C17817;
+    font-size: 3em;
+}
+
+.placeholder{
+    height: 100px;
+}
+
+#medicalProfile {
+    background-color: whitesmoke;
+    border-radius: 0.5em;
+    margin: 1em;
+    padding: 1.5em;
+}
+
+#reviewOS {
+    background-color: whitesmoke;
+    border-radius: 0.5em;
+    margin: 1em;
+    padding: 1.5em;
+}
+
+#profileGrid {
+    border: 0;
+    color:   #27474E;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
+}
+
+.profileItem {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 1.5em;
+    gap: 3em;	
+    padding: 0.5em;
+    justify-content: flex-end;
+    width: 75%;
+}
+
+.saveButton {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 1em;
+    gap: 3em;	
+    padding: 0.5em;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+input[type=submit]{
+    background-color: #d89a47;
+    border: none;
+    color: #27474E;
+    font-size: 1.5em;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+#reviewGrid {
+    border: 0;
+    color:   #27474E;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 100%;
+}
+
+.reviewItem {
+    align-items: flex-start;
+    color:   #27474E;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5em;
+    width: 100%;
+}
+
+.rosGroup > p {
+    font-size: 1em;
+    color:#C17817;
+    font-weight: bold;
+}
