@@ -44,6 +44,35 @@
             <label for="pharmacy">Pharmacy: </label>
             <input type="text" id="pharmacy" list="pharmacy_list">
             <datalist id="pharmacy_list">
+                <?php 
+                    $servername = "localhost";
+                    $username = "username";
+                    $password = "password";
+                    $dbname = "myDB";
+                    // Create connection
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    // Check connection
+                    if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                    }
+                
+                    $sql = "SELECT pharmacy_name FROM Pharmacy";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0){
+                        while($row = $result->fetch_assoc()){
+                            //This is what will create the checkboxes and labels, when it is set up correctly-->
+                            $name = $row[pharmacy_name];
+                            $text = <<<TEXT
+                            <option value="$name">
+                            TEXT;
+                            echo $text;
+                        }
+                    } else {
+                        echo "0 results";
+                    }
+                    $conn->close();
+                ?>
                 <option value="Rite Aid Randolph"> <!-- This will be populated by the items in the SQL table Pharmacy, pharmacy_name-->
             </datalist>
 
@@ -52,7 +81,37 @@
                 <label for="drugname">Drug Name: </label>
                 <input type="text" list="druglist" id="drugname">
                 <datalist id="druglist">
-                    <option value="Valium"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
+                    <?php 
+                        $servername = "localhost";
+                        $username = "username";
+                        $password = "password";
+                        $dbname = "myDB";
+                        // Create connection
+                        $conn = new mysqli($servername, $username, $password, $dbname);
+                        // Check connection
+                        if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                        }
+                    
+                        $sql = "SELECT medication_name, generic_name FROM Pharmacy";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0){
+                            while($row = $result->fetch_assoc()){
+                                //This is what will create the checkboxes and labels, when it is set up correctly-->
+                                $gen_name = $row[generic_name];
+                                $brand_name = $row[medication_name];
+                                $text = <<<TEXT
+                                <option value="$brand_name ($generic_name)">
+                                TEXT;
+                                echo $text;
+                            }
+                        } else {
+                            echo "0 results";
+                        }
+                        $conn->close();
+                    ?>
+                    <option value="Valium (Diazepam)"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
                 <label for="dosage">Dosage: </label>
                 <input type="text" id="dosage">
@@ -86,13 +145,13 @@
             <input type="text" id="providers_to_cc">
             <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
                 <legend>Labs</legend>
-                <?php <!--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp-->
+                <?php 
+                //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp
 
                     $servername = "localhost";
                     $username = "username";
                     $password = "password";
                     $dbname = "myDB";
-                    
                     // Create connection
                     $conn = new mysqli($servername, $username, $password, $dbname);
                     // Check connection
@@ -100,14 +159,25 @@
                     die("Connection failed: " . $conn->connect_error);
                     }
                 
-                    $sql = "SELECT lab_name FROM LabList";
-                    $result = $conn->query($sql)
+                    $sql = "SELECT lab_id, lab_name FROM LabList";
+                    $result = $conn->query($sql);
 
                     if ($result->num_rows > 0){
                         while($row = $result->fetch_assoc()){
-                            <!--This is what will create the checkboxes and labels, when it is set up correctly-->
+                            //This is what will create the checkboxes and labels, when it is set up correctly-->
+                            $id = $row["lab_id"];
+                            $name = $row["lab_name"];
+                            $namelower = strtolower($name);
+                            $text = <<<TEXT
+                            <label for="$namelower">$name</label>
+                            <input type="checkbox" id="$namelower" name="$namelower" value="$id">
+                            TEXT;
+                            echo $text;
                         }
+                    } else {
+                        echo "0 results";
                     }
+                    $conn->close();
                 ?>
                 <label for="lab1">CBC</label>
                 <input type="checkbox" id="cbc" name="cbc" value="cbc">
