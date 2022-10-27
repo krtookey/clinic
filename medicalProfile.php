@@ -595,7 +595,8 @@
     </div>
     <footer>
         <div>
-            <a href="./home.php">Home</a>
+            <a href="./index.php">Home</a>
+            <a href="./patient.php>Patient Note</a>
         </div>
     </footer>
 </body>
