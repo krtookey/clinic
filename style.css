@@ -11,7 +11,7 @@ body {
 }
 
 header {
-  position: sticky;
+  position: fixed;
   align-items: flex-start;
   background-color: #27474e;
   border: 0;
@@ -22,7 +22,10 @@ header {
   font-size: 2em;
   gap: 3em;
   justify-content: flex-start;
-  padding: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
   width: 100%;
 }
 
@@ -109,6 +112,7 @@ h2 {
 input[type="submit"] {
   background-color: #d89a47;
   border: none;
+  border-radius: 0.5em;
   color: #27474e;
   font-size: 1.5em;
   padding: 16px 32px;
