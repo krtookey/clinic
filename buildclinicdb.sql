@@ -471,9 +471,9 @@ CREATE TABLE Prescriptions (
 	status	int NOT NULL, -- Things to Consider #5
 	general_notes	varchar(5000),
 	refills	int NOT NULL,
-	quantity_days	int NOT NULL,
-	quantity_total	int NOT NULL,
+	quantity	int NOT NULL,
 	dosage	varchar(50) NOT NULL,
+	route varchar(20) NOT NULL,
 	medication_id	int NOT NULL,
 	pharmacy_id	int NOT NULL,
 	doctor_id int NOT NULL,	-- Things to Consider #2

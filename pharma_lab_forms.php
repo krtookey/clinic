@@ -34,9 +34,9 @@
             <b>Prescription Order Form</b>
             <br>
             <label for="doctorname">Doctor Name: </label>
-            <input type="text" id="doctorname" required> 
+            <input type="text" id="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
             <label for="pharmacy">Pharmacy: </label>
-            <input type="text" id="pharmacy" list="pharmacy_list" required>
+            <input type="text" id="pharmacy" list="pharmacy_list" required> <!-- Should automatically be filled by patient default pharmacy-->
             <datalist id="pharmacy_list">
                 <?php 
                 /*
@@ -110,13 +110,70 @@
                     ?>
                     <option value="Valium (Diazepam)"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
-                <label for="dosage">Dosage: </label>
-                <input type="text" id="dosage">
+                <label for="dosage">Dosage:</label>
+                <input type="text" list="dosage_nums" id="dosage_num">
+                <datalist id="dosage_nums">
+                     <option value="1 mg">1 mg</option>   
+                     <option value="2 mg">2 mg</option>   
+                     <option value="5 mg">5 mg</option>   
+                     <option value="10 mg">10 mg</option>   
+                     <option value="20 mg">20 mg</option>   
+                     <option value="30 mg">30 mg</option>   
+                     <option value="50 mg">50 mg</option>   
+                     <option value="100 mg">100 mg</option>   
+                     <option value="200 mg">200 mg</option>   
+                </datalist>
+                <label for="dosage_type">Type:</label>
+                <input type="text" list="dosagetypes" id=dosage_type">
+                <datalist id="dosagetypes">
+                     <option value="Tablet">Tablet</option>   
+                     <option value="Capsule">Capsule</option>  
+                     <option value="Chewable">Chewable</option>   
+                     <option value="Liquid">Liquid</option>   
+                     <option value="Other">Other</option>   
+                </datalist>
+                <label for="route">Route:</label>
+                <select id="route">
+                    <option value="oral">Oral</option>
+                    <option value="topical">Topical</option>
+                    <option value="im">IM</option>
+                    <option value="iv">IV</option>
+                    <option value="subq">Sub Q</option>
+                </select>
                 <br>
-                <label for="total_quantity">Quantity (Total): </label>
-                <input type="number" id="total_quantity">
-                <label for="days_quantity">Quantity (Days): </label>
-                <input type="number" id="days_quantity">
+                <label for="qtyperdose">Qty per Dose</label>
+                <select id="qtyperdose">
+                    <option value="0.25">1/4</option>
+                    <option value="0.5">1/2</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+                <label for="frequency">Frequency Of Dose</label>
+                <select id="frequency">
+                    <option value="twiceperday">twice per day</option>
+                    <option value="thriceperday">3 times per day</option>
+                    <option value="perday">per day</option>
+                    <option value="perweek">per week</option>
+                    <option value="everyotherday">every other day</option>
+                    <option value="permonth">per month</option>
+                </select>
+                <label for="duration">Duration</label>
+                <select id="duration">
+                    <option value="7">7 days</option>
+                    <option value="14">14 days</option>
+                    <option value="21">21 days</option>
+                    <option value="28">28 days</option>
+                    <option value="30">30 days</option>
+                </select>
+                <label for="total_quantity">Quantity: </label> <!-- Needs to be grabbed from frequency -->
+                <input type="number" id="quantity" max="100">
                 <label for="refills">Refills: </label>
                 <input type="number" id="refills">
             </fieldset>
@@ -134,10 +191,10 @@
         <form action="orders.php" method="post" id="labform">
             <b>Lab Order Form</b>
             <br>
-            <label for="doctorname">Doctor Name:</label>
+            <label for="doctorname">Doctor Name:</label> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
             <input type="text" id="doctorname" required>
             <br>
-            <label for="labdest">Lab Destination:</label>
+            <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
             <input type="text" id="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
             <datalist id="labdestlist">
                 <?php 
