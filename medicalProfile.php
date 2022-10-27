@@ -596,7 +596,7 @@
     <footer>
         <div>
             <a href="./index.php">Home</a>
-            <a href="./patient.php>Patient Note</a>
+            <a href="./patient.php">Patient Note</a>
         </div>
     </footer>
 </body>
