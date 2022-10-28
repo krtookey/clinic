@@ -111,26 +111,32 @@
                     <option value="Valium (Diazepam)"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
                 <label for="dosage">Dosage:</label>
-                <input type="text" list="dosage_nums" id="dosage_num">
+                <input type="text" list="dosage_nums" id="dosage_num" size="10">
                 <datalist id="dosage_nums">
-                     <option value="1 mg">1 mg</option>   
-                     <option value="2 mg">2 mg</option>   
-                     <option value="5 mg">5 mg</option>   
-                     <option value="10 mg">10 mg</option>   
-                     <option value="20 mg">20 mg</option>   
-                     <option value="30 mg">30 mg</option>   
-                     <option value="50 mg">50 mg</option>   
-                     <option value="100 mg">100 mg</option>   
-                     <option value="200 mg">200 mg</option>   
+                    <option value="1 mg">1 mg</option>   
+                    <option value="2 mg">2 mg</option>   
+                    <option value="5 mg">5 mg</option>   
+                    <option value="10 mg">10 mg</option>   
+                    <option value="20 mg">20 mg</option>   
+                    <option value="30 mg">30 mg</option>   
+                    <option value="50 mg">50 mg</option>   
+                    <option value="100 mg">100 mg</option>   
+                    <option value="200 mg">200 mg</option>   
                 </datalist>
+                <label for="unit">Unit:</label>
+                <select type="text" id="unit">
+                    <option value="mg">mg</option>   
+                    <option value="ml">ml</option>   
+                    <option value="cc">cc</option>
+                </select>      
                 <label for="dosage_type">Type:</label>
-                <input type="text" list="dosagetypes" id=dosage_type">
+                <input type="text" list="dosagetypes" id="dosage_type">
                 <datalist id="dosagetypes">
-                     <option value="Tablet">Tablet</option>   
-                     <option value="Capsule">Capsule</option>  
-                     <option value="Chewable">Chewable</option>   
-                     <option value="Liquid">Liquid</option>   
-                     <option value="Other">Other</option>   
+                    <option value="Tablet">Tablet</option>   
+                    <option value="Capsule">Capsule</option>  
+                    <option value="Chewable">Chewable</option>   
+                    <option value="Liquid">Liquid</option>   
+                    <option value="Other">Other</option>   
                 </datalist>
                 <label for="route">Route:</label>
                 <select id="route">
@@ -140,12 +146,12 @@
                     <option value="iv">IV</option>
                     <option value="subq">Sub Q</option>
                 </select>
-                <br>
+                <br><br>
                 <label for="qtyperdose">Qty per Dose</label>
                 <select id="qtyperdose">
                     <option value="0.25">1/4</option>
                     <option value="0.5">1/2</option>
-                    <option value="1">1</option>
+                    <option value="1" selected>1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -157,25 +163,25 @@
                 </select>
                 <label for="frequency">Frequency Of Dose</label>
                 <select id="frequency">
-                    <option value="twiceperday">twice per day</option>
-                    <option value="thriceperday">3 times per day</option>
-                    <option value="perday">per day</option>
-                    <option value="perweek">per week</option>
-                    <option value="everyotherday">every other day</option>
-                    <option value="permonth">per month</option>
+                    <option value="twice per day">twice per day</option>
+                    <option value="3 times per day">3 times per day</option>
+                    <option value="once per day" selected>once per day</option>
+                    <option value="once per week">once per week</option>
+                    <option value="every other day">every other day</option>
+                    <option value="per month">per month</option>
                 </select>
                 <label for="duration">Duration</label>
                 <select id="duration">
                     <option value="7">7 days</option>
-                    <option value="14">14 days</option>
+                    <option value="14" selected>14 days</option>
                     <option value="21">21 days</option>
                     <option value="28">28 days</option>
                     <option value="30">30 days</option>
                 </select>
-                <label for="total_quantity">Quantity: </label> <!-- Needs to be grabbed from frequency -->
-                <input type="number" id="quantity" max="100">
+                <label for="total_quantity">Quantity: </label> 
+                <input type="number" id="quantity" max="100"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
                 <label for="refills">Refills: </label>
-                <input type="number" id="refills">
+                <input type="number" id="refills" max="10">
             </fieldset>
 
             <label for="usage_info">Usage Info and General Notes: </label>
