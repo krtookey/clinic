@@ -3,7 +3,7 @@
     <head>
         <style>
             body {
-                max-width: 40%;
+                max-width: 45%;
                 margin: 2%;
             }
             #prescriptionform input, label {
@@ -113,15 +113,15 @@
                 <label for="dosage">Dosage:</label>
                 <input type="text" list="dosage_nums" id="dosage_num" size="10">
                 <datalist id="dosage_nums">
-                    <option value="1 mg">1 mg</option>   
-                    <option value="2 mg">2 mg</option>   
-                    <option value="5 mg">5 mg</option>   
-                    <option value="10 mg">10 mg</option>   
-                    <option value="20 mg">20 mg</option>   
-                    <option value="30 mg">30 mg</option>   
-                    <option value="50 mg">50 mg</option>   
-                    <option value="100 mg">100 mg</option>   
-                    <option value="200 mg">200 mg</option>   
+                    <option value="1 mg">   
+                    <option value="2 mg"> 
+                    <option value="5 mg">
+                    <option value="10 mg">   
+                    <option value="20 mg">   
+                    <option value="30 mg">  
+                    <option value="50 mg">  
+                    <option value="100 mg">  
+                    <option value="200 mg">  
                 </datalist>
                 <label for="unit">Unit:</label>
                 <select type="text" id="unit">
@@ -129,14 +129,15 @@
                     <option value="ml">ml</option>   
                     <option value="cc">cc</option>
                 </select>      
+                <br>
                 <label for="dosage_type">Type:</label>
                 <input type="text" list="dosagetypes" id="dosage_type">
                 <datalist id="dosagetypes">
-                    <option value="Tablet">Tablet</option>   
-                    <option value="Capsule">Capsule</option>  
-                    <option value="Chewable">Chewable</option>   
-                    <option value="Liquid">Liquid</option>   
-                    <option value="Other">Other</option>   
+                    <option value="Tablet">
+                    <option value="Capsule">
+                    <option value="Chewable"> 
+                    <option value="Liquid">  
+                    <option value="Other">  
                 </datalist>
                 <label for="route">Route:</label>
                 <select id="route">
@@ -163,12 +164,12 @@
                 </select>
                 <label for="frequency">Frequency Of Dose</label>
                 <select id="frequency">
-                    <option value="twice per day">twice per day</option>
-                    <option value="3 times per day">3 times per day</option>
-                    <option value="once per day" selected>once per day</option>
-                    <option value="once per week">once per week</option>
-                    <option value="every other day">every other day</option>
-                    <option value="per month">per month</option>
+                    <option value="2">twice per day</option>
+                    <option value="3">3 times per day</option>
+                    <option value="1" selected>once per day</option>
+                    <option value="0.1428">once per week</option>
+                    <option value="0.5">every other day</option>
+                    <option value="0.03333">per 30 days</option>
                 </select>
                 <label for="duration">Duration</label>
                 <select id="duration">
