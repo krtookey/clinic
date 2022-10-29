@@ -42,7 +42,7 @@ CREATE TABLE Patient (
 	prev_note_id int NOT NULL,
 	emergency_contact1 int NOT NULL,
 	emergency_contact2 int,
-	--
+	-- 
 	PRIMARY KEY (patient_id),
 	FOREIGN KEY (address_id),
 	FOREIGN KEY (insurance_id),
@@ -55,9 +55,9 @@ CREATE TABLE Patient (
 	FOREIGN KEY (emergency_contact2)
 );
 
---// Sample Data
---INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) 
---VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
+-- // Sample Data
+-- INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) 
+-- VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
 INSERT INTO Patient VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
 INSERT INTO Patient VALUES 	('John', 'Doe', 'Bob', '1945-06-04', 'M', '1', '12809993300', '18025553333', 'catsrule@gmail.com', '3', '3', '3', '1', '1', '0', '0', '1', '1', '0'),
 				('Jane', 'Dough', 'Jill', '1964-12-09', 'F', '2', '13014448998', '12409994444', 'dogsdrool@gmail.com', '4', '4', '4', '2', '2', '0', '0', '2', '0', '2', '0');
@@ -74,12 +74,12 @@ CREATE TABLE Users (
 	first_name	varchar(40),
 	last_name	varchar(40),
 	pwd	varchar(40),
-	--
+	-- 
 	PRIMARY KEY (user_id)
 );
 
---// Sample Data
---INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, last_name, pwd) VALUES ('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger');
+-- // Sample Data
+-- INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, last_name, pwd) VALUES ('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger');
 INSERT INTO Users VALUES 	('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger'),
 				('CBrown', '1', 'NP', '18025556767', 'snoopyrules@aol.com', 'Charlie', 'Brown');
 
@@ -91,12 +91,12 @@ CREATE TABLE Addresses (
 	city	varchar(30) NOT NULL,
 	state_abbr	char(2) NOT NULL,
 	zip	int NOT NULL,
-	--
+	-- 
 	PRIMARY KEY (address_id)
 );
 
---// Sample Data
---INSERT INTO Addresses (street, city, state_abbr, zip) VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
+-- // Sample Data
+-- INSERT INTO Addresses (street, city, state_abbr, zip) VALUES ('1379 Maple St', 'Vergennes', 'VT', '05491');
 INSERT INTO Addresses VALUES ('12 North Main St', 'Randolph', 'VT', '05060');
 INSERT INTO Addresses VALUES 	('1390 Monti Rd', 'Northfield', 'VT', '05663'),
 				('3 Mt Philo Rd', 'Charlotte', 'VT', '05444'),
@@ -135,7 +135,7 @@ CREATE TABLE ProblemList (
 	problem	varchar(30) NOT NULL,
 	category	varchar(30),
 	timeframe	varchar(12),
-	--
+	--  
 	PRIMARY KEY (problem_id),
 	FOREIGN KEY (patient_id)
 );
@@ -154,7 +154,7 @@ CREATE TABLE MedicationList (
 	medication_id	int NOT NULL,
 	dosage	varchar(50),
 	status	boolean NOT NULL,
-	--
+	--  
 	PRIMARY KEY (medlist_id),
 	FOREIGN KEY (patient_id),
 	FOREIGN KEY (medication_id)
@@ -184,9 +184,9 @@ CREATE TABLE Note (
 	lab_id int, -- $$ Is this meant to be labdist? -- EN I checked the diagram, and I think we actually want it to be lab_id, so I went ahead and changed it.  Rational being that we are storing both lab_id and laborder_id in Note so that we can access the OrderedLabs table.  We probably need another work around for multiple labs, in which case we might be storing both as a varchar instead of an int.  
 	demographics  varchar(60000),
 	comments varchar(60000),
-	--
+	-- 
 	PRIMARY KEY (note_id), 
-	--FOREIGN KEY (patient_id)
+	FOREIGN KEY (patient_id)
 	FOREIGN KEY (appointment_id),
 	FOREIGN KEY (ros_id),
 	FOREIGN KEY (med_profile_id),
@@ -221,7 +221,7 @@ CREATE TABLE FamilyHistory (
 	patient_id int NOT NULL,
 	relationship varchar(30) NOT NULL,
 	condition varchar(60000),
-	--
+	-- 
 	FOREIGN KEY (patient_id)
 );
 
@@ -237,7 +237,7 @@ CREATE TABLE EmergencyContact (
 	contact_name 	varchar(50) NOT NULL,
 	relationship	varchar(30) NOT NULL,
 	phone	varchar(20) NOT NULL,
-	--
+	-- 
 	PRIMARY KEY (contact_id)
 
 );
@@ -253,7 +253,7 @@ CREATE TABLE MedicalProfile (
 	pulse int,
 	pulse_ox int,
 	appointment_id	int NOT NULL,
-	--
+	-- 
 	PRIMARY KEY (med_profile_id),
 	FOREIGN KEY (appointment_id)
 );
@@ -392,7 +392,7 @@ CREATE TABLE ReviewOfSystem (
 	sleep	boolean	NOT NULL,
 	psychiatrist	boolean	NOT NULL,
 	mood	boolean	NOT NULL
-	--
+	-- 
 	PRIMARY KEY (ros_id)
 );
 
@@ -414,7 +414,7 @@ CREATE TABLE Appointment (
 	doctor_id	int NOT NULL,
 	doctor_last_name	varchar(30) NOT NULL, -- $$ Don't we want to store the doctors first and last name in the Users table, and just refer to them with doctor_id?
 	doctor_first_name 	varchar(30) NOT NULL,
-	--
+	-- 
 	PRIMARY KEY (appointment_id),
 	FOREIGN KEY (patient_id),
 	FOREIGN KEY (doctor_id)
@@ -430,7 +430,7 @@ CREATE TABLE Billing (
 	bill_statement	varchar(60000) NOT NULL,
 	amount_due	float,
 	paid	boolean NOT NULL,
-	--
+	-- 
 	PRIMARY KEY (billing_id),
 	FOREIGN KEY (patient_id),
 	FOREIGN KEY (appointment_id),
@@ -454,12 +454,12 @@ CREATE TABLE Pharmacy (
 	address_id	int,
 	phone	varchar(20),
 	email	varchar(50),
-	--
+	-- 
 	PRIMARY KEY (pharmacy_id),
 	FOREIGN KEY (address_id)
 );
 
---// Sample Data
+-- // Sample Data
 INSERT INTO Pharmacy VALUES ('Rite Aid Randolph', '2', '18027283722', '05060@riteaid.com');
 
 
@@ -477,7 +477,7 @@ CREATE TABLE Prescriptions (
 	medication_id	int NOT NULL,
 	pharmacy_id	int NOT NULL,
 	doctor_id int NOT NULL,	-- Things to Consider #2
-	--
+    -- 
 	PRIMARY KEY (prescription_id),
 	FOREIGN KEY (patient_id),
 	FOREIGN KEY (medication_id),
@@ -494,12 +494,12 @@ CREATE TABLE LabDest (
 	labdest_name	varchar(50),
 	address_id	int,
 	phone	varchar(20),
-	--
+	-- 
 	PRIMARY KEY (labdest_id),
 	FOREIGN KEY (address_id)
 );
 
---// Sample Data
+-- // Sample Data
 INSERT INTO LabDest VALUES ('A Shack In The Woods', '3', '18024853788');
 
 DROP TABLE IF EXISTS LabOrders;
@@ -511,21 +511,21 @@ CREATE TABLE LabOrders (
 	status	TINYINT NOT NULL,
 	labdest_id	int NOT NULL,
 	cc_recipients	varchar(70), --$$ Should this instead be a list of IDs stored in a seperate table that contains the ID's of the practitioners who were CC'd, or just keep it as a list of names?
-	--
+	-- 
 	PRIMARY KEY (laborder_id),
 	FOREIGN KEY (patient_id),
 	FOREIGN KEY (doctor_id),
 	FOREIGN KEY (labdest_id)
 );
 
---// Sample Data 
+-- // Sample Data 
  
 DROP TABLE IF EXISTS LabList;
 
 CREATE TABLE LabList ( -- List OF ALL labs that can be ordered, pairs lab_id WITH the name OF the lab (similar to DrugList, except that druglist doesn't contain all drugs)
 	lab_id	int NOT NULL AUTO_INCREMENT,
 	lab_name	varchar(50) NOT NULL,
-	--
+	-- 
 	PRIMARY KEY (lab_id)
 );
 
@@ -566,11 +566,11 @@ CREATE TABLE DrugList (
 	medication_id	int NOT NULL AUTO_INCREMENT,
 	medication_name	varchar(50) NOT NULL,
 	generic_name 	varchar(50) NOT NULL,
-	--
+	-- 
 	PRIMARY KEY (medication_id)
 );
 
---// Sample Data
+-- // Sample Data
 INSERT INTO DrugList VALUES ('Aspirin', 'acetylsalicylic acid');
 INSERT INTO DrugList VALUES ('Synthroid', 'Levothyroxine');
 INSERT INTO DrugList VALUES ('Vicodin', 'Hydrocodone/APAP');
@@ -780,6 +780,6 @@ INSERT INTO DrugList VALUES ('Ezetimibe+Simvastatin',   'Vytorin®');
 
 CREATE TABLE Insurance (
 	insurance_id int NOT NULL AUTO_INCREMENT,
-	--
+	-- 
 	PRIMARY KEY (insurance_id)
 );
