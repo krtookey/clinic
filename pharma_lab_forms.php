@@ -70,7 +70,6 @@
                 ?>
                 <option value="Rite Aid Randolph"> <!-- This will be populated by the items in the SQL table Pharmacy, pharmacy_name-->
             </datalist>
-
             <fieldset id="prescription_inputs">
                 <legend>Prescription:</legend>
                 <label for="drugname">Drug Name: </label>
@@ -113,19 +112,19 @@
                 <label for="dosage">Dosage:</label>
                 <input type="text" list="dosage_nums" id="dosage_num" size="10">
                 <datalist id="dosage_nums">
-                    <option value="1 mg">   
-                    <option value="2 mg"> 
-                    <option value="5 mg">
-                    <option value="10 mg">   
-                    <option value="20 mg">   
-                    <option value="30 mg">  
-                    <option value="50 mg">  
-                    <option value="100 mg">  
-                    <option value="200 mg">  
+                    <option value="1">   
+                    <option value="2"> 
+                    <option value="5">
+                    <option value="10">   
+                    <option value="20">   
+                    <option value="30">  
+                    <option value="50">  
+                    <option value="100">  
+                    <option value="200">  
                 </datalist>
                 <label for="unit">Unit:</label>
-                <select type="text" id="unit">
-                    <option value="mg">mg</option>   
+                <select id="unit">
+                    <option value="mg" selected>mg</option>   
                     <option value="ml">ml</option>   
                     <option value="cc">cc</option>
                 </select>      
@@ -133,7 +132,7 @@
                 <label for="dosage_type">Type:</label>
                 <input type="text" list="dosagetypes" id="dosage_type">
                 <datalist id="dosagetypes">
-                    <option value="Tablet">
+                    <option value="Tablet" selected>
                     <option value="Capsule">
                     <option value="Chewable"> 
                     <option value="Liquid">  
@@ -324,6 +323,13 @@
                 </fieldset>
             </fieldset>
             <input type="submit" value="Submit">
+        </form>
+        <form id="adddrugtodatabase">
+            <b>Add Drug to Database</b>
+            <label for="brandname">Brand Name:</label>
+            <input type="text" id="brandname">
+            <label for="genericname">Generic Name:</label>
+            <input type="text" id="genericname">
         </form>
     </body>
 </html>

@@ -468,21 +468,22 @@ DROP TABLE IF EXISTS Prescriptions;
 CREATE TABLE Prescriptions (
 	prescription_id	int NOT NULL AUTO_INCREMENT,
 	patient_id	int NOT NULL,
-	status	int NOT NULL, -- Things to Consider #5
-	general_notes	varchar(5000),
-	refills	int NOT NULL,
+    doctor_id   int NOT NULL,	-- Things to Consider #2
+    pharmacy_id int NOT NULL,
+    medication_id	int NOT NULL,
+    dosage  varchar(50) NOT NULL,
+    route   varchar(20) NOT NULL,
+	usage_details  varchar(40) NOT NULL,
 	quantity	int NOT NULL,
-	dosage	varchar(50) NOT NULL,
-	route varchar(20) NOT NULL,
-	medication_id	int NOT NULL,
-	pharmacy_id	int NOT NULL,
-	doctor_id int NOT NULL,	-- Things to Consider #2
+	refills	int NOT NULL,
+	general_notes	varchar(5000),
+    status	int NOT NULL, -- Things to Consider #5
     -- 
 	PRIMARY KEY (prescription_id),
 	FOREIGN KEY (patient_id),
-	FOREIGN KEY (medication_id),
-	FOREIGN KEY (pharmacy_id),
-	FOREIGN KEY (doctor_id)
+    FOREIGN KEY (doctor_id),
+    FOREIGN KEY (pharmacy_id),
+	FOREIGN KEY (medication_id)
 );
 
 -- Labs
@@ -777,6 +778,7 @@ INSERT INTO DrugList VALUES ('Ezetimibe+Simvastatin',   'Vytorin®');
  * Insurance Stuff (this has no home apparantly, which is what it deserves!!)
  * 
  */
+DROP TABLE IF EXISTS Insurance;
 
 CREATE TABLE Insurance (
 	insurance_id int NOT NULL AUTO_INCREMENT,
