@@ -47,9 +47,34 @@
             <div id="patient_info">
                 <?php 
                     //Need to get patient name and DOB from medical records views
+                /*
+                    $servername = "localhost";
+                    $username = "username";
+                    $password = "password";
+                    $dbname = "myDB";
+                    // Create connection
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    // Check connection
+                    if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                    }
+                
+                    $sql = "SELECT first_name, last_name, DOB FROM Patient WHERE patient_id ='" . $patient_id . "';";
+                    $result = $conn->query($sql);
+                
+                    if ($result->num_rows > 0){
+                        $row = $result->fetch_assoc()
+                        $patient_name = $row["first_name"] . ' ' . $row["last_name"];
+                        $patient_dob = $row["DOB"];
+                    } else {
+                        echo "0 results";
+                    }
+                */
                     $patient_name = "John Doe";
                     $patient_dob = "10/12/1996";
+                
                     echo("<b><u>Prescription Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
+                    $conn->close();
                 ?>
             </div>
             <br>
