@@ -24,6 +24,10 @@
             fieldset{
                 margin: 
             }
+            #patient_info b{
+                margin:1.5em; 
+                font-size:1.2em;
+            }
         </style>
         <script>
         function calcquantity(){
@@ -38,8 +42,16 @@
         </script>
     </head>
     <body>
+        
         <form action="prescription_orders.php" method="post" id="prescriptionform">
-            <b>Prescription Order Form</b>
+            <div id="patient_info">
+                <?php 
+                    //Need to get patient name and DOB from medical records views
+                    $patient_name = "John Doe";
+                    $patient_dob = "10/12/1996";
+                    echo("<b><u>Prescription Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
+                ?>
+            </div>
             <br>
             <!--<label for="doctorname">Doctor Name: </label>
             <input type="text" id="doctorname" name="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
@@ -203,7 +215,14 @@
         <br>
 
         <form action="orders.php" method="post" id="labform">
-            <b>Lab Order Form</b>
+            <div id="patient_info">
+                <?php 
+                    //Need to get patient name and DOB from medical records views
+                    $patient_name = "John Doe";
+                    $patient_dob = "10/12/1996";
+                    echo("<b><u>Lab Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
+                ?>
+            </div>
             <br>
             <!--<label for="doctorname">Doctor Name:</label> 
             <input type="text" id="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
