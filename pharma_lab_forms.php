@@ -30,7 +30,7 @@
         <form action="prescription_orders.php" method="post" id="prescriptionform">
             <b>Prescription Order Form</b>
             <br>
-            <label for="doctorname">Doctor Name: </label>
+            <!--<label for="doctorname">Doctor Name: </label>
             <input type="text" id="doctorname" name="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
             <label for="pharmacy">Pharmacy: </label>
             <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required> <!-- Should automatically be filled by patient default pharmacy-->
@@ -194,9 +194,8 @@
         <form action="orders.php" method="post" id="labform">
             <b>Lab Order Form</b>
             <br>
-            <label for="doctorname">Doctor Name:</label> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
-            <input type="text" id="doctorname" required>
-            <br>
+            <!--<label for="doctorname">Doctor Name:</label> 
+            <input type="text" id="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
             <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
             <input type="text" id="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
             <datalist id="labdestlist">
