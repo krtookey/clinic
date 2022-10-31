@@ -181,7 +181,7 @@ CREATE TABLE Note (
 	assessment varchar(60000),
 	plan varchar(60000),
 	laborder_id	int,
-	lab_id int, -- $$ Is this meant to be labdist? -- EN I checked the diagram, and I think we actually want it to be lab_id, so I went ahead and changed it.  Rational being that we are storing both lab_id and laborder_id in Note so that we can access the OrderedLabs table.  We probably need another work around for multiple labs, in which case we might be storing both as a varchar instead of an int.  
+	labdest_id int, -- $$ Is this meant to be labdist? -- EN I checked the diagram, and I think we actually want it to be lab_id, so I went ahead and changed it.  Rational being that we are storing both lab_id and laborder_id in Note so that we can access the OrderedLabs table.  We probably need another work around for multiple labs, in which case we might be storing both as a varchar instead of an int.  
 	demographics  varchar(60000),
 	comments varchar(60000),
 	-- 

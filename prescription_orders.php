@@ -1,5 +1,16 @@
 <?php
 // Assigning form items to PHP variables that we can use 
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "myDB";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+die("Connection failed: " . $conn->connect_error);
+}
+
 
 $pharmacy = $_POST["pharmacy"];
 $drugname = $_POST["drugname"];
@@ -19,28 +30,41 @@ if ($quantity != intval($quantity_calc)){
     echo("This is not what is supposed to happen. Oops. <br>");
 }
 
+
+
+// Getting patient info for prescription
+$sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patientid . "';";
+$result = $conn->query($sql);
+
+$firstname = $row["first_name"];
+$lastname = $row["last_name"];
+$middlename = $row["middle_name"];
+$DOB = $row["DOB"];
+$addressid = $row["address_id"];
+$sex = $row["sex"];
+
+$sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $addressid . "';";
+$result = $conn->query($sql);
+
+$address_street = $row["street"];
+$address_city = $row["city"];
+$address_state = $row["state_abbr"];
+$address_zip = $row["zip"];
+
+
 // Getting medication ID for drugname
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "myDB";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-die("Connection failed: " . $conn->connect_error);
-}
+
 
 $sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
 $result = $conn->query($sql);
 
 if ($result->num_rows == 1){
-    $drug_id = $row[""];
+    $drug_id = $row["medication_id"];
     }
 } else if ($result->num_rows > 1){
     // How will we handle if there is more than 1 drug with a certain name?
 } else {
-    // If the drug name isn't in the database, how will we add it? Should we prompt the user first? How would we do that?
+    // Popup window that allows user to enter other name for drug, 
 }
 $conn->close();
 
