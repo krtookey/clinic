@@ -6,11 +6,8 @@
                 max-width: 45%;
                 margin: 2%;
             }
-            #prescriptionform input, label {
+            form input, label {
                 margin:0.2em;
-            }
-            #labform input, label {
-                margin: 0.2em;
             }
             form {
                 margin: 2%;
@@ -30,13 +27,13 @@
         </style>
     </head>
     <body>
-        <form action="orders.php" method="post" id="prescriptionform">
+        <form action="prescription_orders.php" method="post" id="prescriptionform">
             <b>Prescription Order Form</b>
             <br>
             <label for="doctorname">Doctor Name: </label>
-            <input type="text" id="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
+            <input type="text" id="doctorname" name="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
             <label for="pharmacy">Pharmacy: </label>
-            <input type="text" id="pharmacy" list="pharmacy_list" required> <!-- Should automatically be filled by patient default pharmacy-->
+            <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required> <!-- Should automatically be filled by patient default pharmacy-->
             <datalist id="pharmacy_list">
                 <?php 
                 /*
@@ -56,7 +53,7 @@
 
                     if ($result->num_rows > 0){
                         while($row = $result->fetch_assoc()){
-                            $name = $row[pharmacy_name];
+                            $name = $row["pharmacy_name"];
                             $text = <<<TEXT
                             <option value="$name">
                             TEXT;
@@ -73,7 +70,7 @@
             <fieldset id="prescription_inputs">
                 <legend>Prescription:</legend>
                 <label for="drugname">Drug Name: </label>
-                <input type="text" list="druglist" id="drugname">
+                <input type="text" list="druglist" id="drugname" name="drugname">
                 <datalist id="druglist">
                     <?php 
                     /*
@@ -94,8 +91,8 @@
                         if ($result->num_rows > 0){
                             while($row = $result->fetch_assoc()){
                                 //This is what will create the checkboxes and labels, when it is set up correctly-->
-                                $gen_name = $row[generic_name];
-                                $brand_name = $row[medication_name];
+                                $gen_name = $row["generic_name"];
+                                $brand_name = $row["medication_name"];
                                 $text = <<<TEXT
                                 <option value="$brand_name ($generic_name)">
                                 TEXT;
@@ -110,7 +107,7 @@
                     <option value="Valium (Diazepam)"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
                 <label for="dosage">Dosage:</label>
-                <input type="text" list="dosage_nums" id="dosage_num" size="10">
+                <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10">
                 <datalist id="dosage_nums">
                     <option value="1">   
                     <option value="2"> 
@@ -123,14 +120,14 @@
                     <option value="200">  
                 </datalist>
                 <label for="unit">Unit:</label>
-                <select id="unit">
+                <select id="unit" name="unit">
                     <option value="mg" selected>mg</option>   
                     <option value="ml">ml</option>   
                     <option value="cc">cc</option>
                 </select>      
                 <br>
                 <label for="dosage_type">Type:</label>
-                <input type="text" list="dosagetypes" id="dosage_type">
+                <input type="text" list="dosagetypes" id="dosage_type" name="dosage_type">
                 <datalist id="dosagetypes">
                     <option value="Tablet" selected>
                     <option value="Capsule">
@@ -139,16 +136,16 @@
                     <option value="Other">  
                 </datalist>
                 <label for="route">Route:</label>
-                <select id="route">
-                    <option value="oral">Oral</option>
-                    <option value="topical">Topical</option>
-                    <option value="im">IM</option>
-                    <option value="iv">IV</option>
-                    <option value="subq">Sub Q</option>
+                <select id="route" name="route">
+                    <option value="Oral">Oral</option>
+                    <option value="Topical">Topical</option>
+                    <option value="IM">IM</option>
+                    <option value="IV">IV</option>
+                    <option value="SubQ">Sub Q</option>
                 </select>
                 <br><br>
                 <label for="qtyperdose">Qty per Dose</label>
-                <select id="qtyperdose">
+                <select id="qtyperdose" name="qtyperdose">
                     <option value="0.25">1/4</option>
                     <option value="0.5">1/2</option>
                     <option value="1" selected>1</option>
@@ -162,7 +159,7 @@
                     <option value="9">9</option>
                 </select>
                 <label for="frequency">Frequency Of Dose</label>
-                <select id="frequency">
+                <select id="frequency" name="frequency">
                     <option value="2">twice per day</option>
                     <option value="3">3 times per day</option>
                     <option value="1" selected>once per day</option>
@@ -171,7 +168,7 @@
                     <option value="0.03333">per 30 days</option>
                 </select>
                 <label for="duration">Duration</label>
-                <select id="duration">
+                <select id="duration" name="duration">
                     <option value="7">7 days</option>
                     <option value="14" selected>14 days</option>
                     <option value="21">21 days</option>
@@ -179,14 +176,14 @@
                     <option value="30">30 days</option>
                 </select>
                 <label for="total_quantity">Quantity: </label> 
-                <input type="number" id="quantity" max="100"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
+                <input type="number" id="quantity" name="quantity" max="100"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
                 <label for="refills">Refills: </label>
-                <input type="number" id="refills" max="10">
+                <input type="number" id="refills" name="refills" max="10">
             </fieldset>
 
             <label for="usage_info">Usage Info and General Notes: </label>
             <br>
-            <textarea rows="10" cols="40" id="usage_info"></textarea>   
+            <textarea rows="10" cols="40" id="usage_info" name="usage_info"></textarea>   
             <br>
             <input type="submit" value="Submit">
         </form>
@@ -223,7 +220,7 @@
 
                     if ($result->num_rows > 0){
                         while($row = $result->fetch_assoc()){
-                            $name = $row[labdest_name];
+                            $name = $row["labdest_name"];
                             $text = <<<TEXT
                             <option value="$name">
                             TEXT;
@@ -325,7 +322,8 @@
             <input type="submit" value="Submit">
         </form>
         <form id="adddrugtodatabase">
-            <b>Add Drug to Database</b>
+            <b>Add Drug to Database</b> 
+            <br>
             <label for="brandname">Brand Name:</label>
             <input type="text" id="brandname">
             <label for="genericname">Generic Name:</label>
