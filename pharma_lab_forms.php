@@ -69,12 +69,13 @@
                     } else {
                         echo "0 results";
                     }
+                    $conn->close();
                 */
                     $patient_name = "John Doe";
                     $patient_dob = "10/12/1996";
                 
                     echo("<b><u>Prescription Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
-                    $conn->close();
+                    
                 ?>
             </div>
             <br>
@@ -118,7 +119,7 @@
             <fieldset id="prescription_inputs">
                 <legend>Prescription:</legend>
                 <label for="drugname">Drug Name: </label>
-                <input type="text" list="druglist" id="drugname" name="drugname">
+                <input type="text" list="druglist" id="drugname" name="drugname" default="" required>
                 <datalist id="druglist">
                     <?php 
                     /*
@@ -155,7 +156,7 @@
                     <option value="Valium (Diazepam)"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
                 <label for="dosage">Dosage:</label>
-                <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10">
+                <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" required>
                 <datalist id="dosage_nums">
                     <option value="1">   
                     <option value="2"> 
@@ -175,9 +176,9 @@
                 </select>      
                 <br>
                 <label for="dosage_type">Type:</label>
-                <input type="text" list="dosagetypes" id="dosage_type" name="dosage_type">
+                <input type="text" list="dosagetypes" id="dosage_type" value="Tablet" name="dosage_type">
                 <datalist id="dosagetypes">
-                    <option value="Tablet" selected>
+                    <option value="Tablet">
                     <option value="Capsule">
                     <option value="Chewable"> 
                     <option value="Liquid">  
@@ -185,7 +186,7 @@
                 </datalist>
                 <label for="route">Route:</label>
                 <select id="route" name="route">
-                    <option value="Oral">Oral</option>
+                    <option value="Oral" selected>Oral</option>
                     <option value="Topical">Topical</option>
                     <option value="IM">IM</option>
                     <option value="IV">IV</option>
@@ -226,7 +227,7 @@
                 <label for="total_quantity">Quantity: </label> 
                 <input type="number" id="quantity" name="quantity" max="100"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
                 <label for="refills">Refills: </label>
-                <input type="number" id="refills" name="refills" max="10">
+                <input type="number" id="refills" name="refills" value="1" max="10">
             </fieldset>
 
             <label for="usage_info">Usage Info and General Notes: </label>
@@ -252,7 +253,7 @@
             <!--<label for="doctorname">Doctor Name:</label> 
             <input type="text" id="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
             <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
-            <input type="text" id="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
+            <input type="text" id="labdest" name="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
             <datalist id="labdestlist">
                 <?php 
                 /*
@@ -290,7 +291,7 @@
             </datalist>
             <br>
             <label for="providers_to_cc">Providers to CC:</label>
-            <input type="text" id="providers_to_cc">
+            <input type="text" id="providers_to_cc" name="providers_to_cc">
             <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
                 <legend>Labs</legend>
                 <?php 
@@ -373,15 +374,18 @@
                     <input type="checkbox" id="syphilis" name="syphilis" value="syphilis">
                 </fieldset>
             </fieldset>
+            <label for="diagnosis">Diagnosis:</label>
+            <input type="text" id="diagnosis" name="diagnosis" required>
+            <br>
             <input type="submit" value="Submit">
         </form>
         <form id="adddrugtodatabase">
             <b>Add Drug to Database</b> 
             <br>
             <label for="brandname">Brand Name:</label>
-            <input type="text" id="brandname">
+            <input type="text" id="brandname" name="brandname">
             <label for="genericname">Generic Name:</label>
-            <input type="text" id="genericname">
+            <input type="text" id="genericname" name="genericname">
         </form>
     </body>
 </html>

@@ -511,7 +511,8 @@ CREATE TABLE LabOrders (
 	doctor_id	int NOT NULL,
 	status	TINYINT NOT NULL,
 	labdest_id	int NOT NULL,
-	cc_recipients	varchar(70), --$$ Should this instead be a list of IDs stored in a seperate table that contains the ID's of the practitioners who were CC'd, or just keep it as a list of names?
+	cc_recipients	varchar(70), -- $$ Should this instead be a list of IDs stored in a seperate table that contains the ID's of the practitioners who were CC'd, or just keep it as a list of names?
+    diagnosis   varchar(70),
 	-- 
 	PRIMARY KEY (laborder_id),
 	FOREIGN KEY (patient_id),
