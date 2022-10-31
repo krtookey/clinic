@@ -25,6 +25,17 @@
                 margin: 
             }
         </style>
+        <script>
+        function calcquantity(){
+            qtyperdose = document.getElementById("qtyperdose").value;
+            frequency = document.getElementById("frequency").value;
+            duration = document.getElementById("duration").value;
+            total = qtyperdose * frequency * duration;
+            //round_total = math.round(total);
+            console.log(total);
+            document.getElementById("quantity").value = total;
+        }
+        </script>
     </head>
     <body>
         <form action="prescription_orders.php" method="post" id="prescriptionform">
@@ -145,7 +156,7 @@
                 </select>
                 <br><br>
                 <label for="qtyperdose">Qty per Dose</label>
-                <select id="qtyperdose" name="qtyperdose">
+                <select id="qtyperdose" name="qtyperdose" onchange="calcquantity()">
                     <option value="0.25">1/4</option>
                     <option value="0.5">1/2</option>
                     <option value="1" selected>1</option>
@@ -159,7 +170,7 @@
                     <option value="9">9</option>
                 </select>
                 <label for="frequency">Frequency Of Dose</label>
-                <select id="frequency" name="frequency">
+                <select id="frequency" name="frequency" onchange="calcquantity()">
                     <option value="2">twice per day</option>
                     <option value="3">3 times per day</option>
                     <option value="1" selected>once per day</option>
@@ -168,7 +179,7 @@
                     <option value="0.03333">per 30 days</option>
                 </select>
                 <label for="duration">Duration</label>
-                <select id="duration" name="duration">
+                <select id="duration" name="duration" onchange="calcquantity()">
                     <option value="7">7 days</option>
                     <option value="14" selected>14 days</option>
                     <option value="21">21 days</option>

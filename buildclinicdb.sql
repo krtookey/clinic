@@ -58,9 +58,9 @@ CREATE TABLE Patient (
 -- // Sample Data
 -- INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) 
 -- VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
-INSERT INTO Patient VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
-INSERT INTO Patient VALUES 	('John', 'Doe', 'Bob', '1945-06-04', 'M', '1', '12809993300', '18025553333', 'catsrule@gmail.com', '3', '3', '3', '1', '1', '0', '0', '1', '1', '0'),
-				('Jane', 'Dough', 'Jill', '1964-12-09', 'F', '2', '13014448998', '12409994444', 'dogsdrool@gmail.com', '4', '4', '4', '2', '2', '0', '0', '2', '0', '2', '0');
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) VALUES ('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, billing_id, insurance_id, pharmacy_id, lab_destid, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) VALUES ('John', 'Doe', 'Bob', '1945-06-04', 'M', '1', '12809993300', '18025553333', 'catsrule@gmail.com', '3', '3', '3', '1', '1', '0', '0', '1', '1', '12', '13'),
+				('Jane', 'Dough', 'Jill', '1964-12-09', 'F', '2', '13014448998', '12409994444', 'dogsdrool@gmail.com', '4', '4', '4', '2', '2', '0', '0', '2', '0', '14', '15');
 				 
 DROP TABLE IF EXISTS Users;
 
@@ -613,7 +613,7 @@ INSERT INTO DrugList (medication_name, generic_name) VALUES ('Keflex', 'Cephalex
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Spiriva', 'Tiotropium');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Neurontin', 'Gabapentin');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Abilify', 'Aripiprazole');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('K-Tab,' 'Potassium');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('K-Tab', 'Potassium');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Flexeril', 'Cyclobenzaprine');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Medrol', 'Methylprednisolone');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Concerta', 'Methylphenidate');
@@ -656,7 +656,7 @@ INSERT INTO DrugList (medication_name, generic_name) VALUES ('Ativan', 'Lorazepa
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zetia', 'Ezetimibe');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Premarin', 'Estrogen');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zyloprim', 'Allopurinol');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pen VK,' 'Penicillin' );
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pen VK', 'Penicillin' );
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Januvia', 'Sitagliptin');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Elavil', 'Amitriptyline');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Catapres', 'Clonidine');

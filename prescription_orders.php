@@ -19,7 +19,9 @@ $route = $_POST["route"];
 $usage_details = $_POST["qtyperdose"] . " " . $_POST["frequency"] . " " . $_POST["duration"];
 $quantity = $_POST["quantity"];
 $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*intval($_POST["duration"]));
+
 echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
+
 $refills = $_POST["refills"];
 $usage_info = $_POST["usage_info"];
 
@@ -60,7 +62,6 @@ $result = $conn->query($sql);
 
 if ($result->num_rows == 1){
     $drug_id = $row["medication_id"];
-    }
 } else if ($result->num_rows > 1){
     // How will we handle if there is more than 1 drug with a certain name?
 } else {
