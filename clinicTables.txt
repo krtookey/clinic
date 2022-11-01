@@ -100,6 +100,7 @@ CREATE TABLE Note (
 	plan    TEXT,
 	laborder_id int,
 	labdest_id  int, 
+	demographics TEXT,
 	comments    TEXT,
 	PRIMARY KEY (note_id)
 );
