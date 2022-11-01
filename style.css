@@ -60,16 +60,10 @@ h2 {
 
 .placeholder {
   height: 100px;
+  width: 100%;
 }
 
-#medicalProfile {
-  background-color: whitesmoke;
-  border-radius: 0.5em;
-  margin: 1em;
-  padding: 1.5em;
-}
-
-#reviewOS {
+.whiteCard {
   background-color: whitesmoke;
   border-radius: 0.5em;
   margin: 1em;
@@ -120,6 +114,12 @@ input[type="submit"] {
   cursor: pointer;
 }
 
+input[type="text"] {
+  border: 2px solid #d89a47;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 #reviewGrid {
   border: 0;
   color: #27474e;
@@ -147,7 +147,7 @@ input[type="submit"] {
 
 .commentBox > textarea {
   width: 100%;
-  height: 200px;
+  height: 100px;
   padding: 10px;
   font-size: 1em;
   resize: none;
@@ -247,3 +247,23 @@ input[type="submit"] {
 }
 
 /********* End Patient Page ************/
+
+#searchGrid {
+  border: 0;
+  color: #27474e;
+  display: grid;
+  grid-template-columns: auto;
+  width: 100%;
+}
+
+.searchItem {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  font-size: 1.5em;
+  gap: 3em;
+  padding: 0.5em;
+  justify-content: flex-end;
+  width: 75%;
+}
