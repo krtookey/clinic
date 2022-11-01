@@ -20,10 +20,9 @@ header {
   flex-wrap: wrap;
   flex-direction: row;
   font-size: 2em;
-  gap: 3em;
+  gap: 1em;
   justify-content: flex-start;
   padding-top: 0.5em;
-  padding-bottom: 0.5em;
   padding-left: 1em;
   padding-right: 1em;
   width: 100%;
@@ -160,26 +159,91 @@ input[type="submit"] {
   font-weight: bold;
 }
 
+/*********** Begin Patient Page **************/
+
 .patientBody {
   display: flex;
+  height: 89vh;
+}
+
+.btn-primary {
+  background-color: #d89a47;
+  border-color: #d89a47;
 }
 
 .patientNote {
   flex-grow: 1;
-  margin: 5px;
+  margin: 10px 10px 10px 5px;
   border-radius: 5px;
+  height: 100%;
+  transition: 0.2s;
+}
+
+#patientFormCard,
+.card-body,
+#patientNoteForm {
+  height: 100%;
+}
+
+#patientFormCard {
+  background-color: whitesmoke;
+  border-radius: 0.5em;
+}
+
+#patientNoteForm {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#patientNoteForm .formField {
+  width: 45%;
+}
+
+#patientFormSubmit {
+  place-self: flex-end;
+  margin-right: 15px;
 }
 
 .patientSideMenu {
+  margin: 5px 0px 5px 5px;
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: auto;
+  overflow: auto;
 }
 
 .patientSideMenuBtn {
   margin: 5px;
+  width: 150px;
+  transition: 0.2s;
 }
 
-.patientMenuItem {
-  width: 800px;
+.patientMenuBox {
+  transition: 0.2s;
+  margin: 0px 5px 5px 5px;
+  top: -5px;
 }
+
+.expandedWidth {
+  width: 600px;
+}
+
+.expandedHeight {
+  height: auto;
+}
+
+#patientHeader {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.hideContent {
+  height: 0;
+  width: 0;
+  display: none;
+}
+
+/********* End Patient Page ************/
