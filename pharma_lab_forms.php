@@ -35,7 +35,7 @@
             frequency = document.getElementById("frequency").value;
             duration = document.getElementById("duration").value;
             total = qtyperdose * frequency * duration;
-            //round_total = math.round(total);
+            //total = math.ceil(total);
             console.log(total);
             document.getElementById("quantity").value = total;
         }

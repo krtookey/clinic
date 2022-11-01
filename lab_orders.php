@@ -56,5 +56,5 @@ $conn->close();
 
 
 // Adding the data into the Prescriptions table
-
+$sql_scrip_into_database = "INSERT INTO Prescriptions () VALUES ();";
 ?>
