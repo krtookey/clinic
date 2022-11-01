@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="./indexstyle.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <header>
@@ -15,7 +15,7 @@
         <p> Male </p>
     </header>
     <div class="placeholder"></div>
-    <div id="searchCard">
+    <div class="whiteCard">
         <h2>Patient Search</h2>
         <form id="searchForm">
             <div id="searchGrid">
@@ -37,7 +37,7 @@
             </div>
         </form>
     </div>
-    <div id="linkContainer">
+    <div class="whiteCard">
         <a href="appointments">Appointments</a> 
         <a href="./medicalProfile.php">Medical Profile</a>
         <a href="./patient.php">Patient Note</a>
