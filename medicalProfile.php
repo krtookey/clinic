@@ -15,7 +15,7 @@
         <p> Male </p>
     </header>
     <div class="placeholder"></div>
-    <div id="medicalProfile">
+    <div class="whiteCard">
         <h2>Medical Profile</h2> <br>
         <form id="profileForm">
             <div id="profileGrid">
@@ -49,8 +49,12 @@
             </div>
         </form>
     </div>
-    <div id="reviewOS">
-        <h2>Review of Systems</h2> <br> <br>
+    <div class="whiteCard">
+        <h2>Review of Systems</h2> <br>
+        <div class="commentBox">
+            <label>Comments:</label> <br>
+            <textarea></textarea>
+        </div> <br> <br>
         <form id="reviewGrid">
             <div class="rosGroup">
                 <div class="reviewItem">
@@ -583,10 +587,7 @@
                 </div>
                 <br>
             </div>
-            <div class="commentBox">
-                <label>Comments:</label> <br> <br>
-                <textarea></textarea>
-            </div>
+            <div></div>
             <div></div>
             <div class="saveButton">
                 <input type="submit" value="Save" id="ProfileSave">
