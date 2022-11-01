@@ -35,12 +35,13 @@ $sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname 
 $result = $conn->query($sql);
 
 if ($result->num_rows == 1){
-    $drug_id = $row[""];
-    }
+    $drug_id = $row["medication_id"];
 } else if ($result->num_rows > 1){
     // How will we handle if there is more than 1 drug with a certain name?
+    echo("This is not good. There is more than 1 drug with the same name. Consider fixing that!");
 } else {
     // If the drug name isn't in the database, how will we add it? Should we prompt the user first? How would we do that?
+
 }
 $conn->close();
 
@@ -57,4 +58,5 @@ $conn->close();
 
 // Adding the data into the Prescriptions table
 $sql_scrip_into_database = "INSERT INTO Prescriptions () VALUES ();";
+
 ?>

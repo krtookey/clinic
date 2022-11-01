@@ -1,5 +1,6 @@
 <?php
 // Assigning form items to PHP variables that we can use 
+/*
 $servername = "localhost";
 $username = "username";
 $password = "password";
@@ -10,7 +11,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
 die("Connection failed: " . $conn->connect_error);
 }
-
+*/
 
 $pharmacy = $_POST["pharmacy"];
 $drugname = $_POST["drugname"];
@@ -32,6 +33,7 @@ if ($quantity != intval($quantity_calc)){
     echo("This is not what is supposed to happen. Oops. <br>");
 }
 
+// Getting patient_id from Medical Records page
 
 
 // Getting patient info for prescription
@@ -53,6 +55,8 @@ $address_city = $row["city"];
 $address_state = $row["state_abbr"];
 $address_zip = $row["zip"];
 
+// Grabbing doctor_id from logged in user
+
 
 // Getting medication ID for drugname
 
@@ -65,8 +69,7 @@ if ($result->num_rows == 1){
 } else if ($result->num_rows > 1){
     // How will we handle if there is more than 1 drug with a certain name?
 } else {
-    // Popup window that allows user to enter other name for drug, 
-}
+    // Reject form, tell user to enter another drug name, have a form to add new drug
 $conn->close();
 
 
@@ -75,11 +78,18 @@ $conn->close();
 
 
 // Sending the data to the pharmacy
+$prescription_text = <<<PRESCRIPTIONTEXT
+<p>$firstname $lastname   $DOB</p><br>
+<p>$address_street</p><br>
+<p>$address_city $address_state $address_zip</p><br>
+<p>$drugname</p><br>
 
 
-
-
+PRESCRIPTIONTEXT;
 
 // Adding the data into the Prescriptions table
-
+$sql_scrip_into_database = <<<SCRIP_INTO_DATABASE
+INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, status) 
+VALUES ($patient_id, $doctor_id, $pharmacy_id, $medication_id, $drug_id, $route, $usage_details, $quantity, $refills, $general_notes, $status);";
+SCRIP_INTO_DATABASE;
 ?>

@@ -143,7 +143,8 @@
                                 $gen_name = $row["generic_name"];
                                 $brand_name = $row["medication_name"];
                                 $text = <<<TEXT
-                                <option value="$brand_name ($generic_name)">
+                                <option value="$brand_name">
+                                <option value="$gen_name">
                                 TEXT;
                                 echo $text;
                             }
@@ -153,7 +154,8 @@
                         $conn->close();
                         */
                     ?>
-                    <option value="Valium (Diazepam)"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
+                    <option value="Valium">
+                    <option value="Diazepam"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
                 <label for="dosage">Dosage:</label>
                 <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" required>
