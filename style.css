@@ -23,6 +23,7 @@ header {
   gap: 1em;
   justify-content: flex-start;
   padding-top: 0.5em;
+  padding-bottom: 0.5em;
   padding-left: 1em;
   padding-right: 1em;
   width: 100%;
@@ -70,26 +71,6 @@ h2 {
   padding: 1.5em;
 }
 
-#profileGrid {
-  border: 0;
-  color: #27474e;
-  display: grid;
-  grid-template-columns: auto auto;
-  width: 100%;
-}
-
-.profileItem {
-  align-items: flex-end;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  font-size: 1.5em;
-  gap: 3em;
-  padding: 0.5em;
-  justify-content: flex-end;
-  width: 75%;
-}
-
 .saveButton {
   align-items: flex-end;
   display: flex;
@@ -108,7 +89,7 @@ input[type="submit"] {
   border-radius: 0.5em;
   color: #27474e;
   font-size: 1.5em;
-  padding: 16px 32px;
+  padding: 10px 26px;
   text-decoration: none;
   margin: 4px 2px;
   cursor: pointer;
@@ -118,6 +99,28 @@ input[type="text"] {
   border: 2px solid #d89a47;
   border-radius: 5px;
   padding: 5px;
+}
+
+/*********** Begin Medical Profile Page **************/
+
+#profileGrid {
+  border: 0;
+  color: #27474e;
+  display: grid;
+  grid-template-columns: auto auto;
+  width: 100%;
+}
+
+.profileItem {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  font-size: 1.5em;
+  gap: 3em;
+  padding: 0.5em;
+  justify-content: flex-end;
+  width: 75%;
 }
 
 #reviewGrid {
@@ -158,6 +161,8 @@ input[type="text"] {
   color: #c17817;
   font-weight: bold;
 }
+
+/*********** End Medical Profile Page **************/
 
 /*********** Begin Patient Page **************/
 
@@ -248,6 +253,8 @@ input[type="text"] {
 
 /********* End Patient Page ************/
 
+/********* Start Index Page ************/
+
 #searchGrid {
   border: 0;
   color: #27474e;
@@ -267,3 +274,29 @@ input[type="text"] {
   justify-content: flex-end;
   width: 75%;
 }
+
+/********* End Index Page ************/
+
+/********* Begin New Patient Page ************/
+
+#newPGrid {
+  border: 0;
+  color: #27474e;
+  display: grid;
+  grid-template-columns: auto auto;
+  width: 100%;
+}
+
+.newPItem {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  font-size: 1.5em;
+  gap: 1em;
+  padding: 0.5em;
+  justify-content: flex-start;
+  width: 75%;
+}
+
+/********* End New Patient Page ************/

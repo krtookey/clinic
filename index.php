@@ -44,8 +44,8 @@
         <a href="./noteHistory.php">Note History</a>
     </div>
     <footer>
-        <input type="submit" value="New User">
-        <input type="submit" value="New Patient">
+        <a href="new user">New User</a>
+        <a href="./newPatient.php">New Patient</a>
     </footer>
 </body>
 </html>
