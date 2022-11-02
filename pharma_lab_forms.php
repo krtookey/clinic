@@ -264,7 +264,7 @@
         <br>
         <br>
 
-        <form action="orders.php" method="post" id="labform">
+        <form action="lab_orders.php" method="post" id="labform">
             <div id="patient_info">
                 <?php 
                     //Need to get patient name and DOB from medical records views
@@ -400,13 +400,14 @@
             <br>
             <input type="submit" value="Submit">
         </form>
-        <form id="adddrugtodatabase">
+        <form action="addnewmeds.php" method="post" id="adddrugtodatabase">
             <b>Add Drug to Database</b> 
             <br>
             <label for="brandname">Brand Name:</label>
             <input type="text" id="brandname" name="brandname">
             <label for="genericname">Generic Name:</label>
             <input type="text" id="genericname" name="genericname">
+            <input type="submit" value="Submit">
         </form>
     </body>
 </html>

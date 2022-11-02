@@ -1,5 +1,6 @@
 <?php
 // Assigning form items to PHP variables that we can use 
+include 'pharma_lab_forms.php';
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -8,7 +9,7 @@ $dbname = "clinic";
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
-die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $pharmacy = $_POST["pharmacy"];
@@ -105,17 +106,36 @@ $conn->close();
 
 // Sending the data to the pharmacy
 $prescription_text = <<<PRESCRIPTIONTEXT
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    function htmlToPdf() {
+        var doc = new jsPDF();
+        doc.fromHTML(document.getElementById("pdf_text"), 
+        15,
+        15, 
+        {'width': 170},
+        function() 
+        {
+        doc.save("prescription_$lastname.pdf");
+        });
+    }
+</script>
+
 <div id="pdf_text">
 <p>$pharmacy</p>
-<p>$firstname $lastname   $DOB  Sex: $sex</p>
-<p>$address_street</p>
-<p>$address_city $address_state $address_zip</p>
-<p>$doctor_name</p>
+<p><u>$firstname $lastname   $DOB  Sex: $sex</u></p>
+<p>$address_street
+$address_city $address_state, $address_zip</p>
+<p>Prescribing Doctor: $doctor_name</p>
 <p>$drugname $dosage - $route</p>
-<p>Quantity: $quantity Refills: $refills</p>
+<p>Quantity: $quantity -- Refills: $refills</p>
 <p>$qtyperdose per dose, $frequency times per day, for $duration days</p>
 <p>Usage Info: $usage_info</p>
 </div>
+
+<a href="javascript:htmlToPdf()">Prescription Download</a>
+
+
 
 PRESCRIPTIONTEXT;
 //<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>
