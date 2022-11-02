@@ -34,30 +34,30 @@ INSERT INTO FamilyHistory VALUES
 
 INSERT INTO Pharmacy (pharmacy_name, address_id, phone, email) VALUES 
   ('Rite Aid Randolph', '2', '18027283722', '05060@riteaid.com'),
-  ('Nick's Funky Pharmacy', '6', '18027678888', 'nickfunkypharmacy@gmail.com');
+  ("Nick's Funky Pharmacy", '6', '18027678888', 'nickfunkypharmacy@gmail.com');
 
 
 INSERT INTO LabDest (labdest_name, address_id, phone) VALUES 
   ('A Shack In The Woods', '3', '18024853788');
 
-INSERT INTO LabList VALUES ('1', 'CBC');
-INSERT INTO LabList VALUES ('2', 'CMP');
-INSERT INTO LabList VALUES ('3', 'TSH');
-INSERT INTO LabList VALUES ('4', 'Free_T4');
-INSERT INTO LabList VALUES ('5', 'Hemoglobin_A1C');
-INSERT INTO LabList VALUES ('6', 'Lipids');
-INSERT INTO LabList VALUES ('7', 'Ferritin');
-INSERT INTO LabList VALUES ('8', 'Iron Sat');
-INSERT INTO LabList VALUES ('9', 'CRP');
-INSERT INTO LabList VALUES ('10', 'Vitamin D');
-INSERT INTO LabList VALUES ('11', 'Vitamin B12');
-INSERT INTO LabList VALUES ('12', 'Vitamin B1');
-INSERT INTO LabList VALUES ('13', 'Vitamin B2');
-INSERT INTO LabList VALUES ('14', 'EKG');
-INSERT INTO LabList VALUES ('15', 'Gonorrhea');
-INSERT INTO LabList VALUES ('16', 'Chlamydia');
-INSERT INTO LabList VALUES ('17', 'HIV');
-INSERT INTO LabList VALUES ('18', 'Syphilis');
+INSERT INTO LabList (lab_name) VALUES ('CBC');
+INSERT INTO LabList (lab_name) VALUES ('CMP');
+INSERT INTO LabList (lab_name) VALUES ('TSH');
+INSERT INTO LabList (lab_name) VALUES ('Free_T4');
+INSERT INTO LabList (lab_name) VALUES ('Hemoglobin_A1C');
+INSERT INTO LabList (lab_name) VALUES ('Lipids');
+INSERT INTO LabList (lab_name) VALUES ('Ferritin');
+INSERT INTO LabList (lab_name) VALUES ('Iron Sat');
+INSERT INTO LabList (lab_name) VALUES ('CRP');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin D');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin B12');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin B1');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin B2');
+INSERT INTO LabList (lab_name) VALUES ('EKG');
+INSERT INTO LabList (lab_name) VALUES ('Gonorrhea');
+INSERT INTO LabList (lab_name) VALUES ('Chlamydia');
+INSERT INTO LabList (lab_name) VALUES ('HIV');
+INSERT INTO LabList (lab_name) VALUES ('Syphilis');
 
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aspirin', 'acetylsalicylic acid');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Synthroid', 'Levothyroxine');
@@ -257,6 +257,6 @@ INSERT INTO DrugList (medication_name, generic_name) VALUES ('Voltaren®', 'Dicl
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Onglyza®', 'Saxagliptin');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aleve®', 'Naproxen');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zanaflex®', 'Tizanidine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Adderall®', 'Amphetamine/Dextro-amphetamine', );
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Adderall®', 'Amphetamine/Dextro-amphetamine');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Augmentin®', 'Amoxicillin+Clavulanate');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ( 'Vytorin®', 'Ezetimibe+Simvastatin',  );
+INSERT INTO DrugList (medication_name, generic_name) VALUES ( 'Vytorin®', 'Ezetimibe+Simvastatin');
