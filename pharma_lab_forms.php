@@ -84,12 +84,11 @@
             <label for="pharmacy">Pharmacy: </label>
             <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required> <!-- Should automatically be filled by patient default pharmacy-->
             <datalist id="pharmacy_list">
-                <?php 
-                /*
+                <?php  
                     $servername = "localhost";
-                    $username = "username";
-                    $password = "password";
-                    $dbname = "myDB";
+                    $username = "root";
+                    $password = "";
+                    $dbname = "clinic";
                     // Create connection
                     $conn = new mysqli($servername, $username, $password, $dbname);
                     // Check connection
@@ -111,22 +110,21 @@
                     } else {
                         echo "0 results";
                     }
-                    $conn->close();
-                    */
+                    //$conn->close();
                 ?>
                 <option value="Rite Aid Randolph"> <!-- This will be populated by the items in the SQL table Pharmacy, pharmacy_name-->
             </datalist>
             <fieldset id="prescription_inputs">
                 <legend>Prescription:</legend>
                 <label for="drugname">Drug Name: </label>
-                <input type="text" list="druglist" id="drugname" name="drugname" default="" required>
+                <input type="text" list="druglist" id="drugname" name="drugname" required>
                 <datalist id="druglist">
                     <?php 
-                    /*
+                    
                         $servername = "localhost";
-                        $username = "username";
-                        $password = "password";
-                        $dbname = "myDB";
+                        $username = "root";
+                        $password = "";
+                        $dbname = "clinic";
                         // Create connection
                         $conn = new mysqli($servername, $username, $password, $dbname);
                         // Check connection
@@ -134,7 +132,7 @@
                         die("Connection failed: " . $conn->connect_error);
                         }
                     
-                        $sql = "SELECT medication_name, generic_name FROM Pharmacy";
+                        $sql = "SELECT medication_name, generic_name FROM DrugList;";
                         $result = $conn->query($sql);
 
                         if ($result->num_rows > 0){
@@ -151,11 +149,8 @@
                         } else {
                             echo "0 results";
                         }
-                        $conn->close();
-                        */
+                        //$conn->close();
                     ?>
-                    <option value="Valium">
-                    <option value="Diazepam"> <!-- This will be populated by the items in the SQL table DrugList, both medication_name and generic_name-->
                 </datalist>
                 <label for="dosage">Dosage:</label>
                 <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" required>
@@ -258,13 +253,11 @@
             <input type="text" id="labdest" name="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
             <datalist id="labdestlist">
                 <?php 
-                /*
                 //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp
-
                     $servername = "localhost";
-                    $username = "username";
-                    $password = "password";
-                    $dbname = "myDB";
+                    $username = "root";
+                    $password = "";
+                    $dbname = "clinic";
                     // Create connection
                     $conn = new mysqli($servername, $username, $password, $dbname);
                     // Check connection
@@ -281,13 +274,12 @@
                             $text = <<<TEXT
                             <option value="$name">
                             TEXT;
-                            echo $text
+                            echo $text;
                         }
                     } else {
                         echo "0 results";
                     }
-                    $conn->close();
-                    */
+                    //$conn->close();
                 ?>
                 <option value="Gifford">
             </datalist>
