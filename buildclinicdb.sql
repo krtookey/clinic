@@ -90,7 +90,7 @@ CREATE TABLE Addresses (
 	street	varchar(40) NOT NULL,
 	city	varchar(30) NOT NULL,
 	state_abbr	char(2) NOT NULL,
-	zip	int NOT NULL,
+	zip	char(5) NOT NULL,
 	-- 
 	PRIMARY KEY (address_id)
 );
