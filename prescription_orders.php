@@ -13,8 +13,11 @@ die("Connection failed: " . $conn->connect_error);
 
 $pharmacy = $_POST["pharmacy"];
 $drugname = $_POST["drugname"];
-$dosage = $_POST["dosage_num"] . $_POST["unit"];
+$dosage = $_POST["dosage_num"] . $_POST["unit"] . " " .$_POST["dosage_type"];
 $route = $_POST["route"];
+$qtyperdose = $_POST["qtyperdose"];
+$frequency = $_POST["frequency"];
+$duration = $_POST["duration"];
 $usage_details = $_POST["qtyperdose"] . " " . $_POST["frequency"] . " " . $_POST["duration"];
 $quantity = $_POST["quantity"];
 $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*intval($_POST["duration"]));
@@ -24,7 +27,7 @@ echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
 $refills = $_POST["refills"];
 $usage_info = $_POST["usage_info"];
 
-echo ("pharmacy " . $pharmacy . "<br>" . "drugname " . $drugname . "<br>" . "dosage " . $dosage . "<br>" . "route " . $route . "<br>" . "usage_details " .$usage_details . "<br>" . "quantity " . $quantity . "<br>" . "quantity_calc " . $quantity_calc . "<br>" . "refills " . $refills . "<br>" . "Usageinfo " . $usage_info);
+echo ("<br>pharmacy " . $pharmacy . "<br>" . "drugname " . $drugname . "<br>" . "dosage " . $dosage . "<br>" . "route " . $route . "<br>" . "usage_details " .$usage_details . "<br>" . "quantity " . $quantity . "<br>" . "quantity_calc " . $quantity_calc . "<br>" . "refills " . $refills . "<br>" . "Usageinfo " . $usage_info);
 
 // Validation of results
 if ($quantity != intval($quantity_calc)){
@@ -32,7 +35,7 @@ if ($quantity != intval($quantity_calc)){
 }
 
 // Getting patient_id from Medical Records page
-$patient_id = "1";
+$patient_id = "1"; // PLACEHOLDER
 
 // Getting patient info for prescription
 $sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
@@ -56,8 +59,16 @@ $address_state = $row["state_abbr"];
 $address_zip = $row["zip"];
 
 // Grabbing doctor_id from logged in user
-$doctor_id = "1";
+$doctor_id = "1"; // PLACEHOLDER
 
+// Grabbing doctor name based on doctor_id
+/*
+$sql = "SELECT doctor_name FROM Users WHERE user_id='" . $doctor_id . "';";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$doctor_name = $row["user_name"];
+*/
+$doctor_name = "Joey Danger"; // PLACEHOLDER
 
 // Getting medication ID for drugname
 $sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
@@ -74,6 +85,7 @@ if ($result->num_rows == 1){
 
 
 // Getting pharmacy_id for pharmacy
+/*
 $sql = "SELECT pharmacy_id FROM pharmacy WHERE pharmacy_name='" . $pharmacy . "';";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
@@ -86,26 +98,36 @@ if ($result->num_rows == 1){
         // Reject form, tell user to enter another drug name, have a form to add new drug
 }
 
-
+*/
 // Getting everything ready to be sent
 
 $conn->close();
 
 // Sending the data to the pharmacy
 $prescription_text = <<<PRESCRIPTIONTEXT
-<p>$firstname $lastname   $DOB</p><br>
-<p>$address_street</p><br>
-<p>$address_city $address_state $address_zip</p><br>
-<p>$drugname</p><br>
-
+<div id="pdf_text">
+<p>$pharmacy</p>
+<p>$firstname $lastname   $DOB  Sex: $sex</p>
+<p>$address_street</p>
+<p>$address_city $address_state $address_zip</p>
+<p>$doctor_name</p>
+<p>$drugname $dosage - $route</p>
+<p>Quantity: $quantity Refills: $refills</p>
+<p>$qtyperdose per dose, $frequency times per day, for $duration days</p>
+<p>Usage Info: $usage_info</p>
+</div>
 
 PRESCRIPTIONTEXT;
+//<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>
+echo "<br><br>" . $prescription_text;
 
 // Adding the data into the Prescriptions table
-$sql_scrip_into_database = <<<SCRIP_INTO_DATABASE
+/*
+$scrip_database = <<<PRESCRIPTIONDATABASE
 INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, status) 
 VALUES ($patient_id, $doctor_id, $pharmacy_id, $drug_id, $dosage, $route, $usage_details, $quantity, $refills, $general_notes, $status);";
-SCRIP_INTO_DATABASE;
+PRESCRIPTIONDATABASE;
+*/
 ?>
 
 

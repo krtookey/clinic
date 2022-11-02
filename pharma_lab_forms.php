@@ -31,8 +31,8 @@
         </style>
         <script>
         function calcquantity(){
-            qtyperdose = document.getElementById("qtyperdose").value;
-            frequency = document.getElementById("frequency").value;
+            qtyperdose = eval(document.getElementById("qtyperdose").value);
+            frequency = eval(document.getElementById("frequency").value);
             duration = document.getElementById("duration").value;
             total = qtyperdose * frequency * duration;
             //total = math.ceil(total);
@@ -70,19 +70,46 @@
                         echo "0 results";
                     }
                     $conn->close();
-                */
-                    $patient_name = "John Doe";
-                    $patient_dob = "10/12/1996";
-                
-                    echo("<b><u>Prescription Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
+                    */
+                    $patient_name = "John Doe"; // PLACEHOLDER
+                    $patient_dob = "10/12/1996"; // PLACEHOLDER
                     
+                    echo("<b><u>Prescription Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
+                    echo("</div><br>");
+                    echo('<label for="pharmacy">Pharmacy: </label>');
+                    /*
+                    // Get pharmacy_id for patient
+                    $sql = "SELECT pharmacy_id FROM Patient where patient_id = '" . $patient_id . "';";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0){
+                    $row = $result->fetch_assoc();
+                    $patient_pharmacy_id = $row["pharmacy_id"]; 
+
+                    // Get pharmacy_id for pharmacy_id
+                    $sql = "SELECT pharmacy_name FROM Pharmacy where pharmacy_id = '" . $patient_pharmacy_id . "';";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0){
+                    $row = $result->fetch_assoc();
+                    $pharmacy_name = $row["pharmacy_name"]; 
+
+                    //$conn->close();
+                    */
+                    $patient_pharmacy = "Nick's Funky Pharmacy"; // PLACEHOLDER
+                    $pharmacyinput = <<<PHARM_INPUT
+                    <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" default="$patient_pharmacy" required>
+                    PHARM_INPUT;
+                    echo $pharmacyinput;
+                    
+
                 ?>
             </div>
             <br>
             <!--<label for="doctorname">Doctor Name: </label>
             <input type="text" id="doctorname" name="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
-            <label for="pharmacy">Pharmacy: </label>
-            <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required> <!-- Should automatically be filled by patient default pharmacy-->
+            <!--<label for="pharmacy">Pharmacy: </label>
+            <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required>--> <!-- Should automatically be filled by patient default pharmacy-->
             <datalist id="pharmacy_list">
                 <?php  
                     $servername = "localhost";
@@ -209,9 +236,9 @@
                     <option value="2">twice per day</option>
                     <option value="3">3 times per day</option>
                     <option value="1" selected>once per day</option>
-                    <option value="0.1428">once per week</option>
-                    <option value="0.5">every other day</option>
-                    <option value="0.03333">per 30 days</option>
+                    <option value="1/7">once per week</option>
+                    <option value="1/2">every other day</option>
+                    <option value="1/30">per 30 days</option>
                 </select>
                 <label for="duration">Duration</label>
                 <select id="duration" name="duration" onchange="calcquantity()">
@@ -241,8 +268,8 @@
             <div id="patient_info">
                 <?php 
                     //Need to get patient name and DOB from medical records views
-                    $patient_name = "John Doe";
-                    $patient_dob = "10/12/1996";
+                    $patient_name = "John Doe"; // PLACEHOLDER
+                    $patient_dob = "10/12/1996"; // PLACEHOLDER
                     echo("<b><u>Lab Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
                 ?>
             </div>
