@@ -308,42 +308,6 @@
             <input type="text" id="providers_to_cc" name="providers_to_cc">
             <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
                 <legend>Labs</legend>
-                <?php 
-                /*
-                //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp
-
-                    $servername = "localhost";
-                    $username = "username";
-                    $password = "password";
-                    $dbname = "myDB";
-                    // Create connection
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-                    // Check connection
-                    if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                    }
-                
-                    $sql = "SELECT lab_id, lab_name FROM LabList";
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0){
-                        while($row = $result->fetch_assoc()){
-                            //This is what will create the checkboxes and labels, when it is set up correctly-->
-                            $id = $row["lab_id"];
-                            $name = $row["lab_name"];
-                            $namelower = strtolower($name);
-                            $text = <<<TEXT
-                            <label for="$namelower">$name</label>
-                            <input type="checkbox" id="$namelower" name="$namelower" value="$id">
-                            TEXT;
-                            echo $text;
-                        }
-                    } else {
-                        echo "0 results";
-                    }
-                    $conn->close();
-                    */
-                ?>
                 <label for="cbc">CBC</label>
                 <input type="checkbox" id="cbc" name="cbc" value="cbc">
                 <label for="cmp">CMP</label>
