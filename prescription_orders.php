@@ -106,20 +106,9 @@ $conn->close();
 
 // Sending the data to the pharmacy
 $prescription_text = <<<PRESCRIPTIONTEXT
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-    function htmlToPdf() {
-        var doc = new jsPDF();
-        doc.fromHTML(document.getElementById("pdf_text"), 
-        15,
-        15, 
-        {'width': 170},
-        function() 
-        {
-        doc.save("prescription_$lastname.pdf");
-        });
-    }
-</script>
+<a href="javascript:htmlToPdf()">Prescription PDF</a>
+<script src="<https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js>" ></script>
+<script src="prescriptionpdf.js"></script>>
 
 <div id="pdf_text">
 <p>$pharmacy</p>
@@ -132,10 +121,6 @@ $address_city $address_state, $address_zip</p>
 <p>$qtyperdose per dose, $frequency times per day, for $duration days</p>
 <p>Usage Info: $usage_info</p>
 </div>
-
-<a href="javascript:htmlToPdf()">Prescription Download</a>
-
-
 
 PRESCRIPTIONTEXT;
 //<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>
