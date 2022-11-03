@@ -107,8 +107,8 @@ $conn->close();
 // Sending the data to the pharmacy
 $prescription_text = <<<PRESCRIPTIONTEXT
 <a href="javascript:htmlToPdf()">Prescription PDF</a>
-<script src="<https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js>" ></script>
-<script src="prescriptionpdf.js"></script>>
+<script src="<https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js>"></script>
+<script src="prescriptionpdf.js"></script>
 
 <div id="pdf_text">
 <p>$pharmacy</p>

@@ -138,8 +138,7 @@
                         echo "0 results";
                     }
                     //$conn->close();
-                ?>
-                <option value="Rite Aid Randolph"> <!-- This will be populated by the items in the SQL table Pharmacy, pharmacy_name-->
+                ?> <!-- This will be populated by the items in the SQL table Pharmacy, pharmacy_name-->
             </datalist>
             <fieldset id="prescription_inputs">
                 <legend>Prescription:</legend>
@@ -308,7 +307,6 @@
                     }
                     //$conn->close();
                 ?>
-                <option value="Gifford">
             </datalist>
             <br>
             <label for="providers_to_cc">Providers to CC:</label>
