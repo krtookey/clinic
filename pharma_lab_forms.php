@@ -75,7 +75,7 @@
                     $patient_dob = "10/12/1996"; // PLACEHOLDER
                     
                     echo("<b><u>Prescription Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
-                    echo("</div><br>");
+                    echo("<br><br>");
                     echo('<label for="pharmacy">Pharmacy: </label>');
                     /*
                     // Get pharmacy_id for patient
@@ -105,11 +105,6 @@
 
                 ?>
             </div>
-            <br>
-            <!--<label for="doctorname">Doctor Name: </label>
-            <input type="text" id="doctorname" name="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
-            <!--<label for="pharmacy">Pharmacy: </label>
-            <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required>--> <!-- Should automatically be filled by patient default pharmacy-->
             <datalist id="pharmacy_list">
                 <?php  
                     $servername = "localhost";
@@ -349,36 +344,44 @@
                     $conn->close();
                     */
                 ?>
-                <label for="lab1">CBC</label>
+                <label for="cbc">CBC</label>
                 <input type="checkbox" id="cbc" name="cbc" value="cbc">
-                <label for="lab2">CMP</label>
+                <label for="cmp">CMP</label>
                 <input type="checkbox" id="cmp" name="cmp" value="cmp">
-                <label for="lab3">TSH</label>
+                <label for="tsh">TSH</label>
                 <input type="checkbox" id="tsh" name="tsh" value="tsh">
-                <label for="lab4">Free T4</label>
+                <label for="free_t4">Free T4</label>
                 <input type="checkbox" id="free_t4" name="free_t4" value="free_t4">
-                <label for="lab4">Hemoglobin A1C</label>
+                <label for="hemoglobin_a1c">Hemoglobin A1C</label>
                 <input type="checkbox" id="hemoglobin_a1c" name="hemoglobin_a1c" value="hemoglobin_a1c">
-                <label for="lab4">Lipids</label>
+                <label for="lipids">Lipids</label>
                 <input type="checkbox" id="lipids" name="lipids" value="lipids">
-                <label for="lab4">Ferritin</label>
+                <label for="ferritin">Ferritin</label>
                 <input type="checkbox" id="ferritin" name="ferritin" value="ferritin">
-                <label for="lab4">Iron Sat</label>
+                <label for="iron_sat">Iron Sat</label>
                 <input type="checkbox" id="iron_sat" name="iron_sat" value="iron_sat">
-                <label for="lab4">CRP</label>
+                <label for="magnesium">Magnesium</label>
+                <input type="checkbox" id="magnesium" name="magnesium" value="magnesium">
+                <label for="crp">CRP</label>
                 <input type="checkbox" id="crp" name="crp" value="crp">
-                <label for="lab4">EKG</label>
+                <label for="prolactin">Prolactin</label>
+                <input type="checkbox" id="prolactin" name="prolactin" value="prolactin">
+                <label for="copper">Copper</label>
+                <input type="checkbox" id="copper" name="copper" value="copper">
+                <label for="zinc">Zinc</label>
+                <input type="checkbox" id="zinc" name="zinc" value="zinc">
+                <label for="ekg">EKG</label>
                 <input type="checkbox" id="ekg" name="ekg" value="ekg">
                 <br>
                 <fieldset id="vitaminlabs">
                     <legend>Vitamin Labs</legend>
-                    <label for="lab4">Vitamin D</label>
+                    <label for="vitamin_d">Vitamin D</label>
                     <input type="checkbox" id="vitamin_d" name="vitamin_d" value="vitamin_d">
-                    <label for="lab4">Vitamin B12</label>
+                    <label for="vitamin_b12">Vitamin B12</label>
                     <input type="checkbox" id="vitamin_b12" name="vitamin_b12" value="vitamin_b12">
-                    <label for="lab4">Vitamin B1</label>
+                    <label for="vitamin_b1">Vitamin B1</label>
                     <input type="checkbox" id="vitamin_b1" name="vitamin_b1" value="vitamin_b1">
-                    <label for="lab4">Vitamin B2</label>
+                    <label for="vitamin_b2">Vitamin B2</label>
                     <input type="checkbox" id="vitamin_b2" name="vitamin_b2" value="vitamin_b2">
                 </fieldset>
                 <fieldset>
@@ -392,6 +395,8 @@
                     <label for="lab4">Syphilis</label>
                     <input type="checkbox" id="syphilis" name="syphilis" value="syphilis">
                 </fieldset>
+                <label for="pregnancy">Pregnancy</label>
+                <input type="checkbox" id="pregnancy" name="pregnancy" value="pregnancy">
             </fieldset>
             <label for="diagnosis">Diagnosis:</label>
             <input type="text" id="diagnosis" name="diagnosis" required>

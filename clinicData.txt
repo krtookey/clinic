@@ -13,7 +13,8 @@ INSERT INTO Addresses (street, city, state_abbr, zip) VALUES
   ('1390 Monti Rd', 'Northfield', 'VT', '05663'),
 	('3 Mt Philo Rd', 'Charlotte', 'VT', '05444'),
 	('26 South Rd', 'Williston', 'VT', '05495'),
-	('100 North Hollow Road', 'Rochester', 'VT', '05767');
+	('100 North Hollow Road', 'Rochester', 'VT', '05767'),
+  ('44 South Main Street', 'Randolph', 'VT', '05060');
 
 INSERT INTO ProblemList (patient_id, problem, category, timeframe)VALUES	
   ('2', 'Cold Urticaria', 'allergy', 'present'), 
@@ -38,7 +39,8 @@ INSERT INTO Pharmacy (pharmacy_name, address_id, phone, email) VALUES
 
 
 INSERT INTO LabDest (labdest_name, address_id, phone) VALUES 
-  ('A Shack In The Woods', '3', '18024853788');
+  ('A Shack In The Woods', '3', '18024853788'),
+  ('Gifford Medical Center', '7', '18027287000');
 
 INSERT INTO LabList (lab_name) VALUES ('CBC');
 INSERT INTO LabList (lab_name) VALUES ('CMP');
