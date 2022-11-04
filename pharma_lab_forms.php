@@ -74,7 +74,7 @@
                     $patient_name = "John Doe"; // PLACEHOLDER
                     $patient_dob = "10/12/1996"; // PLACEHOLDER
                     
-                    echo("<b><u>Prescription Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
+                    echo("<b>". $patient_name . "</b>  <b>  " . $patient_dob . "</b>");
                     echo("<br><br>");
                     echo('<label for="pharmacy">Pharmacy: </label>');
                     /*
@@ -264,7 +264,7 @@
                     //Need to get patient name and DOB from medical records views
                     $patient_name = "John Doe"; // PLACEHOLDER
                     $patient_dob = "10/12/1996"; // PLACEHOLDER
-                    echo("<b><u>Lab Order Form</u></b><b>". $patient_name . "</b><b>" . $patient_dob . "</b>");
+                    echo("<b>". $patient_name . "</b>  <b>  " . $patient_dob . "</b>");
                 ?>
             </div>
             <br>
