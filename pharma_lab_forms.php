@@ -39,41 +39,6 @@
             console.log(total);
             document.getElementById("quantity").value = total;
         }
-        /*
-        function submitPrescription(){
-            var pharmacy=document.getElementByID('pharmacy').value
-            var drugname=document.getElementByID('drugname').value
-            var dosage_num=document.getElementByID('dosage_num').value
-            var unit=document.getElementByID('unit').value
-            var dosage_type=document.getElementByID('dosage_type').value
-            var route=document.getElementByID('route').value
-            var qtyperdose=document.getElementByID('qtyperdose').value
-            var frequency=document.getElementByID('frequency').value
-            var duration=document.getElementByID('duration').value
-            var quantity=document.getElementByID('quantity').value
-            $.ajax({
-                type: "post",
-                url: "prescription_orders.php",
-                data: {
-                    'pharmacy' :pharmacy,
-                    'drugname' :drugname,
-                    'dosage_num' :dosage_num,
-                    'unit' :unit,
-                    'dosage_type' :dosage_type,
-                    'route' :route, 
-                    'qtyperdose' :qtyperdose,
-                    'frequency' :frequency,
-                    'duration' :duration,
-                    'quantity' :quantity
-                },
-                cache:false,
-                success: function(html){
-                    alert('Data Send');
-                }
-            });
-            return false;
-            */
-        }
         </script>
         <script>src="./jquery-3.6.1.js"</script>
     </head>
