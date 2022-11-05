@@ -1,6 +1,6 @@
 <?php
 // Assigning form items to PHP variables that we can use 
-include 'pharma_lab_forms.php';
+//include 'pharma_lab_forms.php';
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -23,12 +23,12 @@ $usage_details = $_POST["qtyperdose"] . " " . $_POST["frequency"] . " " . $_POST
 $quantity = $_POST["quantity"];
 $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*intval($_POST["duration"]));
 
-echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
+//echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
 
 $refills = $_POST["refills"];
 $usage_info = $_POST["usage_info"];
 
-echo ("<br>pharmacy " . $pharmacy . "<br>" . "drugname " . $drugname . "<br>" . "dosage " . $dosage . "<br>" . "route " . $route . "<br>" . "usage_details " .$usage_details . "<br>" . "quantity " . $quantity . "<br>" . "quantity_calc " . $quantity_calc . "<br>" . "refills " . $refills . "<br>" . "Usageinfo " . $usage_info);
+//echo ("<br>pharmacy " . $pharmacy . "<br>" . "drugname " . $drugname . "<br>" . "dosage " . $dosage . "<br>" . "route " . $route . "<br>" . "usage_details " .$usage_details . "<br>" . "quantity " . $quantity . "<br>" . "quantity_calc " . $quantity_calc . "<br>" . "refills " . $refills . "<br>" . "Usageinfo " . $usage_info);
 
 // Validation of results
 if ($quantity != intval($quantity_calc)){
@@ -105,11 +105,13 @@ if ($result->num_rows == 1){
 $conn->close();
 
 // Sending the data to the pharmacy
-$prescription_text = <<<PRESCRIPTIONTEXT
+$prescription_pdf_link = <<<PRESCRIPTIONLINK
 <a href="javascript:htmlToPdf()">Prescription PDF</a>
 <script src="<https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js>"></script>
 <script src="prescriptionpdf.js"></script>
+PRESCRIPTIONLINK;
 
+$prescription_text = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
 <p>$pharmacy</p>
 <p><u>$firstname $lastname   $DOB  Sex: $sex</u></p>
@@ -121,10 +123,10 @@ $address_city $address_state, $address_zip</p>
 <p>$qtyperdose per dose, $frequency times per day, for $duration days</p>
 <p>Usage Info: $usage_info</p>
 </div>
-
 PRESCRIPTIONTEXT;
+
 //<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>
-echo "<br><br>" . $prescription_text;
+echo "<br><br>" . $prescription_pdf_link;
 
 // Adding the data into the Prescriptions table
 /*

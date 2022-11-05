@@ -29,7 +29,7 @@
                 font-size:1.2em;
             }
         </style>
-        <script>
+        <script type="text/javascript">
         function calcquantity(){
             qtyperdose = eval(document.getElementById("qtyperdose").value);
             frequency = eval(document.getElementById("frequency").value);
@@ -39,11 +39,46 @@
             console.log(total);
             document.getElementById("quantity").value = total;
         }
+        /*
+        function submitPrescription(){
+            var pharmacy=document.getElementByID('pharmacy').value
+            var drugname=document.getElementByID('drugname').value
+            var dosage_num=document.getElementByID('dosage_num').value
+            var unit=document.getElementByID('unit').value
+            var dosage_type=document.getElementByID('dosage_type').value
+            var route=document.getElementByID('route').value
+            var qtyperdose=document.getElementByID('qtyperdose').value
+            var frequency=document.getElementByID('frequency').value
+            var duration=document.getElementByID('duration').value
+            var quantity=document.getElementByID('quantity').value
+            $.ajax({
+                type: "post",
+                url: "prescription_orders.php",
+                data: {
+                    'pharmacy' :pharmacy,
+                    'drugname' :drugname,
+                    'dosage_num' :dosage_num,
+                    'unit' :unit,
+                    'dosage_type' :dosage_type,
+                    'route' :route, 
+                    'qtyperdose' :qtyperdose,
+                    'frequency' :frequency,
+                    'duration' :duration,
+                    'quantity' :quantity
+                },
+                cache:false,
+                success: function(html){
+                    alert('Data Send');
+                }
+            });
+            return false;
+            */
+        }
         </script>
+        <script>src="./jquery-3.6.1.js"</script>
     </head>
     <body>
-        
-        <form action="prescription_orders.php" method="post" id="prescriptionform">
+        <form action="prescription_orders.php" method="post" target="prescriptionlinkdisplay" id="prescriptionform">
             <div id="patient_info">
                 <?php 
                     //Need to get patient name and DOB from medical records views
@@ -252,13 +287,14 @@
             <br>
             <textarea rows="10" cols="40" id="usage_info" name="usage_info"></textarea>   
             <br>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Submit"> 
+            <iframe name="prescriptionlinkdisplay"></iframe>
         </form>
 
         <br>
         <br>
 
-        <form action="lab_orders.php" method="post" id="labform">
+        <form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform">
             <div id="patient_info">
                 <?php 
                     //Need to get patient name and DOB from medical records views
@@ -268,8 +304,8 @@
                 ?>
             </div>
             <br>
-            <!--<label for="doctorname">Doctor Name:</label> 
-            <input type="text" id="doctorname" required> <!-- Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
+            <!--<label for="doctorname">Doctor Name:</label> -->
+            <input type="text" id="doctorname" required> <!--Doctor name needs to be automatically grabbed from who is logged in, we can probably get rid of this field -->
             <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
             <input type="text" id="labdest" name="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
             <datalist id="labdestlist">
@@ -309,64 +345,67 @@
             <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
                 <legend>Labs</legend>
                 <label for="cbc">CBC</label>
-                <input type="checkbox" id="cbc" name="cbc" value="cbc">
+                <input type="checkbox" id="cbc" name="general_labs[]" value="cbc">
                 <label for="cmp">CMP</label>
-                <input type="checkbox" id="cmp" name="cmp" value="cmp">
+                <input type="checkbox" id="cmp" name="general_labs[]" value="cmp">
                 <label for="tsh">TSH</label>
-                <input type="checkbox" id="tsh" name="tsh" value="tsh">
+                <input type="checkbox" id="tsh" name="general_labs[]" value="tsh">
                 <label for="free_t4">Free T4</label>
-                <input type="checkbox" id="free_t4" name="free_t4" value="free_t4">
+                <input type="checkbox" id="free_t4" name="general_labs[]" value="free_t4">
                 <label for="hemoglobin_a1c">Hemoglobin A1C</label>
-                <input type="checkbox" id="hemoglobin_a1c" name="hemoglobin_a1c" value="hemoglobin_a1c">
+                <input type="checkbox" id="hemoglobin_a1c" name="general_labs[]" value="hemoglobin_a1c">
                 <label for="lipids">Lipids</label>
-                <input type="checkbox" id="lipids" name="lipids" value="lipids">
+                <input type="checkbox" id="lipids" name="general_labs[]" value="lipids">
                 <label for="ferritin">Ferritin</label>
-                <input type="checkbox" id="ferritin" name="ferritin" value="ferritin">
+                <input type="checkbox" id="ferritin" name="general_labs[]" value="ferritin">
                 <label for="iron_sat">Iron Sat</label>
-                <input type="checkbox" id="iron_sat" name="iron_sat" value="iron_sat">
+                <input type="checkbox" id="iron_sat" name="general_labs[]" value="iron_sat">
                 <label for="magnesium">Magnesium</label>
-                <input type="checkbox" id="magnesium" name="magnesium" value="magnesium">
+                <input type="checkbox" id="magnesium" name="general_labs[]" value="magnesium">
                 <label for="crp">CRP</label>
-                <input type="checkbox" id="crp" name="crp" value="crp">
+                <input type="checkbox" id="crp" name="general_labs[]" value="crp">
                 <label for="prolactin">Prolactin</label>
-                <input type="checkbox" id="prolactin" name="prolactin" value="prolactin">
+                <input type="checkbox" id="prolactin" name="general_labs[]" value="prolactin">
                 <label for="copper">Copper</label>
-                <input type="checkbox" id="copper" name="copper" value="copper">
+                <input type="checkbox" id="copper" name="general_labs[]" value="copper">
                 <label for="zinc">Zinc</label>
-                <input type="checkbox" id="zinc" name="zinc" value="zinc">
+                <input type="checkbox" id="zinc" name="general_labs[]" value="zinc">
                 <label for="ekg">EKG</label>
-                <input type="checkbox" id="ekg" name="ekg" value="ekg">
+                <input type="checkbox" id="ekg" name="general_labs[]" value="ekg">
                 <br>
                 <fieldset id="vitaminlabs">
                     <legend>Vitamin Labs</legend>
                     <label for="vitamin_d">Vitamin D</label>
-                    <input type="checkbox" id="vitamin_d" name="vitamin_d" value="vitamin_d">
+                    <input type="checkbox" id="vitamin_d" name="vitamin_labs[]" value="vitamin_d">
                     <label for="vitamin_b12">Vitamin B12</label>
-                    <input type="checkbox" id="vitamin_b12" name="vitamin_b12" value="vitamin_b12">
+                    <input type="checkbox" id="vitamin_b12" name="vitamin_labs[]" value="vitamin_b12">
                     <label for="vitamin_b1">Vitamin B1</label>
-                    <input type="checkbox" id="vitamin_b1" name="vitamin_b1" value="vitamin_b1">
+                    <input type="checkbox" id="vitamin_b1" name="vitamin_labs[]" value="vitamin_b1">
                     <label for="vitamin_b2">Vitamin B2</label>
-                    <input type="checkbox" id="vitamin_b2" name="vitamin_b2" value="vitamin_b2">
+                    <input type="checkbox" id="vitamin_b2" name="vitamin_labs[]" value="vitamin_b2">
                 </fieldset>
                 <fieldset>
                     <legend>STI Tests</legend>
                     <label for="lab4">Gonorrhea</label>
-                    <input type="checkbox" id="gonorrhea" name="gonorrhea" value="gonorrhea">
+                    <input type="checkbox" id="gonorrhea" name="sti_tests[]" value="gonorrhea">
                     <label for="lab4">Chlamydia</label>
-                    <input type="checkbox" id="chlamydia" name="chlamydia" value="chlamydia">
+                    <input type="checkbox" id="chlamydia" name="sti_tests[]" value="chlamydia">
                     <label for="lab4">HIV</label>
-                    <input type="checkbox" id="hiv" name="hiv" value="hiv">
+                    <input type="checkbox" id="hiv" name="sti_tests[]" value="hiv">
                     <label for="lab4">Syphilis</label>
-                    <input type="checkbox" id="syphilis" name="syphilis" value="syphilis">
+                    <input type="checkbox" id="syphilis" name="sti_tests[]" value="syphilis">
                 </fieldset>
                 <label for="pregnancy">Pregnancy</label>
-                <input type="checkbox" id="pregnancy" name="pregnancy" value="pregnancy">
+                <input type="checkbox" id="pregnancy" name="general_labs[]" value="pregnancy">
             </fieldset>
             <label for="diagnosis">Diagnosis:</label>
             <input type="text" id="diagnosis" name="diagnosis" required>
             <br>
             <input type="submit" value="Submit">
+            <iframe name="laborderlinkdisplay"></iframe>
         </form>
+
+
         <form action="addnewmeds.php" method="post" id="adddrugtodatabase">
             <b>Add Drug to Database</b> 
             <br>
