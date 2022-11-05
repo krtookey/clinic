@@ -11,6 +11,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+$status = 0;
 
 $pharmacy = $_POST["pharmacy"];
 $drugname = $_POST["drugname"];
@@ -125,16 +126,18 @@ $address_city $address_state, $address_zip</p>
 </div>
 PRESCRIPTIONTEXT;
 
+$status = 1;
 //<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>
 echo "<br><br>" . $prescription_pdf_link;
 
 // Adding the data into the Prescriptions table
-/*
 $scrip_database = <<<PRESCRIPTIONDATABASE
 INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, status) 
 VALUES ($patient_id, $doctor_id, $pharmacy_id, $drug_id, $dosage, $route, $usage_details, $quantity, $refills, $general_notes, $status);";
 PRESCRIPTIONDATABASE;
-*/
+
+$result = $conn->query($scrip_database);
+$response = $result->fetch_assoc();
 ?>
 
 

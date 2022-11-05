@@ -42,24 +42,30 @@ INSERT INTO LabDest (labdest_name, address_id, phone) VALUES
   ('A Shack In The Woods', '3', '18024853788'),
   ('Gifford Medical Center', '7', '18027287000');
 
-INSERT INTO LabList (lab_name) VALUES ('CBC');
-INSERT INTO LabList (lab_name) VALUES ('CMP');
-INSERT INTO LabList (lab_name) VALUES ('TSH');
-INSERT INTO LabList (lab_name) VALUES ('Free_T4');
-INSERT INTO LabList (lab_name) VALUES ('Hemoglobin_A1C');
-INSERT INTO LabList (lab_name) VALUES ('Lipids');
-INSERT INTO LabList (lab_name) VALUES ('Ferritin');
-INSERT INTO LabList (lab_name) VALUES ('Iron Sat');
-INSERT INTO LabList (lab_name) VALUES ('CRP');
-INSERT INTO LabList (lab_name) VALUES ('Vitamin D');
-INSERT INTO LabList (lab_name) VALUES ('Vitamin B12');
-INSERT INTO LabList (lab_name) VALUES ('Vitamin B1');
-INSERT INTO LabList (lab_name) VALUES ('Vitamin B2');
-INSERT INTO LabList (lab_name) VALUES ('EKG');
-INSERT INTO LabList (lab_name) VALUES ('Gonorrhea');
-INSERT INTO LabList (lab_name) VALUES ('Chlamydia');
-INSERT INTO LabList (lab_name) VALUES ('HIV');
-INSERT INTO LabList (lab_name) VALUES ('Syphilis');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('1', 'CBC'); 
+INSERT INTO LabList (lab_id, lab_name) VALUES ('2', 'CMP');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('3', 'TSH');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('4', 'Free_T4');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('5', 'Hemoglobin_A1C');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('6', 'Lipids');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('7', 'Ferritin');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('8', 'Iron Sat');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('9', 'Magnesium');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('10', 'CRP');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('11', 'Prolactin');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('12', 'Copper');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('13', 'Zinc');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('14', 'EKG');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('15', 'Vitamin D');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('16', 'Vitamin B12');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('17', 'Vitamin B1');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('18', 'Vitamin B2');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('19', 'Gonorrhea');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('20', 'Chlamydia');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('21', 'HIV');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('22', 'Syphilis');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('23', 'Pregnancy');
+
 
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aspirin', 'acetylsalicylic acid');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Synthroid', 'Levothyroxine');

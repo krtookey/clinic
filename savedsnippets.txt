@@ -1,0 +1,20 @@
+// List of labs to put into lablist, use if we need ability to add more labs on the fly and are using AUTO_INCREMENT. Since we are not currently using AUTO_INCREMENT, this isn't useful.
+
+INSERT INTO LabList (lab_name) VALUES ('CBC');
+INSERT INTO LabList (lab_name) VALUES ('CMP');
+INSERT INTO LabList (lab_name) VALUES ('TSH');
+INSERT INTO LabList (lab_name) VALUES ('Free_T4');
+INSERT INTO LabList (lab_name) VALUES ('Hemoglobin_A1C');
+INSERT INTO LabList (lab_name) VALUES ('Lipids');
+INSERT INTO LabList (lab_name) VALUES ('Ferritin');
+INSERT INTO LabList (lab_name) VALUES ('Iron Sat');
+INSERT INTO LabList (lab_name) VALUES ('CRP');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin D');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin B12');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin B1');
+INSERT INTO LabList (lab_name) VALUES ('Vitamin B2');
+INSERT INTO LabList (lab_name) VALUES ('EKG');
+INSERT INTO LabList (lab_name) VALUES ('Gonorrhea');
+INSERT INTO LabList (lab_name) VALUES ('Chlamydia');
+INSERT INTO LabList (lab_name) VALUES ('HIV');
+INSERT INTO LabList (lab_name) VALUES ('Syphilis');

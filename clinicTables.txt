@@ -346,7 +346,7 @@ CREATE TABLE LabOrders (
 DROP TABLE IF EXISTS LabList;
 
 CREATE TABLE LabList (
-	lab_id  int NOT NULL AUTO_INCREMENT,
+	lab_id  int NOT NULL,
 	lab_name    varchar(50) NOT NULL,
 	PRIMARY KEY (lab_id)
 );
