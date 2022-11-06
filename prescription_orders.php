@@ -133,11 +133,13 @@ echo "<br><br>" . $prescription_pdf_link;
 // Adding the data into the Prescriptions table
 $scrip_database = <<<PRESCRIPTIONDATABASE
 INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, status) 
-VALUES ($patient_id, $doctor_id, $pharmacy_id, $drug_id, $dosage, $route, $usage_details, $quantity, $refills, $general_notes, $status);";
+VALUES ('$patient_id', '$doctor_id', '$pharmacy_id', $drug_id, $dosage, $route, $usage_details, $quantity, $refills, $general_notes, $status);";
 PRESCRIPTIONDATABASE;
 
-$result = $conn->query($scrip_database);
-$response = $result->fetch_assoc();
+if($conn->query($scrip_database) === TRUE){
+    echo("The data was inserted into the database correctly. All is well!")
+}
+
 ?>
 
 
