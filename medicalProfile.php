@@ -8,12 +8,28 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <header>
-        <p> John Smith </p>
-        <p> DOB:  7/23/1990 </p> 
-        <p> 32y <p>
-        <p> Male </p>
-    </header>
+    <?php
+        //Variables stored in POST buffer.
+        $patient_id = $POST['patient_id'] ?? "0";
+        $preferred = $_POST['preferred'] ?? '';
+        $dobirth = $_POST['dob'] ?? '';
+        $age = $_POST['age'] ?? '';
+        $fname = $_POST['firstname'] ?? '';
+        $lname = $_POST['lastname'] ?? '';
+        $sex = $_POST['sex'] ?? '';
+        $gender = $_POST['gender'] ?? '';
+
+        //Populate Header
+        echo "  <header>
+                <p>$preferred</p>
+                <p>$dobirth</p>
+                <p>Age: $age</p>
+                <p>$fname</p>
+                <p>$lname</p>
+                <p>$sex</p>
+                <p>$gender</p>
+                </header>";
+    ?>
     <div class="placeholder"></div>
     <div class="whiteCard">
         <h2>Medical Profile</h2> <br>
