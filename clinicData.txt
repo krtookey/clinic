@@ -45,8 +45,8 @@ INSERT INTO LabDest (labdest_name, address_id, phone) VALUES
 INSERT INTO LabList (lab_id, lab_name) VALUES ('1', 'CBC'); 
 INSERT INTO LabList (lab_id, lab_name) VALUES ('2', 'CMP');
 INSERT INTO LabList (lab_id, lab_name) VALUES ('3', 'TSH');
-INSERT INTO LabList (lab_id, lab_name) VALUES ('4', 'Free_T4');
-INSERT INTO LabList (lab_id, lab_name) VALUES ('5', 'Hemoglobin_A1C');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('4', 'Free T4');
+INSERT INTO LabList (lab_id, lab_name) VALUES ('5', 'Hemoglobin A1C');
 INSERT INTO LabList (lab_id, lab_name) VALUES ('6', 'Lipids');
 INSERT INTO LabList (lab_id, lab_name) VALUES ('7', 'Ferritin');
 INSERT INTO LabList (lab_id, lab_name) VALUES ('8', 'Iron Sat');

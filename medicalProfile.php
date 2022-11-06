@@ -10,7 +10,7 @@
 <body>
     <?php
         //Variables stored in POST buffer.
-        $patient_id = $POST['patient_id'] ?? "0";
+        $patient_id = $_POST['patient_id'] ?? "0";
         $preferred = $_POST['preferred'] ?? '';
         $dobirth = $_POST['dob'] ?? '';
         $age = $_POST['age'] ?? '';

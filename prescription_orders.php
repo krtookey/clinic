@@ -13,15 +13,15 @@ if ($conn->connect_error) {
 }
 $status = 0;
 
-$pharmacy = $_POST["pharmacy"];
-$drugname = $_POST["drugname"];
-$dosage = $_POST["dosage_num"] . $_POST["unit"] . " " .$_POST["dosage_type"];
-$route = $_POST["route"];
-$qtyperdose = $_POST["qtyperdose"];
-$frequency = $_POST["frequency"];
-$duration = $_POST["duration"];
+$pharmacy = $_POST["pharmacy"] ?? '';
+$drugname = $_POST["drugname"] ?? '';
+$dosage = $_POST["dosage_num"] . $_POST["unit"] . " " .$_POST["dosage_type"] ?? '';
+$route = $_POST["route"] ?? '';
+$qtyperdose = $_POST["qtyperdose"] ?? "1";
+$frequency = $_POST["frequency"] ?? "1";
+$duration = $_POST["duration"] ?? "1";
 $usage_details = $_POST["qtyperdose"] . " " . $_POST["frequency"] . " " . $_POST["duration"];
-$quantity = $_POST["quantity"];
+$quantity = $_POST["quantity"] ?? "1";
 $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*intval($_POST["duration"]));
 
 //echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
@@ -40,9 +40,9 @@ if ($quantity != intval($quantity_calc)){
 $patient_id = "1"; // PLACEHOLDER
 
 // Getting patient info for prescription
-$sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+$pinfo_sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
+$pinfo_result = $conn->query($pinfo_sql);
+$row = $pinfo_result->fetch_assoc();
 
 $firstname = $row["first_name"];
 $lastname = $row["last_name"];
@@ -51,9 +51,9 @@ $DOB = $row["DOB"];
 $addressid = $row["address_id"];
 $sex = $row["sex"];
 
-$sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $addressid . "';";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+$addr_sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $addressid . "';";
+$addr_result = $conn->query($addr_sql);
+$row = $addr_result->fetch_assoc();
 
 $address_street = $row["street"];
 $address_city = $row["city"];
@@ -64,20 +64,20 @@ $address_zip = $row["zip"];
 $doctor_id = "1"; // PLACEHOLDER
 
 // Grabbing doctor name based on doctor_id
-/*
-$sql = "SELECT doctor_name FROM Users WHERE user_id='" . $doctor_id . "';";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+
+$drname_sql = "SELECT doctor_name FROM Users WHERE user_id='" . $doctor_id . "';";
+$drname_result = $conn->query($drname_sql);
+$row = $drname_result->fetch_assoc();
 $doctor_name = $row["user_name"];
-*/
-$doctor_name = "Joey Danger"; // PLACEHOLDER
+
+//$doctor_name = "Joey Danger"; // PLACEHOLDER
 
 // Getting medication ID for drugname
-$sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+$drugid_sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
+$drugid_result = $conn->query($drugid_sql);
+$row = $drugid_result->fetch_assoc();
     
-if ($result->num_rows == 1){
+if ($drugid_result->num_rows == 1){
     $drug_id = $row["medication_id"];
 } else if ($result->num_rows > 1){
     // How will we handle if there is more than 1 drug with a certain name?

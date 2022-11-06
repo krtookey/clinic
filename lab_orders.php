@@ -78,8 +78,8 @@ foreach($all_labs as $x => $val){
 
 // Getting labdest_id for LabDest
 
-$sql = "SELECT labdest_id FROM LabDest WHERE labdest_name='" . $labdest . "';";
-$result = $conn->query($sql);
+$labdestid_sql = "SELECT labdest_id FROM LabDest WHERE labdest_name='" . $labdest . "';";
+$labdestid_result = $conn->query($labdestid_sql);
 $row = $result->fetch_assoc();
     
 if ($result->num_rows == 1){
@@ -145,13 +145,13 @@ VALUES ('$patient_id', '$doctor_id', '$labdest_id', '$providers_to_cc', '$diagno
 LABDATABASE;
 
 if ($conn->query($scrip_database) === TRUE){
-    $sql = <<<SELECTLABORDER
+    $laborderid_sql = <<<SELECTLABORDER
     SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$doctor_id' AND diagnosis='$diagnosis';
     SELECTLABORDER;
-    $result = $conn->query($sql);
-    $row = $result->fetch_assoc();
+    $laborderid_result = $conn->query($laborderid_sql);
+    $row = $laborderid_result->fetch_assoc();
     $laborder_id = $row["laborder_id"];
-
+    echo("Lab_ids: " . $lab_ids);
     foreach($lab_ids as $x => $val){
         $order_into_table = <<<ORDERINTOTABLE
         INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES ('$laborder_id', '$val');
