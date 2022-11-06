@@ -137,7 +137,7 @@ VALUES ('$patient_id', '$doctor_id', '$pharmacy_id', $drug_id, $dosage, $route, 
 PRESCRIPTIONDATABASE;
 
 if($conn->query($scrip_database) === TRUE){
-    echo("The data was inserted into the database correctly. All is well!")
+    echo("The data was inserted into the database correctly. All is well!");
 }
 
 ?>
