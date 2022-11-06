@@ -2,10 +2,10 @@ INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, l
   ('JoeyDanger', '1', 'Pediatrician', '18024457689', 'joeydanger@uppervalleyhealth.org', 'Joey', 'Danger', 'joeyD'),
 	('CBrown', '1', 'NP', '18025556767', 'snoopyrules@aol.com', 'Charlie', 'Brown', 'charlieB');
  
-INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, insurance_id, pharmacy_id, labdest_id, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2) VALUES 
-  ('John', 'Doe', 'Bob', '1945-06-04', 'M', '1', '12809993300', '18025553333', 'catsrule@gmail.com', '3', '3', '3', '1', '0', '0', '1', '1', '12', '13'),
-	('Jane', 'Dough', 'Jill', '1964-12-09', 'F', '2', '13014448998', '12409994444', 'dogsdrool@gmail.com', '4', '4', '4', '2', '0', '0', '2', '0', '14', '15'),
-	('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11');
+INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, insurance_id, pharmacy_id, labdest_id, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2, perferred) VALUES 
+  ('John', 'Doe', 'Bob', '1945-06-04', 'M', '1', '12809993300', '18025553333', 'catsrule@gmail.com', '3', '3', '3', '1', '0', '0', '1', '1', '12', '13', 'Jonny'),
+	('Jane', 'Dough', 'Jill', '1964-12-09', 'F', '2', '13014448998', '12409994444', 'dogsdrool@gmail.com', '4', '4', '4', '2', '0', '0', '2', '0', '14', '15', 'Jane'),
+	('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '1', '0', '0', '1', '1', '2', '10', '11', 'Nick');
 
 INSERT INTO Addresses (street, city, state_abbr, zip) VALUES 
   ('1379 Maple St', 'Vergennes', 'VT', '05491'),

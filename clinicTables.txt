@@ -25,6 +25,7 @@ CREATE TABLE Patient (
 	prev_note_id    int NOT NULL,
 	emergency_contact1  int NOT NULL,
 	emergency_contact2  int,
+	perferred varchar(30),
 	
 	PRIMARY KEY (patient_id)
 );

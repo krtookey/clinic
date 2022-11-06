@@ -1,0 +1,19 @@
+-- Clinic Database Updates --
+
+-- New preferred name field in the Patient Table -- November 6, 2022 -------------
+
+ALTER TABLE Patient ADD perferred varchar(30);
+
+UPDATE Patient
+SET perferred = 'Jonny'
+WHERE patient_id = 1;
+
+UPDATE Patient
+SET perferred = 'Jane'
+WHERE patient_id = 2;
+
+UPDATE Patient
+SET perferred = 'Nick'
+WHERE patient_id = 3;
+
+-- End of Update ----------------
