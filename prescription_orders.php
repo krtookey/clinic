@@ -65,12 +65,10 @@ $doctor_id = "1"; // PLACEHOLDER
 
 // Grabbing doctor name based on doctor_id
 
-$drname_sql = "SELECT doctor_name FROM Users WHERE user_id='" . $doctor_id . "';";
+$drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $doctor_id . "';";
 $drname_result = $conn->query($drname_sql);
 $row = $drname_result->fetch_assoc();
 $doctor_name = $row["user_name"];
-
-//$doctor_name = "Joey Danger"; // PLACEHOLDER
 
 // Getting medication ID for drugname
 $drugid_sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
@@ -79,31 +77,31 @@ $row = $drugid_result->fetch_assoc();
     
 if ($drugid_result->num_rows == 1){
     $drug_id = $row["medication_id"];
-} else if ($result->num_rows > 1){
+} else if ($drugid_result->num_rows > 1){
     // How will we handle if there is more than 1 drug with a certain name?
+    $drug_id = $row["medication_id"];
 } else {
         // Reject form, tell user to enter another drug name, have a form to add new drug
 }
 
 
 // Getting pharmacy_id for pharmacy
-/*
-$sql = "SELECT pharmacy_id FROM pharmacy WHERE pharmacy_name='" . $pharmacy . "';";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+$pharmacy_id = 0;
+$pharmaid_sql = 'SELECT pharmacy_id FROM pharmacy WHERE pharmacy_name="' . $pharmacy . '";';
+$pharmaid_result = $conn->query($pharmaid_sql);
+$row = $pharmaid_result->fetch_assoc();
     
-if ($result->num_rows == 1){
+if ($pharmaid_result->num_rows == 1){
     $pharmacy_id = $row["pharmacy_id"];
-} else if ($result->num_rows > 1){
-    // How will we handle if there is more than 1 drug with a certain name?
+} else if ($pharmaid_result->num_rows > 1){
+    // How will we handle if there is more than 1 pharmacy with a certain name?
+    echo("More than 1 pharmacy with the same name. The id of the first row with that name will be used.");
+    $pharmacy_id = $row["pharmacy_id"];
 } else {
-        // Reject form, tell user to enter another drug name, have a form to add new drug
+        // Reject form, tell user to enter another pharmacy name, have a form to add new pharmacy
 }
 
-*/
 // Getting everything ready to be sent
-
-$conn->close();
 
 // Sending the data to the pharmacy
 $prescription_pdf_link = <<<PRESCRIPTIONLINK
@@ -133,13 +131,13 @@ echo "<br><br>" . $prescription_pdf_link;
 // Adding the data into the Prescriptions table
 $scrip_database = <<<PRESCRIPTIONDATABASE
 INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, status) 
-VALUES ('$patient_id', '$doctor_id', '$pharmacy_id', $drug_id, $dosage, $route, $usage_details, $quantity, $refills, $general_notes, $status);";
+VALUES ('$patient_id', '$doctor_id', '$pharmacy_id', '$drug_id', '$dosage', '$route', '$usage_details', '$quantity', '$refills', '$usage_info', '$status');
 PRESCRIPTIONDATABASE;
 
 if($conn->query($scrip_database) === TRUE){
     echo("The data was inserted into the database correctly. All is well!");
 }
-
+$conn->close();
 ?>
 
 

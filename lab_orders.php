@@ -55,24 +55,22 @@ $address_zip = $row["zip"];
 $doctor_id = "1"; // PLACEHOLDER
 
 // Grabbing doctor name based on doctor_id
-/*
-$sql = "SELECT doctor_name FROM Users WHERE user_id='" . $doctor_id . "';";
+
+$sql = "SELECT user_name FROM Users WHERE user_id='" . $doctor_id . "';";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $doctor_name = $row["user_name"];
-*/
-$doctor_name = "Joey Danger"; // PLACEHOLDER
 
 // Grabbing lab_id for lab_name
 $lab_ids = array();
 foreach($all_labs as $x => $val){
-    echo("Value: " . $val);
+    echo(" Value: " . $val . " ");
     $sql = "SELECT lab_id FROM LabList WHERE lab_name='" . $val . "';";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
-    echo("Row: ". $row['lab_id']); 
+    echo("Row: ". $row['lab_id'] . "   "); 
     if ($row != null){
-        $lab_ids = $row['lab_id'];
+        $lab_ids[] = $row['lab_id'];
     }
 }
 
@@ -83,11 +81,11 @@ $labdestid_result = $conn->query($labdestid_sql);
 $row = $result->fetch_assoc();
     
 if ($result->num_rows == 1){
-    $labdest_id = $row["labdest_id"];
+    $labdest_id = $row['labdest_id'];
 } else if ($result->num_rows > 1){
     // How will we handle if there is more than 1 labdest with the same name?
     echo("More than 1 labdest with the same name. The id of the first row with that name will be used.");
-    $labdest_id = $row["labdest_id"];
+    $labdest_id = $row['labdest_id'];
 } else {
     echo("No labdest with the same name");
         // How will we handle if there is not a labdest with the name entered?
@@ -151,14 +149,11 @@ if ($conn->query($scrip_database) === TRUE){
     $laborderid_result = $conn->query($laborderid_sql);
     $row = $laborderid_result->fetch_assoc();
     $laborder_id = $row["laborder_id"];
-    echo("Lab_ids: " . $lab_ids);
     foreach($lab_ids as $x => $val){
         $order_into_table = <<<ORDERINTOTABLE
         INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES ('$laborder_id', '$val');
         ORDERINTOTABLE;
-        $result = $conn->query($order_into_table);
-        $row = $result->fetch_assoc();
-        if (strpos($response) == true){
+        if ($conn->query($order_into_table) === TRUE){
             // Things went well
         } else {
             // Things broke
