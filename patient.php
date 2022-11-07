@@ -1,3 +1,6 @@
+<?php
+    include_once 'dbConnection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,12 +21,35 @@
     </head>
     <body>
         <header id='patientHeader'>
-            <p>John Smith</p>
-            <p>pref: Johnny</p>
-            <p>DOB: 7/23/1990</p>
-            <p>32y</p>
-            <p></p>
-            <p>Male</p>
+            <?php
+            //SQL
+            $sql = "SELECT Patient.first_name, Patient.last_name, Patient.DOB, Patient.sex, Patient.preferred
+            FROM Patient
+            WHERE Patient.patient_id = ?";
+            //Prepare statment
+            $stmt = $conn->prepare($sql);
+            //Bind ? with the POST variable from the prvious page 
+            $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
+            $stmt->bind_param("i", $patient_id);
+            //Execute and get resutls from database
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_row();
+            $patient_firstName = $row[0];
+            $patient_lastName = $row[1];
+            $patient_DOB = date_create($row[2]);
+            $now = new DateTime("now");
+            $patient_DOBFormatted = date_format($patient_DOB,"m/d/Y");
+            $patientYears = $now->diff($patient_DOB);
+            $patient_sex = $row[3];
+            $patient_preferred = $row[4];
+            echo "<p>$patient_firstName</p>
+            <p>$patient_lastName</p>
+            <p>pref: $patient_preferred</p>
+            <p>DOB: $patient_DOBFormatted</p>
+            <p>$patientYears->y" . "y</p>
+            <p>$patient_sex</p>";
+            ?>
         </header>
         <div class="patientBody">
             <section class="patientSideMenu">
@@ -451,18 +477,11 @@
                     </div>
                 </div>
                 <!-- Note History -->
-                <button
-                class="btn btn-primary patientSideMenuBtn"
-                type="button"
-                data-button-name='noteHistory'
-                aria-expanded="false"
-                aria-controls="noteHistoryBox">
+                <a
+                class="btn btn-primary patientSideMenuLink"
+                href="noteHistory.php">
                     Note History
-                </button>
-                <div class="collapse hideContent patientMenuBox" id="noteHistoryBox">
-                    <div class="noteHistory card card-body patientMenuItem">
-                    </div>
-                </div>
+                </a>
             </section>
 
             <!-- Current patient Note -->
@@ -471,6 +490,19 @@
                     <div class="card-body">
                         <h3 class="card-title">10/27/22 - Today</h3>
                         <form id='patientNoteForm'>
+                            <?php
+                                $sql = "SELECT Note.appointment_id, Note.cc, Note.hist_illness, Note.ros_id, Note.med_profile_id, Note.social_hist, Note.med_hist, Note.psych_hist, Note.assessment, Note.plan, Note.laborder_id, Note.labdest_id, Note.demographics, Note.comments
+                                FROM Note
+                                WHERE Note.patient_id = ?";
+                                //Prepare statment
+                                $stmt = $conn->prepare($sql);
+                                //Bind ? with the POST variable from the prvious page 
+                                $stmt->bind_param("i", $patient_id); //$_POST['patient_id']
+                                //Execute and get resutls from database
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $row = $result->fetch_row();
+                            ?>
                             <!-- Demographics  -->
                             <div class="mb-3 formField" id="demographicsContainer">
                                 <label
@@ -482,7 +514,10 @@
                                 class="form-control"
                                 id="demographics"
                                 name="demographics"
-                                ></textarea>
+                                ><?php
+                                    echo $row['12'];
+                                ?>
+                                </textarea>
                             </div>
                             <!-- Chief Complaint -->
                             <div class="mb-3 formField" id="chiefComplaintContainer">
@@ -494,7 +529,9 @@
                                 class="form-control"
                                 id="chiefComplaint"
                                 name="chiefComplaint"
-                                >*Text from the previous note*  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor inc</textarea>
+                                ><?php
+                                    echo $row['1'];
+                                ?></textarea>
                             </div>
                             <!-- History Of Illness -->
                             <div class="mb-3 formField" id="histOfIllnessContainer">
@@ -508,7 +545,9 @@
                                 class="form-control"
                                 id="histOfIllness"
                                 name="histOfIllness"
-                                >*Text from the previous note*  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In est ante in nibh mauris cursus. Ac orci phasellus egestas tellus</textarea
+                                ><?php
+                                    echo $row['2'];
+                                ?></textarea
                                 >
                             </div>
                             <!-- Review Of Symptoms -->
@@ -522,7 +561,9 @@
                                 class="form-control"
                                 id="reviewOfSymptoms"
                                 name="reviewOfSymptoms"
-                                >rci phasellus egestas tellus rutrum tellus pellentesque eu. Pellentesque pulvinar pellentesque habitant</textarea>
+                                ><?php
+                                    echo "How should ROS be displayed?";
+                                ?></textarea>
                             </div>
                             <!-- Social -->
                             <div class="mb-3 formField" id="socialContainer">
@@ -532,7 +573,9 @@
                                 cols="100"
                                 class="form-control"
                                 id="social"
-                                name="social">justo eget magna fermentum iaculis eu non. Magna etiam tempor </textarea>
+                                name="social"><?php
+                                    echo $row['5'];
+                                ?></textarea>
                             </div>
                             <!-- Substance History -->
                             <div class="mb-3 formField" id="substanceHistContainer">
@@ -542,7 +585,9 @@
                                 cols="100"
                                 class="form-control"
                                 id="substanceHist"
-                                name="substanceHist"> magna fermentum iaculis eu non. Magna etiam tempor </textarea>
+                                name="substanceHist"><?php
+                                    echo "Need to create substance field in database";
+                                ?></textarea>
                             </div>
                             <!-- Psychological History -->
                             <div class="mb-3 formField" id="psychHistContainer">
@@ -554,7 +599,9 @@
                                 class="form-control"
                                 id="psychHist"
                                 name="psychHist"
-                                >ng elit, sed do eiusmod tempor incidid</textarea>
+                                ><?php
+                                    echo $row['7'];
+                                ?></textarea>
                             </div>
                             <!-- Medical History -->
                             <div class="mb-3 formField" id="medicalHistContainer">
@@ -566,7 +613,9 @@
                                 class="form-control"
                                 id="medicalHist"
                                 name="medicalHist"
-                                >sellus egestas tellus rutrum tellus pellentesque eu. Pellentesque pulvinar pellentesque habitant morbi</textarea>
+                                ><?php
+                                    echo $row['6'];
+                                ?></textarea>
                             </div>
                             <!-- Family History -->
                             <div class="mb-3 formField" id="familyHistContainer">
@@ -577,8 +626,10 @@
                                 cols="100"
                                 class="form-control"
                                 id="familyHist"
-                                name="familyHist">
-                                utrum tellus pellentesque eu.</textarea>
+                                name="familyHist"
+                                ><?php
+                                    echo $row['12'];
+                                ?></textarea>
                             </div>
                             <!-- Assessment/Formulation -->
                             <div class="mb-3 formField" id="assessmentContainer">
@@ -589,7 +640,9 @@
                                 cols="100"
                                 class="form-control"
                                 id="assessment"
-                                name="assessment">estas tellus rutrum tellus pellentesque e</textarea>
+                                name="assessment"><?php
+                                    echo $row['8'];
+                                ?></textarea>
                             </div>
                             <!-- Treatment Plan -->
                             <div class="mb-3 formField" id="treatmentPlanContainer">
@@ -602,7 +655,9 @@
                                 cols="100"
                                 class="form-control"
                                 id="treatmentPlan"
-                                name="treatmenPlan">od tempor incididunt ut labore et dolore magna aliqua.</textarea>
+                                name="treatmenPlan"><?php
+                                    echo $row['9'];
+                                ?></textarea>
                             </div>
                             <!-- General Comments -->
                             <div class="mb-3 formField" id="generalCommentsContainer">
@@ -615,8 +670,10 @@
                                 cols="100"
                                 class="form-control"
                                 id="generalComments"
-                                name="generalComments">
-                                *Text from the previous note*</textarea>
+                                name="generalComments"
+                                ><?php
+                                    echo $row['13'];
+                                ?></textarea>
                             </div>
                             <!-- Topics Discussed -->
                             <div class="mb-3 formField" id="topicsContainer">
@@ -626,16 +683,7 @@
                                 cols="100"
                                 class="form-control"
                                 id="topics"
-                                name="topics">
-                                For insurence record</textarea>
-                            </div>
-                            <!-- Checkbox -->
-                            <div class="mb-3 form-check formField" id="checkboxConatiner">
-                                <input
-                                type="checkbox"
-                                class="form-check-input"
-                                id="exampleCheck1"/>
-                                <label class="form-check-label" for="exampleCheck1">Incase we need a checkbox</label>
+                                name="topics">Need to add this to database</textarea>
                             </div>
                             <!-- Save Note -->
                             <button type="submit" class="btn btn-primary" id='patientFormSubmit'>Save Note</button>
