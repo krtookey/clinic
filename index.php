@@ -1,3 +1,6 @@
+<?php
+    include_once 'dbConnection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,22 +11,8 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <?php 
-    //Connect to database.
-        $dbServerName = "localhost"; 
-        $dbUsername = "root"; 
-        $dbPassword = ""; 
-        $dbName = "Clinic";
-            
-        $db = new mysqli($dbServerName, $dbUsername, $dbPassword,$dbName);
-            
-        if ($db -> connect_errno > 0){
-            echo "<p>Error: could not connect to database. <br> </p>";
-            echo "<pre> Error Number: " .$db -> errno. "\n";
-            echo "Error: "  .$db -> error. "\n <pre><br>\n";
-            exit;
-        }
-    
+    <?php
+
         //Debug:
             //$patient_id = 1;
             //echo "<pre>"; print_r($_POST); echo "</pre>";
@@ -59,11 +48,11 @@
         if(isset($_POST['submit']) || $_POST['submit'] == 'Search'){
             
             $qstr = "SELECT DISTINCT gender, preferred, patient_id, sex FROM Patient WHERE first_name = ? && last_name = ? && DOB = ? ";
-            $qsearch = $db->prepare($qstr);
+            $qsearch = $conn->prepare($qstr);
             if(!$qsearch){
                 echo "<p>Error: could not execute query. <br> </p>";
-                echo "<pre> Error Number: " .$db -> errno. "\n";
-                echo "Error: "  .$db -> error. "\n <pre><br>\n";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                 exit;
             }
             $qsearch->bind_param("sss", $fname, $lname, $dobirth);
@@ -103,11 +92,11 @@
         } elseif ($patient_id !== 0 && !isset($_POST['submit'])) {
 
             $qstr = "SELECT DISTINCT gender, preferred, first_name, last_name, DOB, sex FROM Patient WHERE patient_id = $patient_id ";
-            $qpatient = $db->prepare($qstr);
+            $qpatient = $conn->prepare($qstr);
             if(! $qpatient){
                 echo "<p>Error: could not execute query. <br> </p>";
-                echo "<pre> Error Number: " .$db -> errno. "\n";
-                echo "Error: "  .$db -> error. "\n <pre><br>\n";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                 exit;
             }
             $qpatient->execute();
@@ -230,7 +219,7 @@
         <a href="./newPatient.php">New Patient</a>
     </footer>
     <?php
-        $db->close();
+        $conn->close();
     ?>
 </body>
 </html>

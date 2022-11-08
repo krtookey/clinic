@@ -1,3 +1,6 @@
+<?php
+    include_once 'dbConnection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,22 +41,6 @@
 
     <?php
 
-        //Connect to database.
-
-        $dbServerName = "localhost"; 
-        $dbUsername = "root"; 
-        $dbPassword = ""; 
-        $dbName = "Clinic";
-                    
-        $db = new mysqli($dbServerName, $dbUsername, $dbPassword,$dbName);
-                    
-        if ($db -> connect_errno > 0){
-            echo "<p>Error: could not connect to database. <br> </p>";
-            echo "<pre> Error Number: " .$db -> errno. "\n";
-            echo "Error: "  .$db -> error. "\n <pre><br>\n";
-            exit;
-        }
-
         //Medical Profile.
 
         if(!isset($_POST['profileSave']) || $_POST['profileSave'] != 'Save'){
@@ -92,7 +79,13 @@
                 
             //See if a Medical Profile already exists for a given appointment 
             $qstr = "SELECT appointment_id FROM MedicalProfile WHERE appointment_id = $appointment ";
-            $qselect = $db->prepare($qstr);
+            $qselect = $conn->prepare($qstr);
+            if(!$qselect){
+                echo "<p>Error: could not execute query. <br> </p>";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                exit;
+            }
             $qselect->execute();
             $qselect->bind_result($appoint_id);
             $qselect->store_result();
@@ -106,11 +99,11 @@
             //Insert Medical Profile data, for a new appointment.
             if($num === 0){
                 $qstr = "INSERT INTO MedicalProfile (bmi, p_weight, height, blood_pressure, pulse, pulse_ox, appointment_id) VALUES (?, ?, ?, ?, ?, ?, $appointment ) ";
-                $qinsert = $db->prepare($qstr);
+                $qinsert = $conn->prepare($qstr);
                 if(!$qinsert){
                     echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$db -> errno. "\n";
-                    echo "Error: "  .$db -> error. "\n <pre><br>\n";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                     exit;
                 }
                 $qinsert->bind_param("dddsii", $bmi, $weight, $height, $bloodp, $pulse, $pulseox);
@@ -120,7 +113,7 @@
 
                 //Get new med_profile_id.
                 $qstr = "SELECT med_profile_id FROM MedicalProfile WHERE appointment_id = $appointment ";
-                $qselect = $db->prepare($qstr);
+                $qselect = $conn->prepare($qstr);
                 $qselect->execute();
                 $qselect->bind_result($med_profile_id);
                 $qselect->store_result();
@@ -139,11 +132,11 @@
                     $qstr = "UPDATE MedicalProfile 
                              SET bmi = ?, p_weight = ?, height = ?, blood_pressure = ?, pulse = ?, pulse_ox = ?, appointment_id = $appointment 
                              WHERE appointment_id = $appointment ";
-                    $qupdate = $db->prepare($qstr);
+                    $qupdate = $conn->prepare($qstr);
                     if(!$qupdate){
                         echo "<p>Error: could not execute query. <br> </p>";
-                        echo "<pre> Error Number: " .$db -> errno. "\n";
-                        echo "Error: "  .$db -> error. "\n <pre><br>\n";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                         exit;
                     }
                     $qupdate->bind_param("dddsii", $bmi, $weight, $height, $bloodp, $pulse, $pulseox);
@@ -209,23 +202,23 @@
         <form id="reviewGrid">
             <div class="rosGroup">
                 <div class="reviewItem">
-                    <input type="checkbox" value="rashes">
+                    <input type="checkbox" name="ros[]" value="rashes">
                     <label>rashes</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="itching">
                     <label>itching</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="hair_nails">
                     <label>hair/nails</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="headaches">
                     <label>headaches</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="head_injury">
                     <label>head injury</label>
                 </div>
                 <br>
@@ -233,15 +226,15 @@
             <div class="rosGroup">
                 <p>Nose/Sinus</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="nose_bld">
                     <label>nose bleeds</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="stuffiness">
                     <label>stuffiness</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="freq_colds">
                     <label>frequent colds</label>
                 </div>
                 <br>
@@ -249,23 +242,23 @@
             <div class="rosGroup">
                 <p>Ears</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="hearing">
                     <label>hearing</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="ear_pain">
                     <label>ear pain</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="ear_disch">
                     <label> ear discharge</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="ringing">
                     <label>ringing</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="dizziness">
                     <label>dizziness</label>
                 </div>
                 <br>
@@ -273,27 +266,27 @@
             <div class="rosGroup">
                 <p>Eyes</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="glasses">
                     <label>glasses</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="change_vision">
                     <label>change vision</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="eye_pain">
                     <label>eye pain</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="double_vision">
                     <label>double vision</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="flash_lgt">
                     <label>light flashes</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="glaucoma">
                     <label>glaucoma</label>
                 </div>
                 <div class="reviewItem">
@@ -305,27 +298,27 @@
             <div class="rosGroup">
                 <p>Allergies</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="hives">
                     <label>hives</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="swell_lip">
                     <label>swelling of lips or tongue</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="hay_fever">
                     <label>hay fever</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="asthma">
                     <label>asthma</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="eczema">
                     <label>eczema</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="sens_drg_food">
                     <label>sensitive to drugs, food, pollen, or dander</label>
                 </div>
                 <br>
@@ -333,31 +326,31 @@
             <div class="rosGroup">
                 <p>Psychiatric</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="anxiety">
                     <label>anxiety</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="depression">
                     <label>depression</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="memory">
                     <label>memory</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="unusual_prob">
                     <label>unusual problem</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="sleep">
                     <label>sleep</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="psychiatrist">
                     <label>psychiatrist</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="mood">
                     <label>mood</label>
                 </div>
                 <br>
@@ -365,19 +358,19 @@
             <div class="rosGroup">
                 <p>Mouth</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="bld_gums">
                     <label>bleeding gums</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="sore_tongue">
                     <label>sore tongue</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="sore_throat">
                     <label>sore throat</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="hoarseness">
                     <label>hoarseness</label>
                 </div>
                 <br>
@@ -385,39 +378,39 @@
             <div class="rosGroup">
                 <p>Neck</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="lumps">
                     <label>lumps</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="swoll_glands">
                     <label>swollen glands</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="goiter">
                     <label>goiter</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
-                    <label>stiffness</label>
+                    <input type="checkbox" name="ros[]" value="neck_stiffness">
+                    <label>neck stiffness</label>
                 </div>
                 <br>
             </div>
             <div class="rosGroup">
                 <p>Breasts</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="breast_lumps">
                     <label>lumps</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="breast_pain">
                     <label>breast pain</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="nipple_discharge">
                     <label>nipple discharge</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="bse">
                     <label>BSE</label>
                 </div>
                 <br>
@@ -425,47 +418,47 @@
             <div class="rosGroup">
                 <p>Circulation</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="leg_cramp">
                     <label>leg cramps</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="varicose_vein">
                     <label>varicose veins</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="clot_vein">
                     <label>clots in veins</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="musc_pain">
                     <label>muscle pain</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="musc_swelling">
                     <label>muscle swelling</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="musc_stiffness">
                     <label>muscle stiffness</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="joint_motion">
                     <label>joint motion</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="broken_bone">
                     <label>broken bone</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
-                    <label>sprain</label>
+                    <input type="checkbox" name="ros[]" value="sprains">
+                    <label>sprains</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="arthritis">
                     <label>arthritis</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="gout">
                     <label>gout</label>
                 </div>
                 <br>
@@ -473,47 +466,47 @@
             <div class="rosGroup">
                 <p>Neurological</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="seizures">
                     <label>seizures</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="fainting">
                     <label>fainting</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="paralysis">
                     <label>paralysis</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="weakness">
                     <label>weakness</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="muscle_size">
                     <label>muscle size</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="muscle_spasm">
                     <label>muscle spasm</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="tremor">
                     <label>tremor</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="invol_move">
                     <label>involuntary movements</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="incoordination">
                     <label>incoordination</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="numbness">
                     <label>numbness</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="pins_needles">
                     <label>pins and needles</label>
                 </div>
                 <br>
@@ -521,35 +514,35 @@
             <div class="rosGroup">
                 <p>Endocrine</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="growth">
                     <label>growth</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="appetite">
                     <label>appetite</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="thirst">
                     <label>thirst</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="incre_urin">
                     <label>increased urination</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="thyroid">
                     <label>thyroid</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="head_cold">
                     <label>head cold</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="sweating">
                     <label>sweating</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="diabetes">
                     <label>diabetes</label>
                 </div>
                 <br>
@@ -557,99 +550,99 @@
             <div class="rosGroup">
                 <p>Digestive</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="appetite1">
                     <label>appetite</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="swallowing">
                     <label>swallowing</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="nausea">
                     <label>nausea</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="heartburn">
                     <label>heartburn</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="vomiting">
                     <label>vomiting</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="vomit_blood">
                     <label>vomiting blood</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="constipation">
                     <label>constipation</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="diarrhea">
                     <label>diarrhea</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="bowels">
                     <label>bowels</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="abdominal_pain">
                     <label>abdominal pain</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="burping">
                     <label>burping</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="farting">
                     <label>farting</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="yellow_skin">
                     <label>yellow skin</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="food_intol">
                     <label>food intolerance</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="rectal_bleed">
                     <label>rectal bleeding</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="urination">
                     <label>urination</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="urin_pain">
                     <label>urination pain</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="freq_urin">
                     <label>frequent urination</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="urgent_urin">
                     <label>urgent urination</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="incontinence_urin">
                     <label>incontinence</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="dribble">
                     <label>dribble</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="urin_stream">
                     <label>urine stream</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="urin_blood">
                     <label>bloody urine</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="uti_stones">
                     <label>uti stones</label>
                 </div>
                 <br>
@@ -657,67 +650,67 @@
             <div class="rosGroup">
                 <p>Cardiovascular/Respiratory</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="short_of_brth">
                     <label>shortness of breath</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="cough">
                     <label>cough</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="phlem">
                     <label>phlem</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="wheezing">
                     <label>wheezing</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="chough_bld">
                     <label>bloody cough</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="chest_pain">
                     <label>chest pain</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="fever">
                     <label>fever</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="night_sweats">
                     <label>night sweats</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="swell_hands">
                     <label>swollen hands</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="blue_toes">
                     <label>blue toes</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="high_blood">
                     <label>high blood pressure</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="skipping_heart">
                     <label>skipping heart</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="heart_murmur">
                     <label>heart murmur</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="hx_of_heart_med">
                     <label>HX of heart medication</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="bronchitis">
                     <label>bronchitis</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="rheumatic_heart_dis">
                     <label>rheumatic heart disease</label>
                 </div>
                 <br>
@@ -725,15 +718,15 @@
             <div class="rosGroup">
                 <p>Hematologic</p> <br>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="anemia">
                     <label>anemia</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="bruising_bleed">
                     <label>easy bruising</label>
                 </div>
                 <div class="reviewItem">
-                    <input type="checkbox">
+                    <input type="checkbox" name="ros[]" value="transfusions">
                     <label>transfusions</label>
                 </div>
                 <br>
@@ -741,7 +734,7 @@
             <div></div>
             <div></div>
             <div class="saveButton">
-                <input type="submit" value="Save" id="rosSave">
+                <input type="submit" value="Save" name="rosSave" id="rosSave">
             </div>
         </form>
     </div>
@@ -752,7 +745,7 @@
         </div>
     </footer>
     <?php
-        $db->close();
+        $conn->close();
     ?>
     <script type="text/javascript">
         //Temporary appointment_id for testing.
