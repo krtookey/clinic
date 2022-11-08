@@ -92,9 +92,9 @@
                     }
                     //$conn->close();
                     
-                    $patient_pharmacy = "Nick's Funky Pharmacy"; // PLACEHOLDER
+                    $pharmacy_name = "Nick's Funky Pharmacy"; // PLACEHOLDER
                     $pharmacyinput = <<<PHARM_INPUT
-                    <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" default="$patient_pharmacy" required>
+                    <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" default="$pharmacy_name" required>
                     PHARM_INPUT;
                     echo $pharmacyinput;
                     
