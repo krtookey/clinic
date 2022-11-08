@@ -3,16 +3,7 @@
 $brandname = $_POST["brandname"];
 $genericname = $_POST["genericname"];
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "clinic";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include_once 'dbConnection.php';
 
 // Insert drug info into DrugList
 $sql = <<<NEWMEDS

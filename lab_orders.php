@@ -10,17 +10,7 @@ $addscript = <<<ADDSCRIPT
 ADDSCRIPT;
 echo($addscript);
 
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "clinic";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include_once 'dbConnection.php';
 
 $labdest = $_POST["labdest"];
 $providers_to_cc = $_POST["providers_to_cc"];
