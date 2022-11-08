@@ -52,6 +52,7 @@ $DOB = $row["DOB"];
 $addressid = $row["address_id"];
 $sex = $row["sex"];
 
+    // Grabbing patient address data from patient address_id
 $sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $addressid . "';";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
