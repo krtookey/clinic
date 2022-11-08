@@ -12,6 +12,8 @@ echo($addscript);
 
 include_once 'dbConnection.php';
 
+$patient_id = $_POST["patient_id"];
+$user_id = $_POST["user_id"];
 $labdest = $_POST["labdest"];
 $providers_to_cc = $_POST["providers_to_cc"];
 $diagnosis = $_POST["diagnosis"];
@@ -28,7 +30,7 @@ $all_labs = array_merge($general_labs, $vitamin_labs, $sti_tests);
 
 
 // Getting patient_id from Medical Records page
-$patient_id = "1"; // PLACEHOLDER
+//$patient_id = "1"; // PLACEHOLDER
 
 // Getting patient info for prescription
 $sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
@@ -53,11 +55,11 @@ $address_state = $row["state_abbr"];
 $address_zip = $row["zip"];
 
 // Grabbing doctor_id from logged in user
-$doctor_id = "1"; // PLACEHOLDER
+//$doctor_id = "1"; // PLACEHOLDER
 
 // Grabbing doctor name based on doctor_id
 
-$sql = "SELECT user_name FROM Users WHERE user_id='" . $doctor_id . "';";
+$sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $doctor_name = $row["user_name"];
@@ -80,7 +82,10 @@ foreach($all_labs as $x => $val){
 $labdestid_sql = "SELECT labdest_id FROM LabDest WHERE labdest_name='" . $labdest . "';";
 echo('I like to move it move it: ' . $labdestid_sql . " -- ");
 $labdestid_result = $conn->query($labdestid_sql);
-$row = $result->fetch_assoc();
+$row = $labdestid_result->fetch_assoc();
+foreach($row as $x => $val){
+    echo($x . " -> " . $val);
+}
 
 if ($result->num_rows == 1){
     $labdest_id = $row['labdest_id'];
@@ -147,12 +152,12 @@ echo "<br><br>" . $laborder_pdf_link;
 // Adding the data into the Prescriptions table
 $scrip_database = <<<LABDATABASE
 INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis)
-VALUES ('$patient_id', '$doctor_id', '$labdest_id', '$providers_to_cc', '$diagnosis');
+VALUES ('$patient_id', '$user_id', '$labdest_id', '$providers_to_cc', '$diagnosis');
 LABDATABASE;
 
 if ($conn->query($scrip_database) === TRUE){
     $laborderid_sql = <<<SELECTLABORDER
-    SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$doctor_id' AND diagnosis='$diagnosis';
+    SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$user_id' AND diagnosis='$diagnosis';
     SELECTLABORDER;
     $laborderid_result = $conn->query($laborderid_sql);
     $row = $laborderid_result->fetch_assoc();
