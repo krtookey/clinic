@@ -19,7 +19,6 @@ WHERE patient_id = 3;
 -- End of Update ----------------
 
 
-
 -- New preferred email field in the LabDest Table -- November 7, 2022 -------------
 
 ALTER TABLE LabDest ADD email varchar(50);
@@ -33,3 +32,11 @@ SET email = 'labs@gifford.com'
 WHERE labdest_id = 2;
 
 -- End of Update ----------------
+
+
+-- Changes the height column in the MedicalProfile table from a float to a string -- November 7, 2022 -----------
+
+ALTER TABLE MedicalProfile
+MODIFY COLUMN height varchar(5);
+
+-- End of Update ------------------
