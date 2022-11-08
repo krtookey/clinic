@@ -39,11 +39,11 @@ $firstname = $row["first_name"];
 $lastname = $row["last_name"];
 $middlename = $row["middle_name"];
 $DOB = $row["DOB"];
-$addressid = $row["address_id"];
+$address_id = $row["address_id"];
 $sex = $row["sex"];
 
     // Grabbing patient address data from patient address_id
-$sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $addressid . "';";
+$sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $address_id . "';";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
