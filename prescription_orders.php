@@ -2,14 +2,13 @@
 // Assigning form items to PHP variables that we can use 
 //include 'pharma_lab_forms.php';
 $addscript = <<<ADDSCRIPT
-function addScript(url) {
-    var script = document.createElement('script');
-    script.type = 'application/javascript';
-    script.src = url;
-    document.head.appendChild(script);
-}
-addScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="es6-promise.auto.min.js"></script>
+<script src="jspdf.min.js"></script>
+<script src="html2canvas.min.js"></script>
+<script src="html2pdf.min.js"></script>
 ADDSCRIPT;
+echo($addscript);
 
 
 $servername = "localhost";
@@ -119,7 +118,7 @@ if ($pharmaid_result->num_rows == 1){
 // Sending the data to the pharmacy
 
 $prescription_text = <<<PRESCRIPTIONTEXT
-<div id="pdf_text" hidden>
+<div id="pdf_text">
 <p>$pharmacy</p>
 <p><u>$firstname $lastname   $DOB  Sex: $sex</u></p>
 <p>$address_street
