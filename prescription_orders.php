@@ -1,6 +1,17 @@
 <?php
 // Assigning form items to PHP variables that we can use 
 //include 'pharma_lab_forms.php';
+$addscript = <<<ADDSCRIPT
+function addScript(url) {
+    var script = document.createElement('script');
+    script.type = 'application/javascript';
+    script.src = url;
+    document.head.appendChild(script);
+}
+addScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+ADDSCRIPT;
+
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -81,7 +92,9 @@ if ($drugid_result->num_rows == 1){
     // How will we handle if there is more than 1 drug with a certain name?
     $drug_id = $row["medication_id"];
 } else {
-        // Reject form, tell user to enter another drug name, have a form to add new drug
+    // Reject form, tell user to enter another drug name, have a form to add new drug
+    echo("<br>There is no drug with that name in our system. Please add the drug to the system using the form on this page: <a href='patient.php'>Patient</a><br><br>");
+    exit(1);
 }
 
 
@@ -104,14 +117,9 @@ if ($pharmaid_result->num_rows == 1){
 // Getting everything ready to be sent
 
 // Sending the data to the pharmacy
-$prescription_pdf_link = <<<PRESCRIPTIONLINK
-<a href="javascript:htmlToPdf()">Prescription PDF</a>
-<script src="<https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js>"></script>
-<script src="prescriptionpdf.js"></script>
-PRESCRIPTIONLINK;
 
 $prescription_text = <<<PRESCRIPTIONTEXT
-<div id="pdf_text">
+<div id="pdf_text" hidden>
 <p>$pharmacy</p>
 <p><u>$firstname $lastname   $DOB  Sex: $sex</u></p>
 <p>$address_street
@@ -123,6 +131,17 @@ $address_city $address_state, $address_zip</p>
 <p>Usage Info: $usage_info</p>
 </div>
 PRESCRIPTIONTEXT;
+echo ($prescription_text);
+
+$prescription_pdf_link = <<<PRESCRIPTIONLINK
+<script>
+function createPDF(){
+    var element = document.getElementById('pdf_text');
+    html2pdf(element);
+}
+</script>
+<button onclick='createPDF()'>Create PDF</button>
+PRESCRIPTIONLINK;
 
 $status = 1;
 //<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>

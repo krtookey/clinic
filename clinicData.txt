@@ -38,9 +38,9 @@ INSERT INTO Pharmacy (pharmacy_name, address_id, phone, email) VALUES
   ("Nick's Funky Pharmacy", '6', '18027678888', 'nickfunkypharmacy@gmail.com');
 
 
-INSERT INTO LabDest (labdest_name, address_id, phone) VALUES 
-  ('A Shack In The Woods', '3', '18024853788'),
-  ('Gifford Medical Center', '7', '18027287000');
+INSERT INTO LabDest (labdest_name, address_id, phone, email) VALUES 
+  ('A Shack In The Woods', '3', '18024853788', 'shackinthewoods@gmail.com'),
+  ('Gifford Medical Center', '7', '18027287000', 'labs@gifford.com');
 
 INSERT INTO LabList (lab_id, lab_name) VALUES ('1', 'CBC'); 
 INSERT INTO LabList (lab_id, lab_name) VALUES ('2', 'CMP');

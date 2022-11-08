@@ -1,6 +1,17 @@
 <?php
 // Assigning form items to PHP variables that we can use 
 //include 'pharma_lab_forms.php';
+$addscript = <<<ADDSCRIPT
+function addScript(url) {
+    var script = document.createElement('script');
+    script.type = 'application/javascript';
+    script.src = url;
+    document.head.appendChild(script);
+}
+addScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+ADDSCRIPT;
+
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -77,9 +88,10 @@ foreach($all_labs as $x => $val){
 // Getting labdest_id for LabDest
 
 $labdestid_sql = "SELECT labdest_id FROM LabDest WHERE labdest_name='" . $labdest . "';";
+echo('I like to move it move it: ' . $labdestid_sql . " -- ");
 $labdestid_result = $conn->query($labdestid_sql);
 $row = $result->fetch_assoc();
-    
+
 if ($result->num_rows == 1){
     $labdest_id = $row['labdest_id'];
 } else if ($result->num_rows > 1){
@@ -97,11 +109,8 @@ if ($result->num_rows == 1){
 
 
 // Sending the data to the labdest
-$laborder_pdf_link = <<<PRESCRIPTIONLINK
-<a href="javascript:htmlToPdf()">Lab Order PDF</a>
-<script src="<https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js>"></script>
-<script src="prescriptionpdf.js"></script>
-PRESCRIPTIONLINK;
+
+
 
 $lab_order_text1 = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
@@ -132,6 +141,15 @@ LABORDERTEXT;
 $lab_order_text = $lab_order_text1 . $lab_order_text2 . $lab_order_text3;
 echo($lab_order_text);
 
+$laborder_pdf_link = <<<PRESCRIPTIONLINK
+<script>
+function createPDF(){
+    var element = document.getElementById('pdf_text');
+    html2pdf(element);
+}
+</script>
+<button onclick='createPDF()'>Create PDF</button>
+PRESCRIPTIONLINK;
 
 //<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>
 echo "<br><br>" . $laborder_pdf_link;

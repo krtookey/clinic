@@ -17,3 +17,19 @@ SET preferred = 'Nick'
 WHERE patient_id = 3;
 
 -- End of Update ----------------
+
+
+
+-- New preferred email field in the LabDest Table -- November 7, 2022 -------------
+
+ALTER TABLE LabDest ADD email varchar(50);
+
+UPDATE LabDest
+SET email = 'shackinthewoods@gmail.com'
+WHERE labdest_id = 1;
+
+UPDATE LabDest
+SET email = 'labs@gifford.com'
+WHERE labdest_id = 2;
+
+-- End of Update ----------------

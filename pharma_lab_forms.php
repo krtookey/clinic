@@ -378,5 +378,52 @@
             <input type="text" id="genericname" name="genericname">
             <input type="submit" value="Submit">
         </form>
+        
+        <form action="addnewpharmacy.php" method="post" target="" id="addpharmacyform">
+            <b>Add Pharmacy</b>
+            <br>
+            <label for="pharmacy_name">Pharmacy Name:</label>
+            <input type="text" id="pharmacy_name" name="pharmacy_name">
+            <fieldset id="pharmacy_address">
+                <legend>Address</legend>
+                <label for="pharmacy_street">Street:</label>
+                <input type="text" id="pharmacy_street" name="pharmacy_street">
+                <label for="pharmacy_city">City:</label>
+                <input type="text" id="pharmacy_city" name="pharmacy_city">
+                <label for="pharmacy_state">State:</label>
+                <input type="text" id="pharmacy_state" name="pharmacy_state">
+                <label for="pharmacy_zip">ZIP:</label>
+                <input type="number" id="pharmacy_zip" name="pharmacy_zip">
+            </fieldset>    
+            <label for="pharmacy_phone">Phone #:</label>
+            <input type="tel" id="pharmacy_phone" name="pharmacy_phone">
+            <br>
+            <label for="pharmacy_email">Email:</label>
+            <input type="email" id="pharmacy_email" name="pharmacy_email">
+        </form>
+
+
+        <form action="addnewlabdest.php" method="post" target="laborderlinkdisplay" id="addlabdestform">
+            <b>Add Lab Destination</b>
+            <br>
+            <label for="labdest_name">Lab Name:</label>
+            <input type="text" id="labdest_name" name="labdest_name">
+            <fieldset id="labdest_address">
+                <legend>Address</legend>
+                <label for="labdest_street">Street:</label>
+                <input type="text" id="labdest_street" name="labdest_street">
+                <label for="labdest_city">City:</label>
+                <input type="text" id="labdest_city" name="labdest_city">
+                <label for="labdest_state">State:</label>
+                <input type="text" id="labdest_state" name="labdest_state">
+                <label for="labdest_zip">ZIP:</label>
+                <input type="number" id="labdest_zip" name="labdest_zip">
+            </fieldset>    
+            <label for="labdest_phone">Phone #:</label>
+            <input type="tel" id="labdest_phone" name="labdest_phone">
+            <br>
+            <label for="labdest_email">Email:</label>
+            <input type="email" id="labdest_email" name="labdest_email">
+        </form>
     </body>
 </html>

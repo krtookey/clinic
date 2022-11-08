@@ -328,6 +328,7 @@ CREATE TABLE LabDest (
 	labdest_name    varchar(50),
 	address_id  int,
 	phone   varchar(20),
+	email 	varchar(50),
 	PRIMARY KEY (labdest_id)
 );
 
