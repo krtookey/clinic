@@ -16,9 +16,8 @@ if ($conn->connect_error) {
 $sql = <<<NEWMEDS
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('$brandname', '$genericname');
 NEWMEDS;
-$result = $conn->query($sql);
-$response = $result->fetch_assoc();
-if (strpos($response) == false){
+
+if($conn->query($sql) === TRUE){
     // The medication failed to be added to the database.
 } else {
     //Medication was added to database successfully.
