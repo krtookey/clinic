@@ -13,18 +13,45 @@
 <body>
     <?php
 
+        //Variables stored in POST buffer.
+        if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
+            $patient_id = $_POST['patient_id'];
+        } 
+        $patient_id = $_POST['patient_id'] ?? '';
+
+        //Patient Search. 
+
         //Debug:
             //$patient_id = 1;
             //echo "<pre>"; print_r($_POST); echo "</pre>";
 
-        //Variables that may have been posted to the POST buffer.
-        $patient_id = $POST['patient_id'] ?? "0";
+        //Variables from Search form.
         $fname = $_POST['firstname'] ?? '';
         $lname = $_POST['lastname'] ?? '';
-        $dobirth = $_POST['dob'] ?? '';
+        $dob = $_POST['dob'] ?? '';
+        if(!isset($_POST['submit']) || $_POST['submit'] != 'Search'){
+            $_POST['submit'] = '';
+        }
 
-        if($dobirth !== ''){
-            $age = getAge($dobirth);
+        //Make sure the submitted dob contains a valid date string.
+        //validateDate: makes sure that a date string contains a valid date, for the given format.
+        //      $date: date string being checked.
+        //      $format: format for the expected date.  Default set to 'Y-m-d'.
+        //      return: returns the original date string if valid, else returns a date string for 0001-01-01.
+        function validateDate($date, $format = 'Y-m-d'){
+            $d = DateTime::createFromFormat($format, $date);
+            if ($d && $d->format($format) === $date){
+                return $date;
+            } else {
+                $str = '0001-01-01';
+                return $str;
+            }
+        }
+
+        $dob = validateDate($dob);
+
+        if($dob !== ''){
+            $age = getAge($dob);
         }
 
         //Debug: echo "Print Age: $age";
@@ -40,10 +67,6 @@
             return $n;
         }
 
-        if(!isset($_POST['submit']) || $_POST['submit'] != 'Search'){
-            $_POST['submit'] = '';
-        }
-
         //See if patient search form has been submitted, and populate header accordingly.
         if(isset($_POST['submit']) || $_POST['submit'] == 'Search'){
             
@@ -55,7 +78,7 @@
                 echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                 exit;
             }
-            $qsearch->bind_param("sss", $fname, $lname, $dobirth);
+            $qsearch->bind_param("sss", $fname, $lname, $dob);
             $qsearch->execute();
             $qsearch->store_result();
             $qsearch->bind_result($gender, $preferred, $patient_id, $sex);
@@ -63,7 +86,7 @@
             echo "<header>";
             while($qsearch->fetch()){
                 echo "  <p>$preferred</p>
-                        <p>$dobirth</p>
+                        <p>$dob</p>
                         <p>Age: $age</p>
                         <p>$fname</p>
                         <p>$lname</p>";
@@ -89,7 +112,7 @@
             echo " </header>";
             $qsearch->free_result();
         //If Patient_Id is present and search form has not been submitted, populate header.
-        } elseif ($patient_id !== 0 && !isset($_POST['submit'])) {
+        } elseif ($patient_id !== '' && !isset($_POST['submit'])) {
 
             $qstr = "SELECT DISTINCT gender, preferred, first_name, last_name, DOB, sex FROM Patient WHERE patient_id = $patient_id ";
             $qpatient = $conn->prepare($qstr);
@@ -101,7 +124,7 @@
             }
             $qpatient->execute();
             $qpatient->store_result();
-            $qpatient->bind_result($gender, $preferred, $fname, $lname, $dobirth, $sex);
+            $qpatient->bind_result($gender, $preferred, $fname, $lname, $dob, $sex);
             
             echo "<header>";
 
@@ -138,6 +161,8 @@
         } else {
             echo "<header></header>";
         }    
+
+        //End Patient Search.
     ?>
 
     <div class="placeholder"></div>
@@ -171,13 +196,6 @@
                 //Store patient header information in POST buffer.
                 if($patient_id != 0){
                     echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                    echo "<input type='hidden' name='preferred' value='$preferred'>";
-                    echo "<input type='hidden' name='dob' value='$dobirth'>";
-                    echo "<input type='hidden' name='age' value='$age'>";
-                    echo "<input type='hidden' name='firstname' value='$fname'>";
-                    echo "<input type='hidden' name='lastname' value='$lname'>";
-                    echo "<input type='hidden' name='sex' value='$sex'>";
-                    echo "<input type='hidden' name='gender' value='$gender'>";
                 }
             ?>
         </form>
@@ -187,29 +205,15 @@
                 //Store patient header information in POST buffer.
                 if($patient_id != 0){
                     echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                    echo "<input type='hidden' name='preferred' value='$preferred'>";
-                    echo "<input type='hidden' name='dob' value='$dobirth'>";
-                    echo "<input type='hidden' name='age' value='$age'>";
-                    echo "<input type='hidden' name='firstname' value='$fname'>";
-                    echo "<input type='hidden' name='lastname' value='$lname'>";
-                    echo "<input type='hidden' name='sex' value='$sex'>";
-                    echo "<input type='hidden' name='gender' value='$gender'>";
                 }
             ?>
         </form>
         <form action="./noteHistory.php" method="POST">
-            <input type="submit" name="submitP" value="Note History">
+            <input type="submit" name="submitNH" value="Note History">
             <?php
                 //Store patient header information in POST buffer.
                 if($patient_id != 0){
                     echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                    echo "<input type='hidden' name='preferred' value='$preferred'>";
-                    echo "<input type='hidden' name='dob' value='$dobirth'>";
-                    echo "<input type='hidden' name='age' value='$age'>";
-                    echo "<input type='hidden' name='firstname' value='$fname'>";
-                    echo "<input type='hidden' name='lastname' value='$lname'>";
-                    echo "<input type='hidden' name='sex' value='$sex'>";
-                    echo "<input type='hidden' name='gender' value='$gender'>";
                 }
             ?>
         </form>
@@ -223,3 +227,4 @@
     ?>
 </body>
 </html>
+
