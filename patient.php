@@ -29,7 +29,7 @@
             //Prepare statment
             $stmt = $conn->prepare($sql);
             //Bind ? with the POST variable from the prvious page 
-            $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
+            $patient_id = $POST['patient_id'] ?? 4; //TODO remove after testing
             $stmt->bind_param("i", $patient_id);
             //Execute and get resutls from database
             $stmt->execute();
@@ -61,20 +61,49 @@
                 aria-expanded="false"
                 aria-controls="medicationListBox">
                     Medication List
-                    <?php
-                    /*
-                    $sql = <<SCRIP_LIST_FOR_PATIENT
-
-                    SCRIP_LIST_FOR_PATIENT;
-                    $result = $conn->query($sql);
-                    */
-                    ?>
                 </button>
                 <div
                 class="collapse card card-body patientMenuBox hideContent medicationList"
                 id="medicationListBox">
                     <div class="medicationList patientMenuItem">
-                        Information about patient medication list
+                        <?php
+                            $patient_id = $_POST['patient_id'] ?? 4;
+                            $sql = <<<SCRIP_LIST_FOR_PATIENT
+                            SELECT medication_id, dosage, status FROM MedicationList WHERE patient_id = '$patient_id';
+                            SCRIP_LIST_FOR_PATIENT;
+                            // Grabbing patient med info from medication list
+                            $medlist_result = $conn->query($sql);
+                            if ($medlist_result->num_rows > 0){
+                                while($row = $medlist_result->fetch_assoc()){
+                                    $medication_id = $row['medication_id']; 
+                                    $dosage = $row['dosage'];
+                                    $status = $row['status'];
+                                    //echo("medication_id: " . $medication_id . " dosage: " . $dosage);
+                                    $status_str = '';
+                                    if ($status == 1){
+                                        $status_str = 'Taking';
+                                    } else if ($status == 0){
+                                        $status_str = 'Not Taking';
+                                    }
+                                    $medname_sql = <<<MEDNAME
+                                    SELECT medication_name, generic_name FROM DrugList WHERE medication_id = '$medication_id';
+                                    MEDNAME;
+                                    // Grabbing medication name from DrugList
+                                    $medname_result = $conn->query($medname_sql);
+                                    if ($row = $medname_result->fetch_assoc()){
+                                        $brand_name = $row['medication_name'];
+                                        $generic_name = $row['generic_name'];
+                                        //echo("<br>brand_name: " . $brand_name . " generic_name: " . $generic_name);
+                                        $medication_info = <<<MEDINFO
+                                        <p>$brand_name -- $generic_name<br>$dosage<br>$status_str</p>
+                                        MEDINFO;
+                                        echo($medication_info);
+                                    }
+                                }
+                            } else {
+                                echo('Unable to retrieve medication list for this user.');
+                            }
+                        ?>
                     </div>
                 </div>
                 <!-- Review Of Systems -->
@@ -105,6 +134,48 @@
                 <div class="collapse hideContent patientMenuBox" id="labResultsBox">
                     <div class="labResults card card-body patientMenuItem">
                         Lab Results
+                        <?php
+                            $note_id = $_POST['note_id'] ?? 1;
+                            $patient_id = $_POST['patient_id'] ?? 1;
+                            $sql = <<<LAB_IDS_FOR_PATIENT
+                            SELECT laborder_id FROM Note WHERE note_id = '$note_id';
+                            LAB_IDS_FOR_PATIENT;
+                            // Grabbing laborder_id and lab_id from current note
+                            $result = $conn->query($sql);
+                            if ($row = $result->fetch_assoc()){
+                                $laborder_id = $row['laborder_id']; 
+                                //echo("Laborder_id: " . $laborder_id);
+                                $results_sql = <<<RESULTS
+                                SELECT lab_id, results FROM OrderedLabs WHERE laborder_id = '$laborder_id';
+                                RESULTS;
+                                // Grabbing results for specific lab based on laborder_id and lab_id of current note
+                                $result = $conn->query($results_sql);
+                                if ($result->num_rows > 0){
+                                    while($row = $result->fetch_assoc()){
+                                        $lab_id = $row['lab_id'];
+                                        $results = $row['results'];
+                                        $lab_name_sql = <<<LABNAME
+                                        SELECT lab_name from LabList WHERE lab_id = '$lab_id';
+                                        LABNAME;  
+                                        $result = $conn->query($lab_name_sql);
+                                        if ($row = $result->fetch_assoc()){
+                                            if ($results == null){
+                                                $results = "No results.";
+                                            }
+                                            $lab_name = $row['lab_name']; 
+                                            $results_info = <<<RESULTSINFO
+                                            <br><br><p><u>$lab_name</u><br>$results</p>
+                                            RESULTSINFO;
+                                            echo($results_info);
+                                        }   
+                                    }
+                                    
+                                        
+                                }
+                            } else {
+                                echo('Unable to retrieve medication list for this user.');
+                            }
+                        ?>
                     </div>
                 </div>
                 <!-- Family History -->
@@ -181,23 +252,18 @@
                                     if ($result->num_rows > 0){
                                         $row = $result->fetch_assoc();
                                         $patient_pharmacy_id = $row["pharmacy_id"]; 
+                                        // Get pharmacy_name for pharmacy_id
+                                        $sql = "SELECT pharmacy_name FROM Pharmacy where pharmacy_id = '" . $patient_pharmacy_id . "';";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0){
+                                            $row = $result->fetch_assoc();
+                                            $pharmacy_name = $row["pharmacy_name"]; 
+                                            $pharmacyinput = <<<PHARM_INPUT
+                                            <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" value="$pharmacy_name" required>
+                                            PHARM_INPUT;
+                                            echo $pharmacyinput;
+                                        }
                                     }
-
-                                    // Get pharmacy_id for pharmacy_id
-                                    $sql = "SELECT pharmacy_name FROM Pharmacy where pharmacy_id = '" . $patient_pharmacy_id . "';";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0){
-                                        $row = $result->fetch_assoc();
-                                        $pharmacy_name = $row["pharmacy_name"]; 
-                                    }
-                                    //$conn->close();
-                                    
-                                    $pharmacy_name = "Nick's Funky Pharmacy"; // PLACEHOLDER
-                                    $pharmacyinput = <<<PHARM_INPUT
-                                    <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" default="$pharmacy_name" required>
-                                    PHARM_INPUT;
-                                    echo $pharmacyinput;
-                                    
 
                                 ?>
                             </div>
@@ -362,7 +428,26 @@
                             </div>
                             <br>
                             <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
-                            <input type="text" id="labdest" name="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
+                            <?php
+                                // Get labdest_id for patient
+                                $sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
+                                $result = $conn->query($sql);
+                                if ($result->num_rows > 0){
+                                    $row = $result->fetch_assoc();
+                                    $patient_labdest_id = $row["labdest_id"]; 
+                                    // Get labdest_name for labdest_id
+                                    $sql = "SELECT labdest_name FROM LabDest where labdest_id = '" . $patient_labdest_id . "';";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0){
+                                        $row = $result->fetch_assoc();
+                                        $labdest_name = $row["labdest_name"]; 
+                                        $labdestinput = <<<LABDEST_INPUT
+                                        <input type="text" id="labdest" name="labdest" list="labdestlist" value="$labdest_name" required>
+                                        LABDEST_INPUT;
+                                        echo $labdestinput;
+                                    }
+                                }
+                            ?>
                             <datalist id="labdestlist">
                                 <?php 
                                 //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp

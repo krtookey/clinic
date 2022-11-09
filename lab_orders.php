@@ -11,23 +11,27 @@ ADDSCRIPT;
 echo($addscript);
 
 include_once 'dbConnection.php';
-
+$notnull = 0;
 $patient_id = $_POST["patient_id"];
 $user_id = $_POST["user_id"];
 $labdest = $_POST["labdest"];
 $providers_to_cc = $_POST["providers_to_cc"];
 $diagnosis = $_POST["diagnosis"];
-if (isset($_POST["general_labs"])){
+if ($_POST["general_labs"] != null){
     $general_labs = $_POST["general_labs"];
+    $notnull = 1;
 }
-if (isset($_POST["vitamin_labs"])){
+if ($_POST["vitamin_labs"] != null){
     $vitamin_labs = $_POST["vitamin_labs"];
+    $notnull = 1;
 }
-if (isset($_POST["sti_tests"])){
+if ($_POST["sti_tests"] != null){
     $sti_tests = $_POST["sti_tests"];
+    $notnull = 1;
 }
-$all_labs = array_merge($general_labs, $vitamin_labs, $sti_tests);
-
+if ($notnull == 1){
+    $all_labs = array_merge($general_labs, $vitamin_labs, $sti_tests);
+}
 
 // Getting patient_id from Medical Records page
 //$patient_id = "1"; // PLACEHOLDER
@@ -140,6 +144,13 @@ $laborder_pdf_link = <<<PRESCRIPTIONLINK
 <script>
 function createPDF(){
     var element = document.getElementById('pdf_text');
+    var opt = {
+        margin: 1,
+        filename: 'lab_order.pdf',
+        image: {type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }
     html2pdf(element);
 }
 </script>

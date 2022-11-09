@@ -81,23 +81,18 @@
                     if ($result->num_rows > 0){
                         $row = $result->fetch_assoc();
                         $patient_pharmacy_id = $row["pharmacy_id"]; 
+                        // Get pharmacy_name for pharmacy_id
+                        $sql = "SELECT pharmacy_name FROM Pharmacy where pharmacy_id = '" . $patient_pharmacy_id . "';";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0){
+                            $row = $result->fetch_assoc();
+                            $pharmacy_name = $row["pharmacy_name"]; 
+                            $pharmacyinput = <<<PHARM_INPUT
+                            <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" value="$pharmacy_name" required>
+                            PHARM_INPUT;
+                            echo $pharmacyinput;
+                        }
                     }
-
-                    // Get pharmacy_id for pharmacy_id
-                    $sql = "SELECT pharmacy_name FROM Pharmacy where pharmacy_id = '" . $patient_pharmacy_id . "';";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0){
-                        $row = $result->fetch_assoc();
-                        $pharmacy_name = $row["pharmacy_name"]; 
-                    }
-                    //$conn->close();
-                    
-                    $pharmacy_name = "Nick's Funky Pharmacy"; // PLACEHOLDER
-                    $pharmacyinput = <<<PHARM_INPUT
-                    <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" default="$pharmacy_name" required>
-                    PHARM_INPUT;
-                    echo $pharmacyinput;
-                    
 
                 ?>
             </div>
@@ -250,7 +245,26 @@
             </div>
             <br>
             <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
-            <input type="text" id="labdest" name="labdest" list="labdestlist" required> <!-- This will be populated by the items in the SQL table LabDest, labdest_name-->
+            <?php
+                // Get labdest_id for patient
+                $sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0){
+                    $row = $result->fetch_assoc();
+                    $patient_labdest_id = $row["labdest_id"]; 
+                    // Get labdest_name for labdest_id
+                    $sql = "SELECT labdest_name FROM LabDest where labdest_id = '" . $patient_labdest_id . "';";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0){
+                        $row = $result->fetch_assoc();
+                        $labdest_name = $row["labdest_name"]; 
+                        $labdestinput = <<<LABDEST_INPUT
+                        <input type="text" id="labdest" name="labdest" list="labdestlist" value="$labdest_name" required>
+                        LABDEST_INPUT;
+                        echo $labdestinput;
+                    }
+                }
+            ?>
             <datalist id="labdestlist">
                 <?php 
                 //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp
