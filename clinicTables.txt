@@ -131,6 +131,7 @@ CREATE TABLE MedicalProfile (
 	med_profile_id  int NOT NULL AUTO_INCREMENT,
 	bmi float,
 	p_weight    float,
+	weight_meas char(3),
 	height  varchar(5),
 	blood_pressure  varchar(10),
 	pulse   int,

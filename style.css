@@ -108,7 +108,7 @@ input[type="text"] {
     color: #27474e;
     display: grid;
     grid-template-columns: auto auto;
-    width: 100%;
+    width: 700px;
 }
 
 .profileItem {
@@ -116,11 +116,15 @@ input[type="text"] {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    font-size: 1.5em;
-    gap: 3em;
+    font-size: 1em;
+    gap: 1em;
     padding: 0.5em;
     justify-content: flex-end;
     width: 75%;
+}
+
+#kglabel{
+  margin-right: 41px;
 }
 
 #reviewGrid {
@@ -161,6 +165,12 @@ input[type="text"] {
     color: #c17817;
     font-weight: bold;
 }
+
+.dropBox > label {
+    font-size: 1em;
+    color: #c17817;
+    font-weight: bold;
+  }  
 
 /*********** End Medical Profile Page **************/
 

@@ -24,6 +24,7 @@
 
         //$appointment = $_POST['appointment'] ?? '';
         $appointment = 1; //for testing
+        $user = 3; //for testing
         
         //Header.
 
@@ -84,353 +85,180 @@
             $qpatient->free_result();
         } else {
             echo "<header></header>";
-        }    
-
-        //Medical Profile.
-
-        if(!isset($_POST['profileSave']) || $_POST['profileSave'] != 'Save'){
-            $_POST['profileSave'] = '';
-        }
-        if(isset($_POST['mpweight']) && $_POST['mpweight'] != ''){
-            $weight = $_POST['mpweight'];
-        }        
-        if(isset($_POST['mpheight']) && $_POST['mpheight'] != ''){
-            $height = $_POST['mpheight'];
-        }
-        if(isset($_POST['mpbmi']) && $_POST['mpbmi'] != ''){
-            $bmi = $_POST['mpbmi'];
-        }
-        if(isset($_POST['mpbloodp']) && $_POST['mpbloodp'] != ''){
-            $bloodp = $_POST['mpbloodp'];
-        }
-        if(isset($_POST['mppulse']) && $_POST['mppulse'] != ''){
-            $pulse = $_POST['mppulse'];
-        }
-        if(isset($_POST['mppulseox']) && $_POST['mppulseox'] != ''){
-            $pulseox = $_POST['mppulseox'];
-        } 
-
-        //See if medical profile form has been submitted.
-        if(isset($_POST['profileSave']) || $_POST['profileSave'] == 'Save'){
-
-            $weight = $_POST['mpweight'] ?? '';
-            $height = $_POST['mpheight'] ?? '';
-            $bmi = $_POST['mpbmi'] ?? '';   
-            $bloodp = $_POST['mpbloodp'] ?? '';
-            $pulse = $_POST['mppulse'] ?? '';
-            $pulseox = $_POST['mppulseox'] ?? '';  
-            $medProfileID = $_POST['medProfileID'] ?? '';
-            $note_id = $_POST['note'] ?? '';
-            $num = 0;   //Counts the return to see if the appointment_id has already been assigned a Medical Profile.
-                
-            //See if a Medical Profile already exists for a given appointment 
-            $qstr = "SELECT appointment_id FROM MedicalProfile WHERE appointment_id = $appointment ";
-            $qselect = $conn->prepare($qstr);
-            if(!$qselect){
-                echo "<p>Error: could not execute query. <br> </p>";
-                echo "<pre> Error Number: " .$conn -> errno. "\n";
-                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                exit;
-            }
-            $qselect->execute();
-            $qselect->store_result();
-                
-            while($qselect->fetch()){
-                $num = $num + 1;
-            }
-                                
-            $qselect->free_result();
-
-            //Insert Medical Profile data, for a new appointment.
-            if($num === 0){
-                $qstr = "INSERT INTO MedicalProfile (bmi, p_weight, height, blood_pressure, pulse, pulse_ox, appointment_id) VALUES (?, ?, ?, ?, ?, ?, $appointment ) ";
-                $qinsert = $conn->prepare($qstr);
-                if(!$qinsert){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qinsert->bind_param("dddsii", $bmi, $weight, $height, $bloodp, $pulse, $pulseox);
-                $qinsert->execute();
-                $qinsert->store_result();
-                $qinsert->free_result();
-
-                //Get new med_profile_id.
-                $qstr = "SELECT med_profile_id FROM MedicalProfile WHERE appointment_id = $appointment ";
-                $qselect = $conn->prepare($qstr);
-                $qselect->execute();
-                $qselect->bind_result($med_profile_id);
-                $qselect->store_result();
-
-                while($qselect->fetch()){
-                    //Debug: echo "New ID: $med_profile_id";
-                    $_POST['medProfileID'] = $med_profile_id;
-                }
-                
-                $qselect->free_result();
-
-                //Add med_profile_id to the Note.
-
-                $num_note = 0;
-                //See if a Note already exists for a given appointment. 
-                $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment ";
-                $qselect = $conn->prepare($qstr);
-                if(!$qselect){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qselect->execute();
-                $qselect->bind_result($note_id);
-                $qselect->store_result();
-                    
-                while($qselect->fetch()){
-                    $num_note = $num_note + 1;
-                    $_POST['note'] = $note_id; 
-                }
-                                    
-                $qselect->free_result();
-                //If Note exists, update it's med_profile_id.
-                if($num_note === 1){
-                    $qstr = "UPDATE Note 
-                             SET med_profile_id = $med_profile_id 
-                             WHERE note_id = $note_id ";
-                    $qupdate = $conn->prepare($qstr);
-                    if(!$qupdate){
-                        echo "<p>Error: could not execute query. <br> </p>";
-                        echo "<pre> Error Number: " .$conn -> errno. "\n";
-                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                        exit;
-                    }
-                    $qupdate->execute();
-                    $qupdate->store_result();
-                    $qupdate->free_result();
-                }
-
-            //Debug: echo "<pre>"; print_r($_POST); echo "</pre>";
-                
-            //Updating an existing Medical Profile data.
-            } elseif ($num === 1) {
-                $qstr = "UPDATE MedicalProfile 
-                         SET bmi = ?, p_weight = ?, height = ?, blood_pressure = ?, pulse = ?, pulse_ox = ?, appointment_id = $appointment 
-                         WHERE appointment_id = $appointment ";
-                $qupdate = $conn->prepare($qstr);
-                if(!$qupdate){
-                echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qupdate->bind_param("dddsii", $bmi, $weight, $height, $bloodp, $pulse, $pulseox);
-                $qupdate->execute();
-                $qupdate->store_result();
-                $qupdate->free_result();
-            }
-        } 
-
-        //Review of Systems.
-
-        //Make sure the submitted eye exam date contains a valid date string.
-        //validateDate: makes sure that a date string contains a valid date, for the given format.
-        //      $date: date string being checked.
-        //      $format: format for the expected date.  Default set to 'Y-m-d'.
-        //      return: returns the original date string if valid, else returns a date string for 0001-01-01.
-        function validateDate($date, $format = 'Y-m-d'){
-            $d = DateTime::createFromFormat($format, $date);
-            if ($d && $d->format($format) === $date){
-                return $date;
-            } else {
-                $str = '0001-01-01';
-                return $str;
-            }
         }
 
-        $ros_count = 0;     //Number of values in $ros array.
-        if(!isset($_POST['rosSave']) || $_POST['rosSave'] != 'Save'){
-            $_POST['rosSave'] = '';
-        }
-        //Array of checked ros values.
-        if(isset($_POST['ros'])){
-            $ros = $_POST['ros'];
-            $ros_count = count($ros);
-        }
-        if(isset($_POST['exam_date']) && $_POST['exam_date'] != ''){
-            $exam = $_POST['exam_date'];
-        }
-        if(isset($_POST['ros_comment']) && $_POST['ros_comment'] != ''){
-            $comment = $_POST['ros_comment'];
-        }
-        $ros = $_POST['ros'] ?? '';
-        $comment = $_POST['ros_comment'] ?? '';
-        $exam = $_POST['exam_date'] ?? '';
-        $exam = validateDate($exam);
-
-        //Debug: echo "<br><br><br><br><br> Comment: $comment";
-        //Debug: 
-        echo "<br><br><br><br><pre>"; print_r($_POST); echo "</pre>";
-        
-        //See if ROS form has been submitted.
-        if(isset($_POST['rosSave']) && $_POST['rosSave'] == 'Save'){
-        
-            $ros_id = $_POST['ros_id'] ?? '';
-            $note_id = $_POST['note'] ?? '';
-            $num = 0;  
-                
-            //See if a ROS already exists for a given appointment 
-            $qstr = "SELECT appointment_id FROM ReviewOfSystem WHERE appointment_id = $appointment ";
-            $qselect = $conn->prepare($qstr);
-            if(!$qselect){
-                echo "<p>Error: could not execute query. <br> </p>";
-                echo "<pre> Error Number: " .$conn -> errno. "\n";
-                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                exit;
-            }
-            $qselect->execute();
-            $qselect->store_result();
-                
-            while($qselect->fetch()){
-                $num = $num + 1;
-            }
-
-            $qselect->free_result();
-            
-            //Debug: echo "<br><br><br><br><br><br>$num";
-            
-            //If no previous ros, insert a new one. 
-            if($num === 0){
-
-                $ros_str = '';
-                $ros_true = '';
-                for($i = 0; $i < $ros_count; $i++){
-                    $ros_str = $ros_str.$ros[$i].', ';
-                    $ros_true = $ros_true.'true, ';
-                }
-
-                //Debug: echo "<br><br><br><br>String: $ros_str"; echo "<br>String: $ros_true"; echo "<br>String: $exam";
-
-                $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment ) ";
-                //Debug: echo "<br>$qstr";
-                $qinsert = $conn->prepare($qstr);
-                if(!$qinsert){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qinsert->bind_param("ss", $exam, $comment);
-                $qinsert->execute();
-                $qinsert->store_result();
-                $qinsert->free_result();
-
-                //Get new ros_id.
-                $qstr = "SELECT ros_id FROM ReviewOfSystem WHERE appointment_id = $appointment ";
-                $qselect = $conn->prepare($qstr);
-                $qselect->execute();
-                $qselect->bind_result($ros_id);
-                $qselect->store_result();
-
-                while($qselect->fetch()){
-                    $_POST['ros_id'] = $ros_id;
-                }
-                
-                $qselect->free_result();
-
-                //Add ros_id to the Note.
-                $num_note = 0;
-                //See if a Note already exists for a given appointment. 
-                $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment ";
-                $qselect = $conn->prepare($qstr);
-                if(!$qselect){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qselect->execute();
-                $qselect->bind_result($note_id);
-                $qselect->store_result();
-                        
-                while($qselect->fetch()){
-                    $num_note = $num_note + 1;
-                    $_POST['note'] = $note_id; 
-                }
-                                    
-                $qselect->free_result();
-                
-                //If Note exists, update it's ros_id.
-                if($num_note === 1){
-                    $qstr = "UPDATE Note 
-                             SET ros_id = $ros_id 
-                             WHERE note_id = $note_id ";
-                    $qupdate = $conn->prepare($qstr);
-                    if(!$qupdate){
-                        echo "<p>Error: could not execute query. <br> </p>";
-                        echo "<pre> Error Number: " .$conn -> errno. "\n";
-                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                        exit;
-                    }
-                    $qupdate->execute();
-                    $qupdate->store_result();
-                    $qupdate->free_result();
-                }
-
-
-            //Debug: echo "<pre>"; print_r($_POST); echo "</pre>";
-                
-            //Updating an existing ROS data.
-            } elseif ($num === 1) {
-
-                $ros_str = '';
-                $ros_true = '';
-                for($i = 0; $i < $ros_count; $i++){
-                    $ros_str = $ros_str.$ros[$i].', ';
-                    $ros_true = $ros_true.'true, ';
-                }
-
-                $qstr = "DELETE FROM ReviewOfSystem WHERE appointment_id = $appointment" ;
-                $qupdate = $conn->prepare($qstr);
-                if(!$qupdate){
-                echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qupdate->execute();
-                $qupdate->store_result();
-                $qupdate->free_result();
-                
-                $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment ) ";
-                //Debug: echo "<br>$qstr";
-                $qinsert = $conn->prepare($qstr);
-                if(!$qinsert){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qinsert->bind_param("ss", $exam, $comment);
-                $qinsert->execute();
-                $qinsert->store_result();
-                $qinsert->free_result();
-
-            } 
-        }              
-    
+        //Debug: echo "<br><br><br><br><pre>"; print_r($_POST); echo "</pre>";    
     ?>
     <div class="placeholder"></div>
     <div class="whiteCard">
         <h2>Medical Profile</h2> <br>
-        <form method="post" action="./medicalProfile.php" id="profileForm">
+        <iframe style="display: none; " name="profileFrame">
+            <?php
+                //Medical Profile.
+
+                if(!isset($_POST['profileSave']) || $_POST['profileSave'] != 'Save'){
+                    $_POST['profileSave'] = '';
+                }
+                if(isset($_POST['mpweight']) && $_POST['mpweight'] != ''){
+                    $weight = $_POST['mpweight'];
+                }        
+                if(isset($_POST['mpheight']) && $_POST['mpheight'] != ''){
+                    $height = $_POST['mpheight'];
+                }
+                if(isset($_POST['mpbmi']) && $_POST['mpbmi'] != ''){
+                    $bmi = $_POST['mpbmi'];
+                }
+                if(isset($_POST['mpbloodp']) && $_POST['mpbloodp'] != ''){
+                    $bloodp = $_POST['mpbloodp'];
+                }
+                if(isset($_POST['mppulse']) && $_POST['mppulse'] != ''){
+                    $pulse = $_POST['mppulse'];
+                }
+                if(isset($_POST['mppulseox']) && $_POST['mppulseox'] != ''){
+                    $pulseox = $_POST['mppulseox'];
+                }
+                if(isset($_POST['weight_meas']) && $_POST['weight_meas'] != ''){
+                    $weight_meas = $_POST['weight_meas'];
+                } 
+                $weight = $_POST['mpweight'] ?? '';
+                $weight_meas = $_POST['weight_meas'] ?? '';
+                $height = $_POST['mpheight'] ?? '';
+                $bmi = $_POST['mpbmi'] ?? '';   
+                $bloodp = $_POST['mpbloodp'] ?? '';
+                $pulse = $_POST['mppulse'] ?? '';
+                $pulseox = $_POST['mppulseox'] ?? '';  
+                $medProfileID = $_POST['medProfileID'] ?? '';
+                $note_id = $_POST['note'] ?? '';
+
+                //See if medical profile form has been submitted.
+                if(isset($_POST['profileSave']) && $_POST['profileSave'] == 'Save'){
+
+                    $num = 0;   //Counts the return to see if the appointment_id has already been assigned a Medical Profile.
+                        
+                    //See if a Medical Profile already exists for a given appointment 
+                    $qstr = "SELECT appointment_id FROM MedicalProfile WHERE appointment_id = $appointment ";
+                    $qselect = $conn->prepare($qstr);
+                    if(!$qselect){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qselect->execute();
+                    $qselect->store_result();
+                        
+                    while($qselect->fetch()){
+                        $num = $num + 1;
+                    }
+                                        
+                    $qselect->free_result();
+
+                    //Insert Medical Profile data, for a new appointment.
+                    if($num === 0){
+                        $qstr = "INSERT INTO MedicalProfile (bmi, p_weight, height, blood_pressure, pulse, pulse_ox, appointment_id, weight_meas) VALUES (?, ?, ?, ?, ?, ?, $appointment, '$weight_meas' ) ";
+                        $qinsert = $conn->prepare($qstr);
+                        if(!$qinsert){
+                            echo "<p>Error: could not execute query. <br> </p>";
+                            echo "<pre> Error Number: " .$conn -> errno. "\n";
+                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                            exit;
+                        }
+                        $qinsert->bind_param("dddsii", $bmi, $weight, $height, $bloodp, $pulse, $pulseox);
+                        $qinsert->execute();
+                        $qinsert->store_result();
+                        $qinsert->free_result();
+
+                        //Get new med_profile_id.
+                        $qstr = "SELECT med_profile_id FROM MedicalProfile WHERE appointment_id = $appointment ";
+                        $qselect = $conn->prepare($qstr);
+                        $qselect->execute();
+                        $qselect->bind_result($med_profile_id);
+                        $qselect->store_result();
+
+                        while($qselect->fetch()){
+                            //Debug: echo "New ID: $med_profile_id";
+                            $_POST['medProfileID'] = $med_profile_id;
+                        }
+                        
+                        $qselect->free_result();
+
+                        //Add med_profile_id to the Note.
+
+                        $num_note = 0;
+                        //See if a Note already exists for a given appointment. 
+                        $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment ";
+                        $qselect = $conn->prepare($qstr);
+                        if(!$qselect){
+                            echo "<p>Error: could not execute query. <br> </p>";
+                            echo "<pre> Error Number: " .$conn -> errno. "\n";
+                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                            exit;
+                        }
+                        $qselect->execute();
+                        $qselect->bind_result($note_id);
+                        $qselect->store_result();
+                            
+                        while($qselect->fetch()){
+                            $num_note = $num_note + 1;
+                            $_POST['note'] = $note_id; 
+                        }
+                                            
+                        $qselect->free_result();
+                        //If Note exists, update it's med_profile_id.
+                        if($num_note === 1){
+                            $qstr = "UPDATE Note 
+                                    SET med_profile_id = $med_profile_id 
+                                    WHERE note_id = $note_id ";
+                            $qupdate = $conn->prepare($qstr);
+                            if(!$qupdate){
+                                echo "<p>Error: could not execute query. <br> </p>";
+                                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                exit;
+                            }
+                            $qupdate->execute();
+                            $qupdate->store_result();
+                            $qupdate->free_result();
+                        }
+
+                    //Debug: echo "<pre>"; print_r($_POST); echo "</pre>";
+                        
+                    //Updating an existing Medical Profile data.
+                    } elseif ($num === 1) {
+                        $qstr = "UPDATE MedicalProfile 
+                                SET bmi = ?, p_weight = ?, height = ?, blood_pressure = ?, pulse = ?, pulse_ox = ?, weight_meas = '$weight_meas' 
+                                WHERE appointment_id = $appointment ";
+                        $qupdate = $conn->prepare($qstr);
+                        if(!$qupdate){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                            echo "<pre> Error Number: " .$conn -> errno. "\n";
+                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                            exit;
+                        }
+                        $qupdate->bind_param("dddsii", $bmi, $weight, $height, $bloodp, $pulse, $pulseox);
+                        $qupdate->execute();
+                        $qupdate->store_result();
+                        $qupdate->free_result();
+                    }
+                }            
+            ?>
+        </iframe>
+        <form method="post" action="./medicalProfile.php" id="profileForm" target="profileFrame">
             <div id="profileGrid">
                 <div class="profileItem">
                     <label>Weight:</label>
                     <input type="text" name="mpweight" id="mpwight" value=<?php echo $weight; ?>>
                 </div>
                 <div class="profileItem">
+                    <label>Weight In:</label>
+                    <input type="radio" name="weight_meas" id="lb" value="lb">
+                    <label for="lb">lb </label>
+                    <input type="radio" name="weight_meas" id="kg" value="kg">
+                    <label for="kg" id="kglabel">kg </label>
+                </div>
+                <div class="profileItem">
                     <label>Height:</label>
-                    <input type="text" name="mpheight" id="mpheight" value=<?php echo $height; ?>>
+                    <input type="text" name="mpheight" id="mpheight" maxlength="5" value=<?php echo $height; ?>>
                 </div>
                 <div class="profileItem">
                     <label>BMI:</label>
@@ -438,7 +266,7 @@
                 </div>
                 <div class="profileItem">
                     <label>Blood Pressure:</label> 
-                    <input type="text" name="mpbloodp" id="mpbloodp" value=<?php echo $bloodp; ?>>
+                    <input type="text" name="mpbloodp" id="mpbloodp" maxlength="10" value=<?php echo $bloodp; ?>>
                 </div>
                 <div class="profileItem">
                     <label>Pulse:</label>
@@ -462,10 +290,199 @@
     </div>
     <div class="whiteCard">
         <h2>Review of Systems</h2> <br>
-        <form action="./medicalProfile.php" method="post">
+        <iframe style="display: none; " name="rosFrame">
+            <?php
+            //Review of Systems.
+
+            //Make sure the submitted eye exam date contains a valid date string.
+            //validateDate: makes sure that a date string contains a valid date, for the given format.
+            //      $date: date string being checked.
+            //      $format: format for the expected date.  Default set to 'Y-m-d'.
+            //      return: returns the original date string if valid, else returns a date string for 0001-01-01.
+            function validateDate($date, $format = 'Y-m-d'){
+                $d = DateTime::createFromFormat($format, $date);
+                if ($d && $d->format($format) === $date){
+                    return $date;
+                } else {
+                    $str = '0001-01-01';
+                    return $str;
+                }
+            }
+
+            $ros_count = 0;     //Number of values in $ros array.
+            if(!isset($_POST['rosSave']) || $_POST['rosSave'] != 'Save'){
+                $_POST['rosSave'] = '';
+            }
+            //Array of checked ros values.
+            if(isset($_POST['ros'])){
+                $ros = $_POST['ros'];
+                $ros_count = count($ros);
+            }
+            if(isset($_POST['exam_date']) && $_POST['exam_date'] != ''){
+                $exam = $_POST['exam_date'];
+            }
+            if(isset($_POST['ros_comment']) && $_POST['ros_comment'] != ''){
+                $comment = $_POST['ros_comment'];
+            }
+            $ros = $_POST['ros'] ?? '';
+            $comment = $_POST['ros_comment'] ?? '';
+            $exam = $_POST['exam_date'] ?? '';
+            $exam = validateDate($exam);
+
+            //Debug: echo "<br><br><br><br><br> Comment: $comment";
+
+            //See if ROS form has been submitted.
+            if(isset($_POST['rosSave']) && $_POST['rosSave'] == 'Save'){
+
+                $ros_id = $_POST['ros_id'] ?? '';
+                $note_id = $_POST['note'] ?? '';
+                $num = 0;  
+                    
+                //See if a ROS already exists for a given appointment 
+                $qstr = "SELECT appointment_id FROM ReviewOfSystem WHERE appointment_id = $appointment ";
+                $qselect = $conn->prepare($qstr);
+                if(!$qselect){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qselect->execute();
+                $qselect->store_result();
+                    
+                while($qselect->fetch()){
+                    $num = $num + 1;
+                }
+
+                $qselect->free_result();
+                
+                //Debug: echo "<br><br><br><br><br><br>$num";
+                
+                //If no previous ros, insert a new one. 
+                if($num === 0){
+
+                    $ros_str = '';
+                    $ros_true = '';
+                    for($i = 0; $i < $ros_count; $i++){
+                        $ros_str = $ros_str.$ros[$i].', ';
+                        $ros_true = $ros_true.'true, ';
+                    }
+
+                    //Debug: echo "<br><br><br><br>String: $ros_str"; echo "<br>String: $ros_true"; echo "<br>String: $exam";
+
+                    $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment ) ";
+                    //Debug: echo "<br>$qstr";
+                    $qinsert = $conn->prepare($qstr);
+                    if(!$qinsert){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qinsert->bind_param("ss", $exam, $comment);
+                    $qinsert->execute();
+                    $qinsert->store_result();
+                    $qinsert->free_result();
+
+                    //Get new ros_id.
+                    $qstr = "SELECT ros_id FROM ReviewOfSystem WHERE appointment_id = $appointment ";
+                    $qselect = $conn->prepare($qstr);
+                    $qselect->execute();
+                    $qselect->bind_result($ros_id);
+                    $qselect->store_result();
+
+                    while($qselect->fetch()){
+                        $_POST['ros_id'] = $ros_id;
+                    }
+                    
+                    $qselect->free_result();
+
+                    //Add ros_id to the Note.
+                    $num_note = 0;
+                    //See if a Note already exists for a given appointment. 
+                    $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment ";
+                    $qselect = $conn->prepare($qstr);
+                    if(!$qselect){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qselect->execute();
+                    $qselect->bind_result($note_id);
+                    $qselect->store_result();
+                            
+                    while($qselect->fetch()){
+                        $num_note = $num_note + 1;
+                        $_POST['note'] = $note_id; 
+                    }
+                                        
+                    $qselect->free_result();
+                    
+                    //If Note exists, update it's ros_id.
+                    if($num_note === 1){
+                        $qstr = "UPDATE Note 
+                                SET ros_id = $ros_id 
+                                WHERE note_id = $note_id ";
+                        $qupdate = $conn->prepare($qstr);
+                        if(!$qupdate){
+                            echo "<p>Error: could not execute query. <br> </p>";
+                            echo "<pre> Error Number: " .$conn -> errno. "\n";
+                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                            exit;
+                        }
+                        $qupdate->execute();
+                        $qupdate->store_result();
+                        $qupdate->free_result();
+                    }
+
+
+                //Debug: echo "<pre>"; print_r($_POST); echo "</pre>";
+                    
+                //Updating an existing ROS data.
+                } elseif ($num === 1) {
+
+                    $ros_str = '';
+                    $ros_true = '';
+                    for($i = 0; $i < $ros_count; $i++){
+                        $ros_str = $ros_str.$ros[$i].', ';
+                        $ros_true = $ros_true.'true, ';
+                    }
+
+                    $qstr = "DELETE FROM ReviewOfSystem WHERE appointment_id = $appointment" ;
+                    $qupdate = $conn->prepare($qstr);
+                    if(!$qupdate){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qupdate->execute();
+                    $qupdate->store_result();
+                    $qupdate->free_result();
+                    
+                    $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment ) ";
+                    //Debug: echo "<br>$qstr";
+                    $qinsert = $conn->prepare($qstr);
+                    if(!$qinsert){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qinsert->bind_param("ss", $exam, $comment);
+                    $qinsert->execute();
+                    $qinsert->store_result();
+                    $qinsert->free_result();
+                } 
+
+            }   
+            ?>
+        </iframe>
+        <form action="./medicalProfile.php" method="post" target="rosFrame">
             <div class="commentBox">
                 <label>Comments:</label> <br>
-                <textarea name="ros_comment"></textarea>
+                <textarea name="ros_comment" maxlength="16777214"></textarea>
             </div> <br> <br>
             <div id="reviewGrid">
                 <div class="rosGroup">
@@ -558,7 +575,7 @@
                         <label>glaucoma</label>
                     </div>
                     <div class="reviewItem">
-                        <input type="text" name="exam_date" value="YYYY-MM-DD">
+                        <input type="text" name="exam_date" placeholder="YYYY-MM-DD">
                         <label>date of last eye exam</label>
                     </div>
                     <br>
@@ -1013,10 +1030,68 @@
             </div>
         </form>
     </div>
+    <?php
+        if($user == 3){
+        echo "<div class='whiteCard'>
+                <h2>Family History</h2> <br>";
+                //fetch family history.
+        echo "<iframe style='display: none; ' name='historyFrame'>";
+                //handle form.
+        echo "</iframe>
+            <form action='./medicalProfile.php' method='post'>
+                <div class='dropBox'>
+                    <label for='famliy'>Relationship:</label>
+                    <select name='family' id='family'>
+                        <option value='Mother'>Mother</option>
+                        <option value='Father'>Father</option>
+                        <option value='Sister'>Sister</option>
+                        <option value='Brother'>Brother</option>
+                        <option value='Maternal Half-Sister'>Maternal Half-Sister</option>
+                        <option value='Maternal Half-Brother'>Maternal Half-Brother</option>
+                        <option value='Paternal Half-Sister'>Paternal Half-Sister</option>
+                        <option value='Paternal Half-Brother'>Paternal Half-Brother</option>
+                        <option value='Maternal Grandfather'>Maternal Grandfather</option>
+                        <option value='Maternal Grandmother'>Maternal Grandmother</option>
+                        <option value='Paternal Grandfather'>Paternal Grandfather</option>
+                        <option value='Paternal Grandmother'>Paternal Grandmother</option>
+                        <option value='Maternal Aunt'>Maternal Aunt</option>
+                        <option value='Paternal Aunt'>Paternal Aunt</option>
+                        <option value='Maternal Uncle'>Maternal Uncle</option>
+                        <option value='Paternal Uncle'>Paternal Uncle</option>
+                    </select>
+                </div>
+                <div class='commentBox'>
+                    <label>Condition:</label> <br>
+                    <textarea name='condition' maxlength='16777214'></textarea>
+                    </div> <br>
+                <div class='saveButton'> 
+                    <input type='submit' value='Add' name='histSave' id='histSave'>
+                </div>
+                <input type='hidden' name='patient_id' value='$patient_id'>
+            </form> 
+        </div>";
+        }
+    ?>
     <footer>
         <div>
-            <a href="./index.php">Home</a>
-            <a href="./patient.php">Patient Note</a>
+            <form action="./index.php" method="POST">
+                <input type="submit" name="submitI" value="Home">
+                <?php
+                    //Store patient header information in POST buffer.
+                    if($patient_id != 0){
+                        echo "<input type='hidden' name='patient_id' value='$patient_id'>";
+                    }
+                ?>
+            </form>
+            <form action="./patient.php" method="POST">
+                <input type="submit" name="submitP" value="Note">
+                <?php
+                    //Store patient header information in POST buffer.
+                    if($patient_id != 0){
+                        echo "<input type='hidden' name='patient_id' value='$patient_id'>";
+                    }
+                ?>
+            </form>
         </div>
     </footer>
     <?php

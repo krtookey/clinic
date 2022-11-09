@@ -177,3 +177,9 @@ CREATE TABLE ReviewOfSystem (
 );
 
 -- End of Update ---------------------
+
+-- Add weight_meas field to the MedicalProfile table -- November 7, 2022 -----------
+
+ALTER TABLE MedicalProfile ADD weight_meas char(3);
+
+-- End of Update ------------------
