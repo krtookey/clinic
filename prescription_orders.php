@@ -39,27 +39,29 @@ if ($quantity != intval($quantity_calc)){
 //$patient_id = "1"; // PLACEHOLDER
 
 // Getting patient info for prescription
-$pinfo_sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
-$pinfo_result = $conn->query($pinfo_sql);
-$row = $pinfo_result->fetch_assoc();
-
-$firstname = $row["first_name"];
-$lastname = $row["last_name"];
-$middlename = $row["middle_name"];
-$DOB = $row["DOB"];
-$address_id = $row["address_id"];
-$sex = $row["sex"];
-
-    // Grabbing patient address data from patient address_id
-$addr_sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $address_id . "';";
-$addr_result = $conn->query($addr_sql);
-$row = $addr_result->fetch_assoc();
-
-$address_street = $row["street"];
-$address_city = $row["city"];
-$address_state = $row["state_abbr"];
-$address_zip = $row["zip"];
-
+$sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
+$result = $conn->query($sql);
+if ($row = $result->fetch_assoc()){
+    $firstname = $row["first_name"];
+    $lastname = $row["last_name"];
+    $middlename = $row["middle_name"];
+    $DOB = $row["DOB"];
+    $address_id = $row["address_id"];
+    $sex = $row["sex"];
+        // Grabbing patient address data from patient address_id
+    $sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $address_id . "';";
+    $result = $conn->query($sql);
+    if ($row = $result->fetch_assoc()){
+        $address_street = $row["street"];
+        $address_city = $row["city"];
+        $address_state = $row["state_abbr"];
+        $address_zip = $row["zip"];
+    } else {
+        echo('Unable to find address info for specified address ID');
+    }
+} else {
+    echo('Unable to find info for specified patient');
+}
 // Grabbing doctor_id from logged in user
 //$doctor_id = "1"; // PLACEHOLDER
 
@@ -109,8 +111,9 @@ if ($pharmaid_result->num_rows == 1){
 
 $prescription_text = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
+<h3>Prescription</h3>
 <p>$pharmacy</p>
-<p><u>$firstname $lastname   $DOB  Sex: $sex</u></p>
+<h4>$firstname $lastname   $DOB  Sex: $sex</h4>
 <p>$address_street $address_city $address_state, $address_zip</p>
 <p>Prescribing Doctor: $doctor_name</p>
 <p>$drugname $dosage - $route</p>

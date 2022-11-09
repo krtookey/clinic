@@ -11,27 +11,15 @@ ADDSCRIPT;
 echo($addscript);
 
 include_once 'dbConnection.php';
-$notnull = 0;
 $patient_id = $_POST["patient_id"];
 $user_id = $_POST["user_id"];
 $labdest = $_POST["labdest"];
 $providers_to_cc = $_POST["providers_to_cc"];
 $diagnosis = $_POST["diagnosis"];
-if ($_POST["general_labs"] != null){
-    $general_labs = $_POST["general_labs"];
-    $notnull = 1;
+if (!is_null($_POST["labs"])){
+    $all_labs = $_POST["labs"];
 }
-if ($_POST["vitamin_labs"] != null){
-    $vitamin_labs = $_POST["vitamin_labs"];
-    $notnull = 1;
-}
-if ($_POST["sti_tests"] != null){
-    $sti_tests = $_POST["sti_tests"];
-    $notnull = 1;
-}
-if ($notnull == 1){
-    $all_labs = array_merge($general_labs, $vitamin_labs, $sti_tests);
-}
+
 
 // Getting patient_id from Medical Records page
 //$patient_id = "1"; // PLACEHOLDER
@@ -39,25 +27,27 @@ if ($notnull == 1){
 // Getting patient info for prescription
 $sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
 $result = $conn->query($sql);
-$row = $result->fetch_assoc();
-
-$firstname = $row["first_name"];
-$lastname = $row["last_name"];
-$middlename = $row["middle_name"];
-$DOB = $row["DOB"];
-$address_id = $row["address_id"];
-$sex = $row["sex"];
-
-    // Grabbing patient address data from patient address_id
-$sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $address_id . "';";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
-
-$address_street = $row["street"];
-$address_city = $row["city"];
-$address_state = $row["state_abbr"];
-$address_zip = $row["zip"];
-
+if ($row = $result->fetch_assoc()){
+    $firstname = $row["first_name"];
+    $lastname = $row["last_name"];
+    $middlename = $row["middle_name"];
+    $DOB = $row["DOB"];
+    $address_id = $row["address_id"];
+    $sex = $row["sex"];
+        // Grabbing patient address data from patient address_id
+    $sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $address_id . "';";
+    $result = $conn->query($sql);
+    if ($row = $result->fetch_assoc()){
+        $address_street = $row["street"];
+        $address_city = $row["city"];
+        $address_state = $row["state_abbr"];
+        $address_zip = $row["zip"];
+    } else {
+        echo('Unable to find address info for specified address ID');
+    }
+} else {
+    echo('Unable to find info for specified patient');
+}
 // Grabbing doctor_id from logged in user
 //$doctor_id = "1"; // PLACEHOLDER
 
@@ -71,11 +61,11 @@ $doctor_name = $row["user_name"];
 // Grabbing lab_id for lab_name
 $lab_ids = array();
 foreach($all_labs as $x => $val){
-    echo(" Value: " . $val . " ");
+    //echo(" Value: " . $val . " ");
     $sql = "SELECT lab_id FROM LabList WHERE lab_name='" . $val . "';";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
-    echo("Row: ". $row['lab_id'] . "   "); 
+    //echo("Row: ". $row['lab_id'] . "   "); 
     if ($row != null){
         $lab_ids[] = $row['lab_id'];
     }
@@ -84,12 +74,9 @@ foreach($all_labs as $x => $val){
 // Getting labdest_id for LabDest
 
 $labdestid_sql = "SELECT labdest_id FROM LabDest WHERE labdest_name='" . $labdest . "';";
-echo('I like to move it move it: ' . $labdestid_sql . " -- ");
+//echo('I like to move it move it: ' . $labdestid_sql . " -- ");
 $labdestid_result = $conn->query($labdestid_sql);
 $row = $labdestid_result->fetch_assoc();
-foreach($row as $x => $val){
-    echo($x . " -> " . $val);
-}
 
 if ($result->num_rows == 1){
     $labdest_id = $row['labdest_id'];
@@ -113,8 +100,9 @@ if ($result->num_rows == 1){
 
 $lab_order_text1 = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
+<h3>Lab Order</h3>
 <p>$labdest</p>
-<p><u>$firstname $lastname   $DOB  Sex: $sex</u></p>
+<h4>$firstname $lastname   $DOB  Sex: $sex</h4>
 <p>$address_street
 $address_city $address_state, $address_zip</p>
 <p>Ordering Doctor: $doctor_name</p>

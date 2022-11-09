@@ -29,7 +29,7 @@
             //Prepare statment
             $stmt = $conn->prepare($sql);
             //Bind ? with the POST variable from the prvious page 
-            $patient_id = $POST['patient_id'] ?? 4; //TODO remove after testing
+            $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
             $stmt->bind_param("i", $patient_id);
             //Execute and get resutls from database
             $stmt->execute();
@@ -67,7 +67,7 @@
                 id="medicationListBox">
                     <div class="medicationList patientMenuItem">
                         <?php
-                            $patient_id = $_POST['patient_id'] ?? 4;
+                            $patient_id = $_POST['patient_id'] ?? 1;
                             $sql = <<<SCRIP_LIST_FOR_PATIENT
                             SELECT medication_id, dosage, status FROM MedicationList WHERE patient_id = '$patient_id';
                             SCRIP_LIST_FOR_PATIENT;
@@ -98,6 +98,8 @@
                                         <p>$brand_name -- $generic_name<br>$dosage<br>$status_str</p>
                                         MEDINFO;
                                         echo($medication_info);
+                                    } else {
+                                        echo ('Unable to grab medication name from DrugList for specified medication ID.');
                                     }
                                 }
                             } else {
@@ -133,7 +135,6 @@
                 </button>
                 <div class="collapse hideContent patientMenuBox" id="labResultsBox">
                     <div class="labResults card card-body patientMenuItem">
-                        Lab Results
                         <?php
                             $note_id = $_POST['note_id'] ?? 1;
                             $patient_id = $_POST['patient_id'] ?? 1;
@@ -487,58 +488,58 @@
                             <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
                                 <legend>Labs</legend>
                                 <label for="cbc">CBC</label>
-                                <input type="checkbox" id="cbc" name="general_labs[]" value="CBC">
+                                <input type="checkbox" id="cbc" name="labs[]" value="CBC">
                                 <label for="cmp">CMP</label>
-                                <input type="checkbox" id="cmp" name="general_labs[]" value="CMP">
+                                <input type="checkbox" id="cmp" name="labs[]" value="CMP">
                                 <label for="tsh">TSH</label>
-                                <input type="checkbox" id="tsh" name="general_labs[]" value="TSH">
+                                <input type="checkbox" id="tsh" name="labs[]" value="TSH">
                                 <label for="free_t4">Free T4</label>
-                                <input type="checkbox" id="free_t4" name="general_labs[]" value="Free T4">
+                                <input type="checkbox" id="free_t4" name="labs[]" value="Free T4">
                                 <label for="hemoglobin_a1c">Hemoglobin A1C</label>
-                                <input type="checkbox" id="hemoglobin_a1c" name="general_labs[]" value="Hemoglobin A1C">
+                                <input type="checkbox" id="hemoglobin_a1c" name="labs[]" value="Hemoglobin A1C">
                                 <label for="lipids">Lipids</label>
-                                <input type="checkbox" id="lipids" name="general_labs[]" value="Lipids">
+                                <input type="checkbox" id="lipids" name="labs[]" value="Lipids">
                                 <label for="ferritin">Ferritin</label>
-                                <input type="checkbox" id="ferritin" name="general_labs[]" value="Ferritin">
+                                <input type="checkbox" id="ferritin" name="labs[]" value="Ferritin">
                                 <label for="iron_sat">Iron Sat</label>
-                                <input type="checkbox" id="iron_sat" name="general_labs[]" value="Iron Sat">
+                                <input type="checkbox" id="iron_sat" name="labs[]" value="Iron Sat">
                                 <label for="magnesium">Magnesium</label>
-                                <input type="checkbox" id="magnesium" name="general_labs[]" value="Magnesium">
+                                <input type="checkbox" id="magnesium" name="labs[]" value="Magnesium">
                                 <label for="crp">CRP</label>
-                                <input type="checkbox" id="crp" name="general_labs[]" value="CRP">
+                                <input type="checkbox" id="crp" name="labs[]" value="CRP">
                                 <label for="prolactin">Prolactin</label>
-                                <input type="checkbox" id="prolactin" name="general_labs[]" value="Prolactin">
+                                <input type="checkbox" id="prolactin" name="labs[]" value="Prolactin">
                                 <label for="copper">Copper</label>
-                                <input type="checkbox" id="copper" name="general_labs[]" value="Copper">
+                                <input type="checkbox" id="copper" name="labs[]" value="Copper">
                                 <label for="zinc">Zinc</label>
-                                <input type="checkbox" id="zinc" name="general_labs[]" value="Zinc">
+                                <input type="checkbox" id="zinc" name="labs[]" value="Zinc">
                                 <label for="ekg">EKG</label>
-                                <input type="checkbox" id="ekg" name="general_labs[]" value="EKG">
+                                <input type="checkbox" id="ekg" name="labs[]" value="EKG">
                                 <br>
                                 <fieldset id="vitaminlabs">
                                     <legend>Vitamin Labs</legend>
                                     <label for="vitamin_d">Vitamin D</label>
-                                    <input type="checkbox" id="vitamin_d" name="vitamin_labs[]" value="Vitamin D">
+                                    <input type="checkbox" id="vitamin_d" name="labs[]" value="Vitamin D">
                                     <label for="vitamin_b12">Vitamin B12</label>
-                                    <input type="checkbox" id="vitamin_b12" name="vitamin_labs[]" value="Vitamin B12">
+                                    <input type="checkbox" id="vitamin_b12" name="labs[]" value="Vitamin B12">
                                     <label for="vitamin_b1">Vitamin B1</label>
-                                    <input type="checkbox" id="vitamin_b1" name="vitamin_labs[]" value="Vitamin B1">
+                                    <input type="checkbox" id="vitamin_b1" name="labs[]" value="Vitamin B1">
                                     <label for="vitamin_b2">Vitamin B2</label>
-                                    <input type="checkbox" id="vitamin_b2" name="vitamin_labs[]" value="Vitamin B2">
+                                    <input type="checkbox" id="vitamin_b2" name="labs[]" value="Vitamin B2">
                                 </fieldset>
                                 <fieldset>
                                     <legend>STI Tests</legend>
                                     <label for="lab4">Gonorrhea</label>
-                                    <input type="checkbox" id="gonorrhea" name="sti_tests[]" value="Gonorrhea">
+                                    <input type="checkbox" id="gonorrhea" name="labs[]" value="Gonorrhea">
                                     <label for="lab4">Chlamydia</label>
-                                    <input type="checkbox" id="chlamydia" name="sti_tests[]" value="Chlamydia">
+                                    <input type="checkbox" id="chlamydia" name="labs[]" value="Chlamydia">
                                     <label for="lab4">HIV</label>
-                                    <input type="checkbox" id="hiv" name="sti_tests[]" value="HIV">
+                                    <input type="checkbox" id="hiv" name="labs[]" value="HIV">
                                     <label for="lab4">Syphilis</label>
-                                    <input type="checkbox" id="syphilis" name="sti_tests[]" value="Syphilis">
+                                    <input type="checkbox" id="syphilis" name="labs[]" value="Syphilis">
                                 </fieldset>
                                 <label for="pregnancy">Pregnancy</label>
-                                <input type="checkbox" id="pregnancy" name="general_labs[]" value="Pregnancy">
+                                <input type="checkbox" id="pregnancy" name="labs[]" value="Pregnancy">
                             </fieldset>
                             <label for="diagnosis">Diagnosis:</label>
                             <input type="text" id="diagnosis" name="diagnosis" required>
