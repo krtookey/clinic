@@ -162,14 +162,13 @@
                 </select>      
                 <br>
                 <label for="dosage_type">Type:</label>
-                <input type="text" list="dosagetypes" id="dosage_type" value="Tablet" name="dosage_type">
-                <datalist id="dosagetypes">
-                    <option value="Tablet">
-                    <option value="Capsule">
-                    <option value="Chewable"> 
-                    <option value="Liquid">  
-                    <option value="Other">  
-                </datalist>
+                <select type="text" list="dosagetypes" id="dosage_type" name="dosage_type">
+                    <option value="Tablet" selected>Tablet</option>
+                    <option value="Capsule">Capsule</option>
+                    <option value="Chewable">Chewable</option>
+                    <option value="Liquid">Liquid</option>
+                    <option value="Other">Other</option>
+                </select>
                 <label for="route">Route:</label>
                 <select id="route" name="route">
                     <option value="Oral" selected>Oral</option>
@@ -211,7 +210,7 @@
                     <option value="30">30 days</option>
                 </select>
                 <label for="total_quantity">Quantity: </label> 
-                <input type="number" id="quantity" name="quantity" max="100"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
+                <input type="number" id="quantity" name="quantity" value="14" max="100"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
                 <label for="refills">Refills: </label>
                 <input type="number" id="refills" name="refills" value="1" max="10">
             </fieldset>
