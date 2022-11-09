@@ -3,10 +3,6 @@
 //include 'pharma_lab_forms.php';
 $addscript = <<<ADDSCRIPT
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="es6-promise.auto.min.js"></script>
-<script src="jspdf.min.js"></script>
-<script src="html2canvas.min.js"></script>
-<script src="html2pdf.min.js"></script>
 ADDSCRIPT;
 echo($addscript);
 
@@ -14,6 +10,8 @@ include_once 'dbConnection.php';
 
 $status = 0;
 
+$patient_id = $_POST["patient_id"];
+$user_id = $_POST["user_id"];
 $pharmacy = $_POST["pharmacy"] ?? '';
 $drugname = $_POST["drugname"] ?? '';
 $dosage = $_POST["dosage_num"] . $_POST["unit"] . " " .$_POST["dosage_type"] ?? '';
@@ -38,7 +36,7 @@ if ($quantity != intval($quantity_calc)){
 }
 
 // Getting patient_id from Medical Records page
-$patient_id = "1"; // PLACEHOLDER
+//$patient_id = "1"; // PLACEHOLDER
 
 // Getting patient info for prescription
 $pinfo_sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
@@ -63,11 +61,11 @@ $address_state = $row["state_abbr"];
 $address_zip = $row["zip"];
 
 // Grabbing doctor_id from logged in user
-$doctor_id = "1"; // PLACEHOLDER
+//$doctor_id = "1"; // PLACEHOLDER
 
 // Grabbing doctor name based on doctor_id
 
-$drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $doctor_id . "';";
+$drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
 $drname_result = $conn->query($drname_sql);
 $row = $drname_result->fetch_assoc();
 $doctor_name = $row["user_name"];
@@ -113,8 +111,7 @@ $prescription_text = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
 <p>$pharmacy</p>
 <p><u>$firstname $lastname   $DOB  Sex: $sex</u></p>
-<p>$address_street
-$address_city $address_state, $address_zip</p>
+<p>$address_street $address_city $address_state, $address_zip</p>
 <p>Prescribing Doctor: $doctor_name</p>
 <p>$drugname $dosage - $route</p>
 <p>Quantity: $quantity -- Refills: $refills</p>
@@ -127,8 +124,9 @@ echo ($prescription_text);
 $prescription_pdf_link = <<<PRESCRIPTIONLINK
 <script>
 function createPDF(){
-    var element = document.getElementById('pdf_text');
-    html2pdf(element);
+    const element = document.getElementById('pdf_text');
+    html2pdf().from(element).save();
+    console.log(element);
 }
 </script>
 <button onclick='createPDF()'>Create PDF</button>
@@ -141,7 +139,7 @@ echo "<br><br>" . $prescription_pdf_link;
 // Adding the data into the Prescriptions table
 $scrip_database = <<<PRESCRIPTIONDATABASE
 INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, status) 
-VALUES ('$patient_id', '$doctor_id', '$pharmacy_id', '$drug_id', '$dosage', '$route', '$usage_details', '$quantity', '$refills', '$usage_info', '$status');
+VALUES ('$patient_id', '$user_id', '$pharmacy_id', '$drug_id', '$dosage', '$route', '$usage_details', '$quantity', '$refills', '$usage_info', '$status');
 PRESCRIPTIONDATABASE;
 
 if($conn->query($scrip_database) === TRUE){

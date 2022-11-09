@@ -61,6 +61,14 @@
                 aria-expanded="false"
                 aria-controls="medicationListBox">
                     Medication List
+                    <?php
+                    /*
+                    $sql = <<SCRIP_LIST_FOR_PATIENT
+
+                    SCRIP_LIST_FOR_PATIENT;
+                    $result = $conn->query($sql);
+                    */
+                    ?>
                 </button>
                 <div
                 class="collapse card card-body patientMenuBox hideContent medicationList"
@@ -128,7 +136,7 @@
 
                         <!-- PHARMACY GROUP! Pharmacy order form goes here ---------------------------------------------------->
                         <form action="prescription_orders.php" method="post" target="prescriptionlinkdisplay" id="prescriptionform">
-                        <script>
+                        <script type="text/javascript">
                             function calcquantity(){
                                 qtyperdose = eval(document.getElementById("qtyperdose").value);
                                 frequency = eval(document.getElementById("frequency").value);
@@ -141,59 +149,52 @@
                         </script>
                             <div id="patient_info">
                                 <?php 
+                                    $user_id = $POST['user_id'] ?? 1;
+                                    $patient_id = $POST['patient_id'] ?? 1;
+                                    $idfields = <<<IDFIELDS
+                                    <input type="text" id="patient_id" name="patient_id" value="$patient_id" hidden>
+                                    <input type="text" id="user_id" name="user_id" value="$user_id" hidden>
+                                    IDFIELDS;
+                                    echo($idfields);
                                     //Need to get patient name and DOB from medical records views
-                                /*
-                                    $servername = "localhost";
-                                    $username = "username";
-                                    $password = "password";
-                                    $dbname = "myDB";
-                                    // Create connection
-                                    $conn = new mysqli($servername, $username, $password, $dbname);
-                                    // Check connection
-                                    if ($conn->connect_error) {
-                                    die("Connection failed: " . $conn->connect_error);
-                                    }
                                 
                                     $sql = "SELECT first_name, last_name, DOB FROM Patient WHERE patient_id ='" . $patient_id . "';";
                                     $result = $conn->query($sql);
-                                
                                     if ($result->num_rows > 0){
-                                        $row = $result->fetch_assoc()
+                                        $row = $result->fetch_assoc();
                                         $patient_name = $row["first_name"] . ' ' . $row["last_name"];
                                         $patient_dob = $row["DOB"];
                                     } else {
                                         echo "0 results";
                                     }
-                                    $conn->close();
-                                    */
-                                    $patient_name = "John Doe"; // PLACEHOLDER
-                                    $patient_dob = "10/12/1996"; // PLACEHOLDER
+                                    
+                                    //$patient_name = "John Doe"; // PLACEHOLDER
+                                    //$patient_dob = "10/12/1996"; // PLACEHOLDER
                                     
                                     echo("<b>". $patient_name . "</b>  <b>  " . $patient_dob . "</b>");
                                     echo("<br><br>");
                                     echo('<label for="pharmacy">Pharmacy: </label>');
-                                    /*
+                                    
                                     // Get pharmacy_id for patient
                                     $sql = "SELECT pharmacy_id FROM Patient where patient_id = '" . $patient_id . "';";
                                     $result = $conn->query($sql);
-
                                     if ($result->num_rows > 0){
-                                    $row = $result->fetch_assoc();
-                                    $patient_pharmacy_id = $row["pharmacy_id"]; 
+                                        $row = $result->fetch_assoc();
+                                        $patient_pharmacy_id = $row["pharmacy_id"]; 
+                                    }
 
                                     // Get pharmacy_id for pharmacy_id
                                     $sql = "SELECT pharmacy_name FROM Pharmacy where pharmacy_id = '" . $patient_pharmacy_id . "';";
                                     $result = $conn->query($sql);
-
                                     if ($result->num_rows > 0){
-                                    $row = $result->fetch_assoc();
-                                    $pharmacy_name = $row["pharmacy_name"]; 
-
+                                        $row = $result->fetch_assoc();
+                                        $pharmacy_name = $row["pharmacy_name"]; 
+                                    }
                                     //$conn->close();
-                                    */
-                                    $patient_pharmacy = "Nick's Funky Pharmacy"; // PLACEHOLDER
+                                    
+                                    $pharmacy_name = "Nick's Funky Pharmacy"; // PLACEHOLDER
                                     $pharmacyinput = <<<PHARM_INPUT
-                                    <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" default="$patient_pharmacy" required>
+                                    <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" default="$pharmacy_name" required>
                                     PHARM_INPUT;
                                     echo $pharmacyinput;
                                     
@@ -202,17 +203,6 @@
                             </div>
                             <datalist id="pharmacy_list">
                                 <?php  
-                                    $servername = "localhost";
-                                    $username = "root";
-                                    $password = "";
-                                    $dbname = "clinic";
-                                    // Create connection
-                                    $conn = new mysqli($servername, $username, $password, $dbname);
-                                    // Check connection
-                                    if ($conn->connect_error) {
-                                    die("Connection failed: " . $conn->connect_error);
-                                    }
-                                
                                     $sql = "SELECT pharmacy_name FROM Pharmacy";
                                     $result = $conn->query($sql);
 
@@ -235,19 +225,7 @@
                                 <label for="drugname">Drug Name: </label>
                                 <input type="text" list="druglist" id="drugname" name="drugname" required>
                                 <datalist id="druglist">
-                                    <?php 
-                                    
-                                        $servername = "localhost";
-                                        $username = "root";
-                                        $password = "";
-                                        $dbname = "clinic";
-                                        // Create connection
-                                        $conn = new mysqli($servername, $username, $password, $dbname);
-                                        // Check connection
-                                        if ($conn->connect_error) {
-                                        die("Connection failed: " . $conn->connect_error);
-                                        }
-                                    
+                                    <?php                                
                                         $sql = "SELECT medication_name, generic_name FROM DrugList;";
                                         $result = $conn->query($sql);
 
@@ -347,7 +325,7 @@
                             <br>
                             <textarea rows="10" cols="40" id="usage_info" name="usage_info"></textarea>   
                             <br>
-                            <input type="submit" value="Submit">
+                            <input type="submit" value="Submit"> 
                             <iframe name="prescriptionlinkdisplay"></iframe>
                         </form>
                     </div>
@@ -369,9 +347,16 @@
                         <form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform">
                             <div id="patient_info">
                                 <?php 
+                                    $user_id = $POST['user_id'] ?? 1;
+                                    $patient_id = $POST['patient_id'] ?? 1;
+                                    $idfields = <<<IDFIELDS
+                                    <input type="text" id="patient_id" name="patient_id" value="$patient_id" hidden>
+                                    <input type="text" id="user_id" name="user_id" value="$user_id" hidden>
+                                    IDFIELDS;
+                                    echo($idfields);
                                     //Need to get patient name and DOB from medical records views
-                                    $patient_name = "John Doe"; // PLACEHOLDER
-                                    $patient_dob = "10/12/1996"; // PLACEHOLDER
+                                    //$patient_name = "John Doe"; // PLACEHOLDER
+                                    //$patient_dob = "10/12/1996"; // PLACEHOLDER
                                     echo("<b>". $patient_name . "</b>  <b>  " . $patient_dob . "</b>");
                                 ?>
                             </div>
@@ -381,6 +366,7 @@
                             <datalist id="labdestlist">
                                 <?php 
                                 //--Look to this for help: https://www.w3schools.com/php/php_mysql_select.asp
+                                    /*
                                     $servername = "localhost";
                                     $username = "root";
                                     $password = "";
@@ -391,7 +377,8 @@
                                     if ($conn->connect_error) {
                                     die("Connection failed: " . $conn->connect_error);
                                     }
-                                
+                                    */
+
                                     $sql = "SELECT labdest_name FROM LabDest";
                                     $result = $conn->query($sql);
 
