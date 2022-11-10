@@ -155,7 +155,7 @@ echo "<br><br>" . $prescription_pdf_link;
 // Adding the data into the Prescriptions table
 $scrip_database = <<<PRESCRIPTIONDATABASE
 INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, status) 
-VALUES ('$patient_id', '$user_id', '$pharmacy_id', '$drug_id', '$dosage', '$route', '$usage_details', '$quantity', '$refills', '$usage_info', '$status');
+VALUES ("$patient_id", "$user_id", "$pharmacy_id", "$drug_id", "$dosage", "$route", "$usage_details", "$quantity", "$refills", "$usage_info", "$status");
 PRESCRIPTIONDATABASE;
 
 if($conn->query($scrip_database) === TRUE){
