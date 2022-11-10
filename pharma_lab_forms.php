@@ -399,7 +399,7 @@
         </form>
 
 
-        <form action="addnewlabdest.php" method="post" target="laborderlinkdisplay" id="addlabdestform">
+        <form action="addnewlabdest.php" method="post" target="" id="addlabdestform">
             <b>Add Lab Destination</b>
             <br>
             <label for="labdest_name">Lab Name:</label>
@@ -422,5 +422,106 @@
             <input type="email" id="labdest_email" name="labdest_email">
             <input type="submit" value="Submit">
         </form>
+
+
+        <form action="insertlabresults.php" method="post" target="" id="insertlabresultsform">
+            <b>Insert Lab Results</b>
+            <br>
+            <label for="">Lab </label>
+
+            <?php
+                $note_id = $_POST['note_id'] ?? 1;
+                $patient_id = $_POST['patient_id'] ?? 1;
+                $sql = <<<LAB_IDS_FOR_PATIENT
+                SELECT laborder_id FROM Note WHERE note_id = '$note_id';
+                LAB_IDS_FOR_PATIENT;
+                // Grabbing laborder_id and lab_id from current note
+                $result = $conn->query($sql);
+                if ($row = $result->fetch_assoc()){
+                    $laborder_id = $row['laborder_id']; 
+                    //echo("Laborder_id: " . $laborder_id);
+                    $results_sql = <<<RESULTS
+                    SELECT lab_id, results FROM OrderedLabs WHERE laborder_id = '$laborder_id';
+                    RESULTS;
+                    // Grabbing results for specific lab based on laborder_id and lab_id of current note
+                    $result = $conn->query($results_sql);
+                    if ($result->num_rows > 0){
+                        while($row = $result->fetch_assoc()){
+                            $lab_id = $row['lab_id'];
+                            $results = $row['results'];
+                            $lab_name_sql = <<<LABNAME
+                            SELECT lab_name from LabList WHERE lab_id = '$lab_id';
+                            LABNAME;  
+                            $result = $conn->query($lab_name_sql);
+                            if ($row = $result->fetch_assoc()){
+                                if ($results == null){
+                                    $results = "No results.";
+                                }
+                                $lab_name = $row['lab_name']; 
+                                $results_info = <<<RESULTSINFO
+                                <br><br><p><u>$lab_name</u><br>$results</p>
+                                RESULTSINFO;
+                                echo($results_info);
+                            }   
+                        }
+                        
+                            
+                    }
+                } else {
+                    echo('Unable to retrieve medication list for this user.');
+                }
+            ?>
+
+        </form>
+
+        <?php // This is the code for viewing prescription and lab orders in patient.php. Copy this into there when it is ready.
+            $patient_id = $_POST['patient_id'] ?? 1;
+            // Grabbing all prescriptions and their data for patient
+            $get_prescriptions = <<<GETPRESCRIPTIONS
+            SELECT * FROM Prescriptions WHERE patient_id = '$patient_id';
+            GETPRESCRIPTIONS;
+
+
+            // Grabbing laborder_ids for all lab orders made by patient
+            $getlabids = <<<GETLABIDS
+            SELECT laborder_id FROM LabOrders WHERE patient_id = '$patient_id';
+            GETLABIDS;
+            $getlabids_result = $conn->query($getlabids);
+            if ($result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $laborder_id = $row['laborder_id']; 
+                    $results_sql = <<<RESULTS
+                    SELECT lab_id, results FROM OrderedLabs WHERE laborder_id = '$laborder_id';
+                    RESULTS;
+                    // Grabbing results for specific lab based on laborder_id and lab_id of current note
+                    $result = $conn->query($results_sql);
+                    if ($result->num_rows > 0){
+                        while($row = $result->fetch_assoc()){
+                            $lab_id = $row['lab_id'];
+                            $results = $row['results'];
+                            $lab_name_sql = <<<LABNAME
+                            SELECT lab_name from LabList WHERE lab_id = '$lab_id';
+                            LABNAME;  
+                            $result = $conn->query($lab_name_sql);
+                            if ($row = $result->fetch_assoc()){
+                                if ($results == null){
+                                    $results = "No results.";
+                                }
+                                $lab_name = $row['lab_name']; 
+                                $results_info = <<<RESULTSINFO
+                                <br><br><p><u>$lab_name</u><br>$results</p>
+                                RESULTSINFO;
+                                echo($results_info);
+                            }   
+                        }        
+                    }
+                }
+            }
+
+            
+
+
+        ?>
+
     </body>
 </html>

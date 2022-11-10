@@ -87,6 +87,10 @@ if ($result->num_rows == 1){
 }
 
 
+// Getting date of order
+$currentDate = new date();
+$orderdate = $currentDate->format('Y-m-d');
+
 // Getting everything ready to be sent
 
 
@@ -146,8 +150,8 @@ echo "<br><br>" . $laborder_pdf_link;
 
 // Adding the data into the Prescriptions table
 $scrip_database = <<<LABDATABASE
-INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis)
-VALUES ('$patient_id', '$user_id', '$labdest_id', '$providers_to_cc', '$diagnosis');
+INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis, orderdate)
+VALUES ("$patient_id", "$user_id", "$labdest_id", "$providers_to_cc", "$diagnosis", "$orderdate");
 LABDATABASE;
 
 if ($conn->query($scrip_database) === TRUE){
