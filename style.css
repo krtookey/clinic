@@ -172,6 +172,10 @@ input[type="text"] {
     font-weight: bold;
   }  
 
+#lab_checkboxes label {
+    padding-left:2%;
+}
+
 /*********** End Medical Profile Page **************/
 
 /*********** Begin Patient Page **************/
