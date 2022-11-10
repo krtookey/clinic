@@ -127,9 +127,14 @@ echo ($prescription_text);
 $prescription_pdf_link = <<<PRESCRIPTIONLINK
 <script>
 function createPDF(){
-    const element = document.getElementById('pdf_text');
-    html2pdf().from(element).save();
-    console.log(element);
+    var element = document.getElementById('pdf_text');
+    var opt = {
+        margin: 1,
+        filename: 'prescription_order.pdf',
+        html2canvas:  { scale: 2, height: 500, width: 550, scrollX: 0, scrollY: 0},
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }
+    html2pdf().set(opt).from(element).save();
 }
 </script>
 <button onclick='createPDF()'>Create PDF</button>

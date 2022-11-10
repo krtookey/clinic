@@ -3,10 +3,6 @@
 //include 'pharma_lab_forms.php';
 $addscript = <<<ADDSCRIPT
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="es6-promise.auto.min.js"></script>
-<script src="jspdf.min.js"></script>
-<script src="html2canvas.min.js"></script>
-<script src="html2pdf.min.js"></script>
 ADDSCRIPT;
 echo($addscript);
 
@@ -16,10 +12,11 @@ $user_id = $_POST["user_id"];
 $labdest = $_POST["labdest"];
 $providers_to_cc = $_POST["providers_to_cc"];
 $diagnosis = $_POST["diagnosis"];
-if (!is_null($_POST["labs"])){
-    $all_labs = $_POST["labs"];
+if (is_null($_POST["labs"])){
+    echo("No labs selected. Please select a lab before ordering.");
+    exit(1);
 }
-
+$all_labs = $_POST["labs"];
 
 // Getting patient_id from Medical Records page
 //$patient_id = "1"; // PLACEHOLDER
@@ -135,11 +132,10 @@ function createPDF(){
     var opt = {
         margin: 1,
         filename: 'lab_order.pdf',
-        image: {type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
+        html2canvas:  { scale: 2, height: 500, width: 550, scrollX: 0, scrollY: 0},
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
     }
-    html2pdf(element);
+    html2pdf().set(opt).from(element).save();
 }
 </script>
 <button onclick='createPDF()'>Create PDF</button>
