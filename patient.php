@@ -314,7 +314,7 @@
                                     ?>
                                 </datalist>
                                 <label for="dosage">Dosage:</label>
-                                <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" required>
+                                <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" max="10000" required>
                                 <datalist id="dosage_nums">
                                     <option value="1">   
                                     <option value="2"> 
@@ -389,7 +389,7 @@
 
                             <label for="usage_info">Usage Info and General Notes: </label>
                             <br>
-                            <textarea rows="10" cols="40" id="usage_info" name="usage_info"></textarea>   
+                            <textarea rows="10" cols="40" id="usage_info" name="usage_info" maxlength="4900"></textarea>     
                             <br>
                             <input type="submit" value="Submit"> 
                             <iframe name="prescriptionlinkdisplay"></iframe>

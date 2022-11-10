@@ -28,6 +28,7 @@ $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*i
 $refills = $_POST["refills"];
 $usage_info = $_POST["usage_info"];
 
+
 //echo ("<br>pharmacy " . $pharmacy . "<br>" . "drugname " . $drugname . "<br>" . "dosage " . $dosage . "<br>" . "route " . $route . "<br>" . "usage_details " .$usage_details . "<br>" . "quantity " . $quantity . "<br>" . "quantity_calc " . $quantity_calc . "<br>" . "refills " . $refills . "<br>" . "Usageinfo " . $usage_info);
 
 // Validation of results
@@ -110,6 +111,13 @@ if ($pharmaid_result->num_rows == 1){
 // Sending the data to the pharmacy
 
 $prescription_text = <<<PRESCRIPTIONTEXT
+<style>
+    #pdf_text{
+        border-style: 2px solid #262626;
+        border-radius:25px;
+        background: EEE1C7;
+    }
+</style>
 <div id="pdf_text">
 <h3>Prescription</h3>
 <p>$pharmacy</p>
