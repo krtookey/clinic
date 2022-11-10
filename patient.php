@@ -118,7 +118,7 @@
                     Review Of Systems
                 </button>
                 <div
-                class="collapse card card-body patientMenuBox hideContent reviewOfSystems"
+                class="collapse card card-body patientMenuBox hideContent"
                 id="reviewOfSystemsBox">
                     <div class="reviewOfSystems patientMenuItem">
                         Copy of review of systems form answers completed earlier
@@ -548,6 +548,38 @@
                         </form>
                     </div>
                 </div>
+                <!-- Lab Order History -->
+                <button
+                class="btn btn-primary patientSideMenuBtn"
+                type="button"
+                data-button-name='labOrderHistory'
+                aria-expanded="false"
+                aria-controls="labOrderHistoryBox">
+                    Lab Order History
+                </button>
+                <div
+                class="collapse card card-body patientMenuBox hideContent"
+                id="labOrderHistoryBox">
+                    <div class="labOrderHistory patientMenuItem">
+                        <!-- Put code here -->
+                    </div>
+                </div>
+                <!-- Prescriptions -->
+                <button
+                class="btn btn-primary patientSideMenuBtn"
+                type="button"
+                data-button-name='prescriptions'
+                aria-expanded="false"
+                aria-controls="prescriptionsBox">
+                    Prescriptions
+                </button>
+                <div
+                class="collapse card card-body patientMenuBox hideContent"
+                id="prescriptionsBox">
+                    <div class="prescriptions patientMenuItem">
+                        <!-- Put code here -->
+                    </div>
+                </div>
                 <!-- Note History -->
                 <a
                 class="btn btn-primary patientSideMenuLink"
@@ -563,9 +595,12 @@
                         <h3 class="card-title">10/27/22 - Today</h3>
                         <form id='patientNoteForm'>
                             <?php
-                                $sql = "SELECT Note.appointment_id, Note.cc, Note.hist_illness, Note.ros_id, Note.med_profile_id, Note.social_hist, Note.med_hist, Note.psych_hist, Note.assessment, Note.plan, Note.laborder_id, Note.labdest_id, Note.demographics, Note.comments
+                                $sql = "SELECT Note.appointment_id, Note.cc, Note.hist_illness, Note.ros_id, Note.med_profile_id, Note.social_hist, Note.med_hist, Note.psych_hist, Note.assessment, Note.plan, Note.laborder_id, Note.labdest_id, Note.demographics, Note.comments, Patient.prev_note_id
                                 FROM Note
-                                WHERE Note.patient_id = ?";
+                                INNER JOIN Patient
+                                ON Patient.prev_note_id = Note.note_id
+                                WHERE Note.note_id = Patient.prev_note_id
+                                AND Patient.patient_id = ?";
                                 //Prepare statment
                                 $stmt = $conn->prepare($sql);
                                 //Bind ? with the POST variable from the prvious page 
@@ -622,21 +657,6 @@
                                 ?></textarea
                                 >
                             </div>
-                            <!-- Review Of Symptoms -->
-                            <div class="mb-3 formField" id="reviewOfSymptomsContainer">
-                                <label
-                                for="reviewOfSymptoms"
-                                id="reviewOfSymptomsLabel">Reivew Of Symptoms</label>
-                                <textarea
-                                rows="1"
-                                cols="100"
-                                class="form-control"
-                                id="reviewOfSymptoms"
-                                name="reviewOfSymptoms"
-                                ><?php
-                                    echo "How should ROS be displayed?";
-                                ?></textarea>
-                            </div>
                             <!-- Social -->
                             <div class="mb-3 formField" id="socialContainer">
                                 <label for="social" id="socialLabel">Social</label>
@@ -687,20 +707,6 @@
                                 name="medicalHist"
                                 ><?php
                                     echo $row['6'];
-                                ?></textarea>
-                            </div>
-                            <!-- Family History -->
-                            <div class="mb-3 formField" id="familyHistContainer">
-                                <label for="social" id="familyHistLabel"
-                                >Family History</label>
-                                <textarea
-                                rows="1"
-                                cols="100"
-                                class="form-control"
-                                id="familyHist"
-                                name="familyHist"
-                                ><?php
-                                    echo $row['12'];
                                 ?></textarea>
                             </div>
                             <!-- Assessment/Formulation -->
