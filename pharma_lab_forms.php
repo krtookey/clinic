@@ -482,7 +482,7 @@
             $prescriptions_result = $conn->query($get_prescriptions);
             while ($prescriptions_row = $prescriptions_result->fetch_assoc()){
                 // Prescription result variables
-                $user_id = $prescriptions_row['user_id'];
+                $user_id = $prescriptions_row['doctor_id'];
 
                 $pharmacy_id = $prescriptions_row['pharmacy_id'];
                 $pharmaid_sql = 'SELECT pharmacy_name FROM pharmacy WHERE pharmacy_id="' . $pharmacy_id . '";';
@@ -494,13 +494,18 @@
                         // Reject form, tell user to enter another pharmacy name, have a form to add new pharmacy
                 }
 
-                $drug_id = $prescriptions_row['drug_id'];
-                $drugname_sql = "SELECT medication_name, generic_name FROM DrugList WHERE drug_id ='" . $drug_id . "';";
+                $drug_id = $prescriptions_row['medication_id'];
+                $drugname_sql = "SELECT medication_name, generic_name FROM DrugList WHERE medication_id ='" . $drug_id . "';";
                 $drugname_result = $conn->query($drugname_sql);
                 $row = $drugname_result->fetch_assoc();
                 $brand_name = $row['medication_name'];
                 $generic_name = $row['generic_name'];
                 
+                // Select doctor name from user id
+                $drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
+                $drname_result = $conn->query($drname_sql);
+                $row = $drname_result->fetch_assoc();
+                $doctor_name = $row["user_name"];
 
                 $dosage = $prescriptions_row['dosage'];
                 $route = $prescriptions_row['route'];
@@ -511,11 +516,24 @@
                 $duration = $usage_arr[2];
                 $quantity = $prescriptions_row['quantity'];
                 $refills = $prescriptions_row['refills'];
-                $usage_info = $prescriptions_row['usage_info'];
+                $general_notes = $prescriptions_row['usage_info'];
                 $orderdate = $prescriptions_row['orderdate'];
                 $status = $prescriptions_row['status'];
+
+                $prescription_details_print = <<<PRESCIPTIONS_PRINT
+                <p>$pharmacy_name</p>
+                <p>$orderdate</p>
+                <p>Prescribing Doctor: $doctor_name</p>
+                <p>$brand_name ($generic_name) $dosage - $route</p>
+                <p>Quantity: $quantity -- Refills: $refills</p>
+                <p>$qtyperdose per dose, $frequency times per day, for $duration days</p>
+                <p>Usage Info: $usage_info</p>
+                PRESCIPTIONS_PRINT;
             }
+            
+            
             // Grabbing laborder_ids for all lab orders made by patient
+            $patient_id = $_POST['patient_id'] ?? 1;
             $getlabids = <<<GETLABIDS
             SELECT laborder_id FROM LabOrders WHERE patient_id = '$patient_id';
             GETLABIDS;
@@ -523,6 +541,7 @@
             if ($result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
                     $laborder_id = $row['laborder_id']; 
+                    $labs_ordered = array();
                     $results_sql = <<<RESULTS
                     SELECT lab_id, results FROM OrderedLabs WHERE laborder_id = '$laborder_id';
                     RESULTS;
@@ -541,6 +560,7 @@
                                     $results = "No results.";
                                 }
                                 $lab_name = $row['lab_name']; 
+                                $labs_ordered[] = $labname;
                                 $results_info = <<<RESULTSINFO
                                 <br><br><p><u>$lab_name</u><br>$results</p>
                                 RESULTSINFO;
@@ -548,6 +568,32 @@
                             }   
                         }        
                     }
+                    $lab_order_text1 = <<<PRESCRIPTIONTEXT
+                    <div id="pdf_text">
+                    <h3>Lab Order</h3>
+                    <p>$labdest</p>
+                    <p>Ordering Doctor: $doctor_name</p>
+                    <p>$providers_to_cc</p> 
+
+                    PRESCRIPTIONTEXT;
+
+                    $lab_order_text2 = '<p>';
+                    foreach ($all_labs as $x => $val){ 
+                        if ($x > 0){
+                            $lab_order_text2 = $lab_order_text2 . ", " . $val;
+                        } else {
+                            $lab_order_text2 = $lab_order_text2 . $val;
+                        }
+                    }
+                    $lab_order_text2 = $lab_order_text2 . "</p>";
+                    
+                    $lab_order_text3 = <<<LABORDERTEXT
+                    <p>Diagnosis: $diagnosis</p>
+                    </div>
+                    LABORDERTEXT;
+
+                    $lab_order_text = $lab_order_text1 . $lab_order_text2 . $lab_order_text3;
+                    echo($lab_order_text);
                 }
             }
 
