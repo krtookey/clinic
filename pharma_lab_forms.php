@@ -142,7 +142,7 @@
                     ?>
                 </datalist>
                 <label for="dosage">Dosage:</label>
-                <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" max='10000' required>
+                <input type="number" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" max='10000' required>
                 <datalist id="dosage_nums">
                     <option value="1">   
                     <option value="2"> 
@@ -474,6 +474,7 @@
         </form>
 
         <?php // This is the code for viewing prescription and lab orders in patient.php. Copy this into there when it is ready.
+            echo('Here is where the code to show prescriptions starts.');
             $patient_id = $_POST['patient_id'] ?? 1;
             // Grabbing all prescriptions and their data for patient
             $get_prescriptions = <<<GETPRESCRIPTIONS
@@ -516,23 +517,27 @@
                 $duration = $usage_arr[2];
                 $quantity = $prescriptions_row['quantity'];
                 $refills = $prescriptions_row['refills'];
-                $general_notes = $prescriptions_row['usage_info'];
+                $general_notes = $prescriptions_row['general_notes'];
                 $orderdate = $prescriptions_row['orderdate'];
                 $status = $prescriptions_row['status'];
 
                 $prescription_details_print = <<<PRESCIPTIONS_PRINT
+                <div class="prescription_detail_box" style="margin:2%; border-style:solid; border-radius:25px; padding:1em; width:40%;">
                 <p>$pharmacy_name</p>
                 <p>$orderdate</p>
                 <p>Prescribing Doctor: $doctor_name</p>
                 <p>$brand_name ($generic_name) $dosage - $route</p>
                 <p>Quantity: $quantity -- Refills: $refills</p>
                 <p>$qtyperdose per dose, $frequency times per day, for $duration days</p>
-                <p>Usage Info: $usage_info</p>
+                <p>Usage Info: $general_notes</p>
+                </div>
                 PRESCIPTIONS_PRINT;
+                echo($prescription_details_print);
             }
             
             
             // Grabbing laborder_ids for all lab orders made by patient
+            echo('Here is where the code to show lab orders starts.');
             $patient_id = $_POST['patient_id'] ?? 1;
             $getlabids = <<<GETLABIDS
             SELECT laborder_id FROM LabOrders WHERE patient_id = '$patient_id';

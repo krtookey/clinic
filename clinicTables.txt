@@ -319,7 +319,7 @@ CREATE TABLE Prescriptions (
 	quantity    int NOT NULL,
 	refills int NOT NULL,
 	general_notes   varchar(5000),
-	orderdate	date,
+	orderdate 	DATE,
     status  int NOT NULL, 
 	PRIMARY KEY (prescription_id)
 );
@@ -345,7 +345,7 @@ CREATE TABLE LabOrders (
 	labdest_id  int NOT NULL,
 	cc_recipients   varchar(70), 
     diagnosis   varchar(70),
-	orderdate	date,
+	orderdate 	DATE,
 	PRIMARY KEY (laborder_id)
 );
 

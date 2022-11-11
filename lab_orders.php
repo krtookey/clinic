@@ -7,8 +7,8 @@ ADDSCRIPT;
 echo($addscript);
 
 include_once 'dbConnection.php';
-$patient_id = $_POST["patient_id"];
-$user_id = $_POST["user_id"];
+$patient_id = $_POST["patient_id"] ?? 1;
+$user_id = $_POST["user_id"] ?? 1;
 $labdest = $_POST["labdest"];
 $providers_to_cc = $_POST["providers_to_cc"];
 $diagnosis = $_POST["diagnosis"];
@@ -88,8 +88,7 @@ if ($result->num_rows == 1){
 
 
 // Getting date of order
-$currentDate = new date();
-$orderdate = $currentDate->format('Y-m-d');
+$orderdate = date('Y-m-d');
 
 // Getting everything ready to be sent
 

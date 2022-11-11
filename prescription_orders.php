@@ -9,18 +9,18 @@ echo($addscript);
 include_once 'dbConnection.php';
 
 $status = 0;
-
-$patient_id = $_POST["patient_id"];
-$user_id = $_POST["user_id"];
+//echo ("post patient id: " . $_POST['patient_id']);
+$patient_id = $_POST["patient_id"] ?? 1;
+$user_id = $_POST["user_id"] ?? 1;
 $pharmacy = $_POST["pharmacy"] ?? '';
 $drugname = $_POST["drugname"] ?? '';
 $dosage = $_POST["dosage_num"] . $_POST["unit"] . " " .$_POST["dosage_type"] ?? '';
 $route = $_POST["route"] ?? '';
-$qtyperdose = $_POST["qtyperdose"] ?? "1";
-$frequency = $_POST["frequency"] ?? "1";
-$duration = $_POST["duration"] ?? "1";
+$qtyperdose = $_POST["qtyperdose"] ?? 1;
+$frequency = $_POST["frequency"] ?? 1;
+$duration = $_POST["duration"] ?? 1;
 $usage_details = $_POST["qtyperdose"] . " " . $_POST["frequency"] . " " . $_POST["duration"];
-$quantity = $_POST["quantity"] ?? "1";
+$quantity = $_POST["quantity"] ?? 1;
 $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*intval($_POST["duration"]));
 
 //echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
@@ -40,6 +40,7 @@ if ($quantity != intval($quantity_calc)){
 //$patient_id = "1"; // PLACEHOLDER
 
 // Getting patient info for prescription
+//$patient_id = 1;
 $sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
 $result = $conn->query($sql);
 if ($row = $result->fetch_assoc()){
@@ -71,7 +72,7 @@ if ($row = $result->fetch_assoc()){
 $drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
 $drname_result = $conn->query($drname_sql);
 $row = $drname_result->fetch_assoc();
-$doctor_name = $row["user_name"];
+$doctor_name = $row["user_name"] ?? 1;
 
 // Getting medication ID for drugname
 $drugid_sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
@@ -108,9 +109,7 @@ if ($pharmaid_result->num_rows == 1){
 
 
 // Getting date of order
-$currentDate = new date();
-$orderdate = $currentDate->format('Y-m-d');
-
+$orderdate = date('Y-m-d');
 
 // Getting everything ready to be sent
 

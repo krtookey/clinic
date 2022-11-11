@@ -314,7 +314,7 @@
                                     ?>
                                 </datalist>
                                 <label for="dosage">Dosage:</label>
-                                <input type="text" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" max="10000" required>
+                                <input type="number" list="dosage_nums" id="dosage_num" name="dosage_num" size="10" max="10000" required>
                                 <datalist id="dosage_nums">
                                     <option value="1">   
                                     <option value="2"> 
