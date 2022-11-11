@@ -430,7 +430,6 @@
             <label for="">Lab </label>
 
             <?php
-                $note_id = $_POST['note_id'] ?? 1;
                 $patient_id = $_POST['patient_id'] ?? 1;
                 $sql = <<<LAB_IDS_FOR_PATIENT
                 SELECT laborder_id FROM Note WHERE note_id = '$note_id';
@@ -480,8 +479,42 @@
             $get_prescriptions = <<<GETPRESCRIPTIONS
             SELECT * FROM Prescriptions WHERE patient_id = '$patient_id';
             GETPRESCRIPTIONS;
+            $prescriptions_result = $conn->query($get_prescriptions);
+            while ($prescriptions_row = $prescriptions_result->fetch_assoc()){
+                // Prescription result variables
+                $user_id = $prescriptions_row['user_id'];
 
+                $pharmacy_id = $prescriptions_row['pharmacy_id'];
+                $pharmaid_sql = 'SELECT pharmacy_name FROM pharmacy WHERE pharmacy_id="' . $pharmacy_id . '";';
+                $pharmaid_result = $conn->query($pharmaid_sql);
+                $row = $pharmaid_result->fetch_assoc();
+                if ($pharmaid_result->num_rows == 1){
+                    $pharmacy_name = $row["pharmacy_name"];
+                } else {
+                        // Reject form, tell user to enter another pharmacy name, have a form to add new pharmacy
+                }
 
+                $drug_id = $prescriptions_row['drug_id'];
+                $drugname_sql = "SELECT medication_name, generic_name FROM DrugList WHERE drug_id ='" . $drug_id . "';";
+                $drugname_result = $conn->query($drugname_sql);
+                $row = $drugname_result->fetch_assoc();
+                $brand_name = $row['medication_name'];
+                $generic_name = $row['generic_name'];
+                
+
+                $dosage = $prescriptions_row['dosage'];
+                $route = $prescriptions_row['route'];
+                $usage_details = $prescriptions_row['usage_details'];
+                $usage_arr = explode(' ', $usage_details);
+                $qtyperdose = $usage_arr[0];
+                $frequency = $usage_arr[1];
+                $duration = $usage_arr[2];
+                $quantity = $prescriptions_row['quantity'];
+                $refills = $prescriptions_row['refills'];
+                $usage_info = $prescriptions_row['usage_info'];
+                $orderdate = $prescriptions_row['orderdate'];
+                $status = $prescriptions_row['status'];
+            }
             // Grabbing laborder_ids for all lab orders made by patient
             $getlabids = <<<GETLABIDS
             SELECT laborder_id FROM LabOrders WHERE patient_id = '$patient_id';
