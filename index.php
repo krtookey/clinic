@@ -18,6 +18,37 @@
             $patient_id = $_POST['patient_id'];
         } 
         $patient_id = $_POST['patient_id'] ?? '';
+        if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
+            $appointment_id = $_POST['appointment_id'];
+        }
+        $appointment_id = $_POST['appointment_id'] ?? '1'; //For Testing
+        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+            $user_id = $_POST['user_id'];
+        }
+        $user_id = $_POST['user_id'] ?? '1';    //For Testing.
+        $user_id = 4;                           //For Testing.
+        $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
+        $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
+        $nursePermission = 1;                   // Permission Level for nurses - access to limited patient information.
+        $userPermission = 0;
+    
+        //Get User's Permission Level.
+        if ($user_id !== '' ){
+            $qstr = "SELECT DISTINCT permission FROM Users WHERE user_id = $user_id ";
+            //Debug: echo $qstr;
+            $qselect = $conn->prepare($qstr);
+            if(! $qselect){
+                echo "<p>Error: could not execute query. <br> </p>";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                exit;
+            }
+            $qselect->execute();
+            $result = $qselect->get_result();
+            $row = $result->fetch_row();
+            $userPermission = $row[0];
+            $qselect->free_result();
+        }
 
         //Patient Search. 
 
@@ -164,7 +195,6 @@
 
         //End Patient Search.
     ?>
-
     <div class="placeholder"></div>
     <div class="whiteCard">
         <h2>Patient Search</h2>
@@ -180,7 +210,7 @@
                 </div>
                 <div class="searchItem">
                     <label>Date of Birth:</label>
-                    <input type="text" name="dob" value="YYYY-MM-DD">
+                    <input type="text" name="dob" placeholder="YYYY-MM-DD">
                 </div>
             </div>
             <div class="saveButton">
@@ -188,43 +218,70 @@
             </div>
         </form>
     </div>
-    <div class="whiteCard">
-        <a href="appointments">Appointments</a> 
-        <form action="./medicalProfile.php" method="POST">
-            <input type="submit" name="submitMR" value="Medical Profile">
-            <?php
-                //Store patient header information in POST buffer.
-                if($patient_id != 0){
-                    echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                }
-            ?>
-        </form>
-        <form action="./patient.php" method="POST">
-            <input type="submit" name="submitP" value="Note">
-            <?php
-                //Store patient header information in POST buffer.
-                if($patient_id != 0){
-                    echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                }
-            ?>
-        </form>
-        <form action="./noteHistory.php" method="POST">
-            <input type="submit" name="submitNH" value="Note History">
-            <?php
-                //Store patient header information in POST buffer.
-                if($patient_id != 0){
-                    echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                }
-            ?>
-        </form>
-    </div>
+
     <footer>
-        <a href="new user">New User</a>
-        <a href="./newPatient.php">New Patient</a>
+        <div>
+            <?php
+                if($userPermission >= $managmentPermission){
+                echo "  <form action='new user' method='POST'>
+                            <input type='submit' name='submitNU' value='New User'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>";
+                }
+            ?>
+        </div>
+        <div>
+            <form action="./newPatient.php" method="POST">
+                <input type="submit" name="submitNP" value="New Patient">
+                <?php
+                    //Store patient_id, appointment_id, user_id in POST buffer.
+                    echo "  <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>";
+                ?>
+            </form>
+        </div>
+        <div>
+            <a href="appointments">Appointments</a> 
+        </div>
+        <?php
+            if($userPermission >= $nursePermission){
+            echo "  <div>
+                        <form action='./medicalProfile.php' method='POST'>
+                            <input type='submit' name='submitMP' value='Medical Profile'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>";
+                }                
+        
+            if($userPermission >= $doctorPermission){
+            echo "  <div>
+                        <form action='./patient.php' method='POST'>
+                            <input type='submit' name='submitP' value='Note'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>";
+                }
+        
+            if($userPermission >= $doctorPermission){
+            echo "  
+                    <div>
+                        <form action='./noteHistory.php' method='POST'>
+                            <input type='submit' name='submitNH' value='Note History'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>";
+                    }
+        ?>
     </footer>
     <?php
         $conn->close();
     ?>
 </body>
 </html>
-

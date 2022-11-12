@@ -21,10 +21,16 @@
             $patient_id = $_POST['patient_id'];
         }
         $patient_id = $_POST['patient_id'] ?? ''; 
-
-        //$appointment = $_POST['appointment'] ?? '';
-        $appointment = 1; //for testing
-        $user = 3; //for testing
+        if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
+            $appointment_id = $_POST['appointment_id'];
+        }
+        $appointment_id = $_POST['appointment_id'] ?? '';
+        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+            $user_id = $_POST['user_id'];
+        }
+        $user_id = $_POST['user_id'] ?? '';
+        $doctorPermission = 2;       //Permission Level needed to access Family History and Patient Note.
+        $userPermission = 0;         //Permission Level of User.
         
         //Header.
 
@@ -88,6 +94,25 @@
         }
 
         //Debug: echo "<br><br><br><br><pre>"; print_r($_POST); echo "</pre>";    
+
+        //Get User's Permission Level.
+        if ($user_id !== '' ){
+            $qstr = "SELECT DISTINCT permission FROM Users WHERE user_id = $user_id ";
+            //Debug: echo $qstr;
+            $qselect = $conn->prepare($qstr);
+            if(! $qselect){
+                echo "<p>Error: could not execute query. <br> </p>";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                exit;
+            }
+            $qselect->execute();
+            $result = $qselect->get_result();
+            $row = $result->fetch_row();
+            $userPermission = $row[0];
+            $qselect->free_result();
+        }
+
     ?>
     <div class="placeholder"></div>
     <div class="whiteCard">
@@ -136,7 +161,7 @@
                     $num = 0;   //Counts the return to see if the appointment_id has already been assigned a Medical Profile.
                         
                     //See if a Medical Profile already exists for a given appointment 
-                    $qstr = "SELECT appointment_id FROM MedicalProfile WHERE appointment_id = $appointment ";
+                    $qstr = "SELECT appointment_id FROM MedicalProfile WHERE appointment_id = $appointment_id ";
                     $qselect = $conn->prepare($qstr);
                     if(!$qselect){
                         echo "<p>Error: could not execute query. <br> </p>";
@@ -155,7 +180,7 @@
 
                     //Insert Medical Profile data, for a new appointment.
                     if($num === 0){
-                        $qstr = "INSERT INTO MedicalProfile (bmi, p_weight, height, blood_pressure, pulse, pulse_ox, appointment_id, weight_meas) VALUES (?, ?, ?, ?, ?, ?, $appointment, '$weight_meas' ) ";
+                        $qstr = "INSERT INTO MedicalProfile (bmi, p_weight, height, blood_pressure, pulse, pulse_ox, appointment_id, weight_meas) VALUES (?, ?, ?, ?, ?, ?, $appointment_id, '$weight_meas' ) ";
                         $qinsert = $conn->prepare($qstr);
                         if(!$qinsert){
                             echo "<p>Error: could not execute query. <br> </p>";
@@ -169,7 +194,7 @@
                         $qinsert->free_result();
 
                         //Get new med_profile_id.
-                        $qstr = "SELECT med_profile_id FROM MedicalProfile WHERE appointment_id = $appointment ";
+                        $qstr = "SELECT med_profile_id FROM MedicalProfile WHERE appointment_id = $appointment_id ";
                         $qselect = $conn->prepare($qstr);
                         $qselect->execute();
                         $qselect->bind_result($med_profile_id);
@@ -186,7 +211,7 @@
 
                         $num_note = 0;
                         //See if a Note already exists for a given appointment. 
-                        $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment ";
+                        $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment_id ";
                         $qselect = $conn->prepare($qstr);
                         if(!$qselect){
                             echo "<p>Error: could not execute query. <br> </p>";
@@ -227,7 +252,7 @@
                     } elseif ($num === 1) {
                         $qstr = "UPDATE MedicalProfile 
                                 SET bmi = ?, p_weight = ?, height = ?, blood_pressure = ?, pulse = ?, pulse_ox = ?, weight_meas = '$weight_meas' 
-                                WHERE appointment_id = $appointment ";
+                                WHERE appointment_id = $appointment_id ";
                         $qupdate = $conn->prepare($qstr);
                         if(!$qupdate){
                         echo "<p>Error: could not execute query. <br> </p>";
@@ -284,7 +309,8 @@
                 <input type="hidden" name="note">
                 <?php
                     echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                    //echo "<input type='hidden' name='rosSave' value=''>";
+                    echo "<input type='hidden' name='appointment_id' value='$appointment_id'>";
+                    echo "<input type='hidden' name='user_id' value='$user_id'>";
                 ?>
         </form>
     </div>
@@ -339,7 +365,7 @@
                 $num = 0;  
                     
                 //See if a ROS already exists for a given appointment 
-                $qstr = "SELECT appointment_id FROM ReviewOfSystem WHERE appointment_id = $appointment ";
+                $qstr = "SELECT appointment_id FROM ReviewOfSystem WHERE appointment_id = $appointment_id ";
                 $qselect = $conn->prepare($qstr);
                 if(!$qselect){
                     echo "<p>Error: could not execute query. <br> </p>";
@@ -370,7 +396,7 @@
 
                     //Debug: echo "<br><br><br><br>String: $ros_str"; echo "<br>String: $ros_true"; echo "<br>String: $exam";
 
-                    $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment ) ";
+                    $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment_id ) ";
                     //Debug: echo "<br>$qstr";
                     $qinsert = $conn->prepare($qstr);
                     if(!$qinsert){
@@ -385,7 +411,7 @@
                     $qinsert->free_result();
 
                     //Get new ros_id.
-                    $qstr = "SELECT ros_id FROM ReviewOfSystem WHERE appointment_id = $appointment ";
+                    $qstr = "SELECT ros_id FROM ReviewOfSystem WHERE appointment_id = $appointment_id ";
                     $qselect = $conn->prepare($qstr);
                     $qselect->execute();
                     $qselect->bind_result($ros_id);
@@ -400,7 +426,7 @@
                     //Add ros_id to the Note.
                     $num_note = 0;
                     //See if a Note already exists for a given appointment. 
-                    $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment ";
+                    $qstr = "SELECT note_id FROM Note WHERE appointment_id = $appointment_id ";
                     $qselect = $conn->prepare($qstr);
                     if(!$qselect){
                         echo "<p>Error: could not execute query. <br> </p>";
@@ -449,7 +475,7 @@
                         $ros_true = $ros_true.'true, ';
                     }
 
-                    $qstr = "DELETE FROM ReviewOfSystem WHERE appointment_id = $appointment" ;
+                    $qstr = "DELETE FROM ReviewOfSystem WHERE appointment_id = $appointment_id" ;
                     $qupdate = $conn->prepare($qstr);
                     if(!$qupdate){
                     echo "<p>Error: could not execute query. <br> </p>";
@@ -461,7 +487,7 @@
                     $qupdate->store_result();
                     $qupdate->free_result();
                     
-                    $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment ) ";
+                    $qstr = "INSERT INTO ReviewOfSystem ($ros_str last_eye, comments, appointment_id) VALUES ($ros_true ?, ?, $appointment_id ) ";
                     //Debug: echo "<br>$qstr";
                     $qinsert = $conn->prepare($qstr);
                     if(!$qinsert){
@@ -1025,23 +1051,164 @@
                 <input type="hidden" name="note">
                 <?php
                     echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                    //echo "<input type='hidden' name='profileSave' value=''>";
+                    echo "<input type='hidden' name='appointment_id' value='$appointment_id'>";
+                    echo "<input type='hidden' name='user_id' value='$user_id'>";
                 ?>
             </div>
         </form>
     </div>
     <?php
-        if($user == 3){
+
+        //Family History.
+    
+        // Set user permissions to limit access to the family history.
+        // Debug: echo "User Permission: $userPermission";
+        if($userPermission >= $doctorPermission){
         echo "<div class='whiteCard'>
-                <h2>Family History</h2> <br>";
-                //fetch family history.
-        echo "<iframe style='display: none; ' name='historyFrame'>";
-                //handle form.
-        echo "</iframe>
-            <form action='./medicalProfile.php' method='post'>
+                <h2>Family History</h2> <br> 
+                    <div id='familyHistory'>";
+                        //fetch family history.
+                        if(!isset($_POST['histEdit']) || $_POST['histEdit'] != 'Edit'){
+                            $_POST['histEdit'] = '';
+                        }
+                        if(!isset($_POST['histSave']) || $_POST['histSave'] != 'Save'){
+                            $_POST['histSave'] = '';
+                        }
+                        if(!isset($_POST['memberDelete']) || $_POST['memberDelete'] != 'Delete'){
+                            $_POST['memberDelete'] = '';
+                        }
+                        if(isset($_POST['relationship']) && $_POST['relationship'] != ''){
+                            $family = $_POST['relationship'];
+                        }
+                        if(isset($_POST['conditionBox']) && $_POST['conditionBox'] != ''){
+                            $conditionBox = $_POST['conditionBox'];
+                        }
+                        $family = $_POST['relationship'] ?? '';
+                        $conditionBox = $_POST['conditionBox'] ?? '';
+                        $num = 0;                                   //Array index for $members and $hists.
+                        $members = [];                              //Array of family members.
+                        $hists = [];                                //Array of conditions.
+                        $present = 'false';                         //If family member is already part of the family history, present == true.
+
+                        if(isset($_POST['patient_id']) || $patient_id !== 0){
+
+                            $qstr = "SELECT relationship, condit FROM FamilyHistory WHERE patient_id = $patient_id ";
+                            $qselect = $conn->prepare($qstr);
+                            if(!$qselect){
+                                echo "<p>Error: could not execute query. <br> </p>";
+                                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                exit;
+                            }
+                            $qselect->execute();
+                            $qselect->store_result();
+                            $qselect->bind_result($relationship, $condition);
+                            
+                            while($qselect->fetch()){
+                                echo    "<div class='familyMember'>
+                                            <h3>$relationship</h3>
+                                            <p>$condition</p><br>
+                                        </div>";
+                                $members[$num] = $relationship;
+                                $hists[$num] = $condition;
+                                $num = $num + 1;   
+                            }
+                            if(isset($_POST['histEdit']) && $_POST['histEdit'] == 'Edit'){
+                            
+                                $i = 0;
+                                while($i < $num){
+                                    if($members[$i] == $family){
+                                        $conditionBox = $hists[$i];
+                                    }
+                                    $i = $i + 1;
+                                } 
+                            }
+                            $qselect->free_result();
+
+                            if(isset($_POST['histSave']) && $_POST['histSave'] == 'Save'){
+
+                                $i = 0;
+                                while($i < $num && $present != 'true'){
+                                    if($members[$i] == $family){
+                                        $present = 'true';
+                                    } else {
+                                        $present = 'false';
+                                    }
+                                    $i = $i + 1;
+                                } 
+
+                                if($present == 'false'){
+                                    $qstr = "INSERT INTO FamilyHistory (patient_id, relationship, condit) VALUES ($patient_id, ?, ? ) ";
+                                    //Debug: echo "<br>$qstr";
+                                    $qinsert = $conn->prepare($qstr);
+                                    if(!$qinsert){
+                                        echo "<p>Error: could not execute query. <br> </p>";
+                                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                        exit;
+                                    }
+                                    $qinsert->bind_param("ss", $family, $conditionBox);
+                                    $qinsert->execute();
+                                    $qinsert->store_result();
+                                    $qinsert->free_result();
+                                } else {
+
+                                    $qstr = "UPDATE FamilyHistory 
+                                            SET condit = ? 
+                                            WHERE relationship = '$family' AND patient_id = $patient_id ";
+                                    $qupdate = $conn->prepare($qstr);
+                                    if(!$qupdate){
+                                        echo "<p>Error: could not execute query. <br> </p>";
+                                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                        exit;
+                                    }
+                                    $qupdate->bind_param("s", $conditionBox);
+                                    $qupdate->execute();
+                                    $qupdate->store_result();
+                                    $qupdate->free_result();
+
+                                } 
+                            }
+                            if(isset($_POST['memberDelete']) && $_POST['memberDelete'] == 'Delete'){
+                                $present = 'false';
+                                $i = 0;
+                                while($i < $num && $present != 'true'){
+                                    if($members[$i] == $family){
+                                        $present = 'true';
+                                    } else {
+                                        $present = 'false';
+                                    }
+                                    $i = $i + 1;
+                                }
+                                if($present == 'true'){
+                                    $qstr = "DELETE FROM FamilyHistory WHERE patient_id = $patient_id AND relationship = ? ";
+                                    $qdelete = $conn->prepare($qstr);
+                                    if(!$qdelete){
+                                        echo "<p>Error: could not execute query. <br> </p>";
+                                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                        exit;
+                                    }
+                                    $qdelete->bind_param("s", $family);
+                                    $qdelete->execute();
+                                    $qdelete->store_result();
+                                    $qdelete->free_result();
+                                }
+                            }     
+                        }
+        echo "      </div>
+             <iframe style='display: none; ' name='historyFrame'>";
+
+        echo "</iframe>";
+        //Debug: echo "<pre>"; print_r($_POST); echo" </pre>";
+        
+        echo"
+            <form action='./medicalProfile.php' method='post' >
                 <div class='dropBox'>
                     <label for='famliy'>Relationship:</label>
-                    <select name='family' id='family'>
+                    <input list='family' maxlength='29' name='relationship' value='$family'>
+                    <datalist name='relationship' id='family' >
                         <option value='Mother'>Mother</option>
                         <option value='Father'>Father</option>
                         <option value='Sister'>Sister</option>
@@ -1058,16 +1225,20 @@
                         <option value='Paternal Aunt'>Paternal Aunt</option>
                         <option value='Maternal Uncle'>Maternal Uncle</option>
                         <option value='Paternal Uncle'>Paternal Uncle</option>
-                    </select>
-                </div>
+                    </datalist>
+                </div><br>
                 <div class='commentBox'>
-                    <label>Condition:</label> <br>
-                    <textarea name='condition' maxlength='16777214'></textarea>
+                    <label>Conditions: </label> <br>
+                    <textarea name='conditionBox' maxlength='5999'> $conditionBox </textarea>
                     </div> <br>
                 <div class='saveButton'> 
-                    <input type='submit' value='Add' name='histSave' id='histSave'>
+                    <input type='submit' value='Edit' name='histEdit' id='histEdit'>
+                    <input type='submit' value='Save' name='histSave' id='histSave'>
+                    <input type='submit' value='Delete' name='memberDelete' id='memberDelete'>
                 </div>
                 <input type='hidden' name='patient_id' value='$patient_id'>
+                <input type='hidden' name='appointment_id' value='$appointment_id'>
+                <input type='hidden' name='user_id' value='$user_id'>
             </form> 
         </div>";
         }
@@ -1077,21 +1248,24 @@
             <form action="./index.php" method="POST">
                 <input type="submit" name="submitI" value="Home">
                 <?php
-                    //Store patient header information in POST buffer.
-                    if($patient_id != 0){
-                        echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                    }
+                    //Store patient_id, appointment_id, and user_id in POST buffer.
+                    echo "  <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>";
                 ?>
             </form>
-            <form action="./patient.php" method="POST">
-                <input type="submit" name="submitP" value="Note">
-                <?php
-                    //Store patient header information in POST buffer.
-                    if($patient_id != 0){
-                        echo "<input type='hidden' name='patient_id' value='$patient_id'>";
-                    }
-                ?>
-            </form>
+        </div>
+        <div>
+            <?php
+            if($userPermission >= $doctorPermission){
+            echo "  <form action='./patient.php' method='POST'>
+                        <input type='submit' name='submitP' value='Note'>
+                        <input type='hidden' name='patient_id' value='$patient_id'>
+                        <input type='hidden' name='appointment_id' value='$appointment_id'>
+                        <input type='hidden' name='user_id' value='$user_id'>
+                    </form>";
+                }
+            ?>
         </div>
     </footer>
     <?php
