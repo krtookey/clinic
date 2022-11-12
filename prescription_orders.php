@@ -72,7 +72,7 @@ if ($row = $result->fetch_assoc()){
 $drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
 $drname_result = $conn->query($drname_sql);
 $row = $drname_result->fetch_assoc();
-$doctor_name = $row["user_name"] ?? 1;
+$doctor_name = $row["user_name"];
 
 // Getting medication ID for drugname
 $drugid_sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
