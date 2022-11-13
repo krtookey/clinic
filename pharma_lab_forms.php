@@ -424,43 +424,47 @@
         </form>
 
 
-        <form action="insertlabresults.php" method="post" target="" id="insertlabresultsform">
+        <form action="insertlabresults.php" method="post" target="insertlabresultsframe" id="insertlabresultsform">
             <b>Insert Lab Results</b>
             <br>
-            <label for="">Lab </label>
-
+            <label for="lab_name">Lab Name</label> 
             <?php
                 $patient_id = $_POST['patient_id'] ?? 1;
+                $note_id = $_POST['note_id'] ?? 1;
                 $sql = <<<LAB_IDS_FOR_PATIENT
                 SELECT laborder_id FROM Note WHERE note_id = '$note_id';
                 LAB_IDS_FOR_PATIENT;
                 // Grabbing laborder_id and lab_id from current note
-                $result = $conn->query($sql);
-                if ($row = $result->fetch_assoc()){
-                    $laborder_id = $row['laborder_id']; 
+                $laborderid_result = $conn->query($sql);
+                if ($laborderid_row = $laborderid_result->fetch_assoc()){
+                    $laborder_id = $laborderid_row['laborder_id']; 
+                    $laborder_id_field = <<<LABORDERIDFIELD
+                    <input type="text" id="laborder_id" name="laborder_id" value="$laborder_id" hidden>
+                    <select id="lab_name" name="lab_name">
+                    LABORDERIDFIELD;
+                    echo($laborder_id_field);
                     //echo("Laborder_id: " . $laborder_id);
                     $results_sql = <<<RESULTS
                     SELECT lab_id, results FROM OrderedLabs WHERE laborder_id = '$laborder_id';
                     RESULTS;
                     // Grabbing results for specific lab based on laborder_id and lab_id of current note
-                    $result = $conn->query($results_sql);
-                    if ($result->num_rows > 0){
-                        while($row = $result->fetch_assoc()){
-                            $lab_id = $row['lab_id'];
-                            $results = $row['results'];
+                    $labid_result = $conn->query($results_sql);
+                    if ($labid_result->num_rows > 0){
+                        while($labid_row = $labid_result->fetch_assoc()){
+                            $lab_id = $labid_row['lab_id'];
+                            //$results = $row['results'];
+                            //echo("Looking at " . $lab_id . " --- ");
                             $lab_name_sql = <<<LABNAME
                             SELECT lab_name from LabList WHERE lab_id = '$lab_id';
                             LABNAME;  
-                            $result = $conn->query($lab_name_sql);
-                            if ($row = $result->fetch_assoc()){
-                                if ($results == null){
-                                    $results = "No results.";
-                                }
-                                $lab_name = $row['lab_name']; 
-                                $results_info = <<<RESULTSINFO
-                                <br><br><p><u>$lab_name</u><br>$results</p>
-                                RESULTSINFO;
-                                echo($results_info);
+                            $labname_result = $conn->query($lab_name_sql);
+                            if ($labname_row = $labname_result->fetch_assoc()){
+                                $lab_name = $labname_row['lab_name']; 
+                                $lab_name_option = <<<LABNAMEOPTION
+                                <option value="$lab_name">$lab_name</option>
+                                LABNAMEOPTION;
+                                echo ($lab_name_option);
+                                //echo($results_info);
                             }   
                         }
                         
@@ -470,7 +474,13 @@
                     echo('Unable to retrieve medication list for this user.');
                 }
             ?>
-
+            </select>
+            <br>
+            <label for="enter_results">Enter Results</label>
+            <br>
+            <textarea rows="6" cols="30" id="enter_results" name="enter_results" maxlength="4900"></textarea>   
+            <input type="submit" value="Submit">
+            <iframe name="insertlabresultsframe"></iframe>
         </form>
 
         <?php // This is the code for viewing prescription and lab orders in patient.php. Copy this into there when it is ready.
@@ -510,6 +520,7 @@
                 $doctor_name = $row["user_name"];
             } else {
                 echo("There is no name associated with the ID on this prescription. Please contact an admin.");
+                $doctor_name = "Unknown";
             }
 
             $dosage = $prescriptions_row['dosage'];
@@ -526,7 +537,7 @@
             $status = $prescriptions_row['status'];
 
             $prescription_details_print = <<<PRESCIPTIONS_PRINT
-            <div class="prescription_detail_box" style="margin:2%; border-style:solid; border-radius:25px; padding:1em; width:40%;">
+            <div class="prescription_detail_box" style="border-style:solid; border-radius:25px; padding:1em;">
             <p>$pharmacy_name</p>
             <p>$orderdate</p>
             <p>Prescribing Doctor: $doctor_name</p>
@@ -538,6 +549,7 @@
             PRESCIPTIONS_PRINT;
             echo($prescription_details_print); 
         }
+        
             
             
             // Grabbing laborder_ids for all lab orders made by patient
@@ -547,46 +559,78 @@
             SELECT laborder_id FROM LabOrders WHERE patient_id = '$patient_id';
             GETLABIDS;
             $getlabids_result = $conn->query($getlabids);
-            if ($result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $laborder_id = $row['laborder_id']; 
+            if ($getlabids_result->num_rows > 0){
+                while($getlabids_row = $getlabids_result->fetch_assoc()){
+                    //echo("This is a thing for the things.");
+                    $laborder_id = $getlabids_row['laborder_id']; 
                     $labs_ordered = array();
                     $results_sql = <<<RESULTS
-                    SELECT lab_id FROM OrderedLabs WHERE laborder_id = '$laborder_id';
+                    SELECT lab_id, results FROM OrderedLabs WHERE laborder_id = '$laborder_id';
                     RESULTS;
                     // Grabbing results for specific lab based on laborder_id and lab_id of current note
-                    $result = $conn->query($results_sql);
-                    if ($result->num_rows > 0){
-                        while($row = $result->fetch_assoc()){
-                            $lab_id = $row['lab_id'];
+                    $labid_result = $conn->query($results_sql);
+                    if ($labid_result->num_rows > 0){
+                        while($labid_row = $labid_result->fetch_assoc()){
+                            $lab_id = $labid_row['lab_id'];
+                            $results = $labid_row['results'];
                             $lab_name_sql = <<<LABNAME
                             SELECT lab_name from LabList WHERE lab_id = '$lab_id';
                             LABNAME;  
-                            $result = $conn->query($lab_name_sql);
-                            if ($row = $result->fetch_assoc()){
-                                if ($results == null){
-                                    $results = "No results.";
-                                }
-                                $lab_name = $row['lab_name']; 
-                                $labs_ordered[] = $labname;
+                            $labname_result = $conn->query($lab_name_sql);
+                            if ($labname_row = $labname_result->fetch_assoc()){
+                                $lab_name = $labname_row['lab_name']; 
+                                $labs_ordered[] = $lab_name;
                                 $results_info = <<<RESULTSINFO
                                 <br><br><p><u>$lab_name</u><br>$results</p>
                                 RESULTSINFO;
-                                echo($results_info);
+                                //echo($results_info);
                             }   
                         }        
                     }
+
+                    // Grab all info about laborder from laborder_id
+                    $laborderinfo_sql = <<<LABORDERINFO
+                    SELECT labdest_id, doctor_id, cc_recipients, diagnosis, orderdate FROM LabOrders WHERE laborder_id = '$laborder_id'; 
+                    LABORDERINFO;
+                    $laborderinfo_results = $conn->query($laborderinfo_sql);
+                    $laborderinfo_row = $laborderinfo_results->fetch_assoc(); 
+                    // Assign variables from laborderinfo
+                    $labdest_id = $laborderinfo_row['labdest_id'];
+                    $doctor_id = $laborderinfo_row['doctor_id'];
+                    $cc_recipients = $laborderinfo_row['cc_recipients'];
+                    $diagnosis = $laborderinfo_row['diagnosis'];
+                    $orderdate = $laborderinfo_row['orderdate'];
+
+
+                    // Get labdest_name from labdest_id
+                    $labdestname_sql = <<<LABDESTNAME
+                    SELECT labdest_name from LabDest WHERE labdest_id = '$labdest_id';
+                    LABDESTNAME;
+                    $labdestname_results = $conn->query($labdestname_sql);
+                    $labdestname_row = $labdestname_results->fetch_assoc(); 
+                    $labdest_name = $labdestname_row['labdest_name'];
+
+
+                    // Get doctor name from doctor_id
+                    $doctorname_sql = <<<DOCTORNAME
+                    SELECT user_name from Users WHERE user_id = '$doctor_id';
+                    DOCTORNAME;
+                    $doctorname_results = $conn->query($doctorname_sql);
+                    $doctorname_row = $doctorname_results->fetch_assoc(); 
+                    $doctor_name = $doctorname_row['user_name'];
+
+
                     $lab_order_text1 = <<<PRESCRIPTIONTEXT
-                    <div id="pdf_text">
-                    <h3>Lab Order</h3>
-                    <p>$labdest</p>
+                    <div class="laborder_detail_box" style="border-style:solid; border-radius:25px; padding:1em;">
+                    <p>$labdest_name</p>
+                    <p>$orderdate</p>
                     <p>Ordering Doctor: $doctor_name</p>
-                    <p>$providers_to_cc</p> 
+                    <p>$cc_recipients</p> 
 
                     PRESCRIPTIONTEXT;
 
                     $lab_order_text2 = '<p>';
-                    foreach ($all_labs as $x => $val){ 
+                    foreach ($labs_ordered as $x => $val){ 
                         if ($x > 0){
                             $lab_order_text2 = $lab_order_text2 . ", " . $val;
                         } else {

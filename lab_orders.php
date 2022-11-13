@@ -155,7 +155,7 @@ LABDATABASE;
 
 if ($conn->query($scrip_database) === TRUE){
     $laborderid_sql = <<<SELECTLABORDER
-    SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$user_id' AND diagnosis='$diagnosis';
+    SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$user_id' AND diagnosis='$diagnosis' AND orderdate='$orderdate';
     SELECTLABORDER;
     $laborderid_result = $conn->query($laborderid_sql);
     $row = $laborderid_result->fetch_assoc();
