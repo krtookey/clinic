@@ -1,0 +1,104 @@
+--- addnewlabdest.php
+Script to add new lab destination to database, called by #addlabdestform
+
+--- addnewmeds.php
+Script to add new medication to database, called by #adddrugtodatabase
+
+--- addnewpharmacy.php
+Script to add new pharmacy to database, called by #addpharmacyform
+
+--- buildclinicdb.sql
+Depracated, contains old SQL code to build the database
+
+--- clinicDBUpdates.txt
+Lists updates to SQL database structure
+
+--- clinicData.txt
+Contains SQL to add test data to database
+
+--- clinicTables.txt
+Contains SQL to build database tables
+
+--- dbConnection.php
+Contains details to connect PHP with SQL database, included in all PHP files that connect to database
+
+--- index.php
+Patient search page
+
+--- insertlabresults.php
+Script to add lab results for specified lab within specified lab order to database, called by #insertlabresultsform
+
+--- jquery-3.6.1.js
+Library file for jquery, DO NOT MODIFY!!
+
+--- lab_orders.php
+Script that handles the ordering of labs, called by #labform within laborderform.php
+
+--- laborderform.php
+Contains HTML and PHP for lab order form, calls lab_orders.php when submitted
+
+--- listofcommondrugs.lua
+List of common drugs that were put into database, NOT NEEDED
+
+--- listofcommondrugs.txt
+List of common drugs that were put into database, NOT NEEDED
+
+--- medicalProfile.php
+
+
+--- newPatient.php
+
+
+--- noteHistory.php
+
+
+--- orderfunctions.php
+Contains functions for getting patient data from patient_id and address data from address_id, not currently being used
+
+--- patient.js
+
+
+--- patient.php
+Shows currently open note for current patient, contains sidebar menus to show
+    - Medication List (showmedicationlist.php)
+    - Review of Systems
+    - Lab Results (showlabresults.php)
+    - Family History
+    - Order Pharmacy (prescriptionform.php)
+    - Order Lab (laborderform.php)
+    - Lab Order History (viewlaborders.php)
+    - Prescriptions (viewprescriptions.php)
+    - Note History
+
+--- pharma_lab_forms.php
+Test page for pharmacy group, contains prescription, lab order, add drug, add pharmacy, add lab dest, and insert lab results forms. SHOULD NOT BE REACHABLE BY USERS CLICKING HYPERLINKS!!
+
+--- pharmacy_sql_queries.sql
+Draft SQL queries for Pharmacy group, used to workshop what SQL would be needed
+
+--- prescription_orders.php
+Script that handles the ordering of prescriptions, called by #prescriptionform within prescriptionform.php
+
+--- prescriptionform.php
+Contains HTML and PHP for prescription order form, calls prescription_orders.php when submitted
+
+--- savedsnippets.txt
+Place to store code that was removed but may be needed in the future, currently just contains old SQL to insert lab names into database
+
+--- showlabresults.php
+Script that shows results of all labs ordered within opened patient note, used within patient.php
+
+--- showmedicationlist.php
+Script that shows list of medications that patient is currently taking, used within patient.php
+
+--- style.css
+Style sheet for most pages, contains general style info for all pages and specific sections for each page
+
+--- viewlaborders.php
+Script that grabs past lab orders for a given patient and shows them, used within patient.php
+
+--- viewprescriptions.php
+Script that grabs past prescription orders for a given patient and shows them, used within patient.php
+
+--- whatarethesefiles.txt
+This file, lists what each file does and its purpose to make development easier.
