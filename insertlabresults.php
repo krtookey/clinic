@@ -20,6 +20,8 @@ if ($labidforname_row = $labidforname_result->fetch_assoc()){
     } else {
         echo("The lab results were not updated successfully");
     }
+} else {
+    echo("The lab name selected has no valid lab id. Please contact an administrator.");
 }
 ?>
 
