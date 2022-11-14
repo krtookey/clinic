@@ -1,9 +1,13 @@
 <?php 
 include_once 'dbConnection.php';
 
-$lab_name = $_POST['lab_name'];
-$enter_results = $_POST['enter_results'];
-$laborder_id = $_POST['laborder_id'];
+$lab_name = $_POST['lab_name'] ?? "Unknown";
+$enter_results = $_POST['enter_results'] ?? "None Entered";
+if($enter_results == "None Entered"){
+    echo("Results to enter is empty. Please enter text of results.");
+    exit(1);
+}
+$laborder_id = $_POST['laborder_id'] ?? 1;
 
 // Get lab id for lab name 
 $labidforname_sql = <<<LABIDFORNAME
