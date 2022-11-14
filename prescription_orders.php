@@ -165,6 +165,8 @@ PRESCRIPTIONDATABASE;
 
 if($conn->query($scrip_database) === TRUE){
     echo("The data was inserted into the database correctly. All is well!");
+} else {
+    echo("The data was not inserted into the database correctly. Please contact an administrator.");
 }
 $conn->close();
 ?>

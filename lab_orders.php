@@ -22,28 +22,29 @@ $all_labs = $_POST["labs"];
 //$patient_id = "1"; // PLACEHOLDER
 
 // Getting patient info for prescription
-$sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
-$result = $conn->query($sql);
-if ($row = $result->fetch_assoc()){
-    $firstname = $row["first_name"];
-    $lastname = $row["last_name"];
-    $middlename = $row["middle_name"];
-    $DOB = $row["DOB"];
-    $address_id = $row["address_id"];
-    $sex = $row["sex"];
+$pinfo_sql = "SELECT first_name, last_name, middle_name, DOB, address_id, sex FROM Patient WHERE patient_id='" . $patient_id . "';";
+$pinfo_result = $conn->query($pinfo_sql);
+if ($pinfo_row = $pinfo_result->fetch_assoc()){
+    $firstname = $pinfo_row["first_name"];
+    $lastname = $pinfo_row["last_name"];
+    $middlename = $pinfo_row["middle_name"];
+    $DOB = $pinfo_row["DOB"];
+    $address_id = $pinfo_row["address_id"];
+    $sex = $pinfo_row["sex"];
         // Grabbing patient address data from patient address_id
-    $sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $address_id . "';";
-    $result = $conn->query($sql);
-    if ($row = $result->fetch_assoc()){
-        $address_street = $row["street"];
-        $address_city = $row["city"];
-        $address_state = $row["state_abbr"];
-        $address_zip = $row["zip"];
+    $addr_sql = "SELECT street, city, state_abbr, zip FROM Addresses WHERE address_id='" . $address_id . "';";
+    $addr_result = $conn->query($addr_sql);
+    if ($addr_row = $addr_result->fetch_assoc()){
+        $address_street = $addr_row["street"];
+        $address_city = $addr_row["city"];
+        $address_state = $addr_row["state_abbr"];
+        $address_zip = $addr_row["zip"];
     } else {
         echo('Unable to find address info for specified address ID');
     }
 } else {
     echo('Unable to find info for specified patient');
+    exit(1);
 }
 // Grabbing doctor_id from logged in user
 //$doctor_id = "1"; // PLACEHOLDER
@@ -58,16 +59,14 @@ $doctor_name = $row["user_name"];
 // Grabbing lab_id for lab_name
 $lab_ids = array();
 foreach($all_labs as $x => $val){
-    //echo(" Value: " . $val . " ");
     $sql = "SELECT lab_id FROM LabList WHERE lab_name='" . $val . "';";
     $result = $conn->query($sql);
-    $row = $result->fetch_assoc();
-    //echo("Row: ". $row['lab_id'] . "   "); 
-    if ($row != null){
+    if ($row = $result->fetch_assoc()){
         $lab_ids[] = $row['lab_id'];
+    } else {
+        echo("Unable to find lab id for lab name specified. Pleae contact an administrator.");
     }
 }
-
 // Getting labdest_id for LabDest
 
 $labdestid_sql = "SELECT labdest_id FROM LabDest WHERE labdest_name='" . $labdest . "';";
@@ -86,17 +85,10 @@ if ($result->num_rows == 1){
         // How will we handle if there is not a labdest with the name entered?
 }
 
-
 // Getting date of order
 $orderdate = date('Y-m-d');
 
 // Getting everything ready to be sent
-
-
-
-// Sending the data to the labdest
-
-
 
 $lab_order_text1 = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
@@ -154,20 +146,25 @@ VALUES ("$patient_id", "$user_id", "$labdest_id", "$providers_to_cc", "$diagnosi
 LABDATABASE;
 
 if ($conn->query($scrip_database) === TRUE){
+    // If lab order data was inserted into LabOrders correctly, grab the laborder_id that the database assigns
     $laborderid_sql = <<<SELECTLABORDER
     SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$user_id' AND diagnosis='$diagnosis' AND orderdate='$orderdate';
     SELECTLABORDER;
     $laborderid_result = $conn->query($laborderid_sql);
-    $row = $laborderid_result->fetch_assoc();
-    $laborder_id = $row["laborder_id"];
-    foreach($lab_ids as $x => $val){
-        $order_into_table = <<<ORDERINTOTABLE
-        INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES ('$laborder_id', '$val');
-        ORDERINTOTABLE;
-        if ($conn->query($order_into_table) === TRUE){
-            // Things went well
-        } else {
-            // Things broke
+    if ($row = $laborderid_result->fetch_assoc()){
+        $laborder_id = $row["laborder_id"];
+        //echo("laborderid = " . $laborder_id);
+        foreach($lab_ids as $x => $val){
+            $order_into_table = <<<ORDERINTOTABLE
+            INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES ('$laborder_id', '$val');
+            ORDERINTOTABLE;
+            if ($conn->query($order_into_table) === TRUE){
+                // Things went well
+                //echo("The data was inserted into the database correctly. All is well!");
+            } else {
+                // Things broke
+                //echo("The data was not inserted into the database correctly. Please contact an administrator.");
+            }
         }
     }
 }
