@@ -235,6 +235,17 @@
                 <input type="submit" name="submitNP" value="New Patient">
                 <?php
                     //Store patient_id, appointment_id, user_id in POST buffer.
+                    echo "  <input type='hidden' name='patient_id' value=''>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>";
+                ?>
+            </form>
+        </div>
+        <div>
+            <form action="./editPatient.php" method="POST">
+                <input type="submit" name="submitEP" value="Edit Patient">
+                <?php
+                    //Store patient_id, appointment_id, user_id in POST buffer.
                     echo "  <input type='hidden' name='patient_id' value='$patient_id'>
                             <input type='hidden' name='appointment_id' value='$appointment_id'>
                             <input type='hidden' name='user_id' value='$user_id'>";

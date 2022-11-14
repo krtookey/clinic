@@ -192,3 +192,16 @@ ALTER TABLE LabOrders ADD orderdate date;
 ALTER TABLE Prescriptions ADD orderdate date;
 
 -- End of Update ------------------
+
+-- Add data to EmergencyContact -- November 13, 2022 --------------
+
+INSERT INTO EmergencyContact (contact_name, relationship, phone) VALUES
+  ('Bob Doe', 'Brother', '802-666-7777'),
+  ('Barbie Doe', 'Sister', '802-777-8888'),
+  ('Mandy Dough', 'Daughter', '802-888-9999'),
+  ('John Dough', 'Husband', '301-999-0000');
+
+UPDATE Patient SET emergency_contact1 = 1, emergency_contact2 = 2 WHERE patient_id = 1;
+UPDATE Patient SET emergency_contact1 = 3, emergency_contact2 = 4 WHERE patient_id = 2;
+
+-- End of Update ------------------
