@@ -1090,7 +1090,7 @@
                         $hists = [];                                //Array of conditions.
                         $present = 'false';                         //If family member is already part of the family history, present == true.
 
-                        if(isset($_POST['patient_id']) || $patient_id !== 0){
+                        if(isset($_POST['patient_id']) && $patient_id !== ''){
 
                             $qstr = "SELECT relationship, condit FROM FamilyHistory WHERE patient_id = $patient_id ";
                             $qselect = $conn->prepare($qstr);

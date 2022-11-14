@@ -62,7 +62,7 @@ a:active {
 
 h2 {
     color: #c17817;
-    font-size: 3em;
+    font-size: 2em;
 }
 
 .placeholder {
@@ -371,24 +371,37 @@ a.patientSideMenuLink:active,
 
 /********* Begin New Patient Page ************/
 
-#newPGrid {
+.newPGrid {
     border: 0;
     color: #27474e;
     display: grid;
     grid-template-columns: auto auto;
-    width: 100%;
+    width: 720px;
 }
 
 .newPItem {
-    align-items: flex-start;
+    align-items: flex-end;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    font-size: 1.5em;
+    flex-direction: column;
+    font-size: 1em;
     gap: 1em;
     padding: 0.5em;
-    justify-content: flex-start;
-    width: 75%;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.npItem{
+  color: #27474e;
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  font-size: 1em;
+  gap: 1em;
+  padding: 0.5em;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 /********* End New Patient Page ************/

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Patient</title>
+    <title>Edit Patient</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -56,7 +56,7 @@
         $n = $diff->y;
         return $n;
     }
-
+    
     //Make sure the submitted dob contains a valid date string.
     //validateDate: makes sure that a date string contains a valid date, for the given format.
     //      $date: date string being checked.
@@ -71,7 +71,7 @@
             return $str;
         }
     }
-
+    
     //Variables.
 
     $fname = $_POST['fname'] ?? '';
@@ -109,35 +109,123 @@
     $guard_id = 0;
     $pcp_id = 0;
 
-    ?>
+    //If Editing Patient, get patient information and autofill.
+    if($patient_id !== ''){
+        $qstr = "SELECT DISTINCT a.gender, a.preferred, a.first_name, a.middle_name, a.last_name, a.DOB, a.sex, a.primary_phone, a.secondary_phone, a.email, b.address_id, b.street, b.city, b.state_abbr, b.zip, a.insurance_id, a.pharmacy_id, a.labdest_id, a.minor, a.guardian, c.user_id, c.first_name, c.last_name, a.prev_note_id, a.emergency_contact1, a.emergency_contact2  
+                 FROM Patient AS a 
+                 INNER JOIN Addresses AS b ON a.address_id = b.address_id
+                 INNER JOIN Users AS c ON a.pcp_id = c.user_id
+                 WHERE patient_id = $patient_id ";
+        $qpatient = $conn->prepare($qstr);
+        if(! $qpatient){
+            echo "<p>Error: could not execute query. <br> </p>";
+            echo "<pre> Error Number: " .$conn -> errno. "\n";
+            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+            exit;
+        }
+        $qpatient->execute();
+        $result = $qpatient->get_result();
+        $row = $result->fetch_row();
 
-    <header>New Patient</header>
-    <div class='placeholder'></div>
-    <div class="fullGrid">
-    <div class='whiteCard' class="gridItem1">
-        <h2>New Patient</h2>
+        $gender = $row[0];
+        $preferred = $row[1];
+        $fname = $row[2];
+        $mname = $row[3];
+        $lname = $row[4];
+        $dob = $row[5];
+        $sex = $row[6];
+        $phone1 = $row[7];
+        $phone2 = $row[8];
+        $email = $row[9];
+        $address = $row[10];
+        $street = $row[11];
+        $city = $row[12];
+        $state = $row[13];
+        $zip = $row[14];
+        $insurance = $row[15];
+        $pharm = $row[16];
+        $lab = $row[17];
+        $minor = $row[18];
+        $guard_id = $row[19];
+        $pcp_id = $row[20];
+        $pcp = $row[21]." ".$row[22];
+        $note = $row[23];
+        $ec1 = $row[24];
+        $ec2 = $row[25];
 
-    <?php
+        echo "<header>";
+            echo "  <p>$preferred</p>
+                    <p>$dob</p>";
+            
+            $age = getAge($dob);
 
-    if(isset($_POST['npSave']) && $_POST['npSave'] == 'Save'){
-        //New Patient.
-        if($patient_id === ''){
-            //Insert Emergency Contacts.
-            if($ecName1 !== ''){
-                $qstr = "INSERT INTO EmergencyContact (contact_name, relationship, phone) VALUES (?, ?, ?) ";
-                $qinsert = $conn->prepare($qstr);
-                if(!$qinsert){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qinsert->bind_param("sss", $ecName1, $ecRelationship1, $ecPhone1);
-                $qinsert->execute();
-                $qinsert->store_result();
-                $qinsert->free_result();
-                //Get new emergency contact_id.
-                $qstr = "SELECT DISTINCT contact_id FROM EmergencyContact WHERE contact_name = '$ecName1' AND relationship = '$ecRelationship1' AND phone = '$ecPhone1' ";
+            echo "  <p>Age: $age</p>
+                    <p>$fname</p>
+                    <p>$lname</p>";
+
+            if ($sex == 'M'){
+                $tsex = 'Male';
+            } elseif ($sex == 'F') {
+                $tsex = 'Female';
+            } elseif ($sex == 'O') {
+                $tsex = 'Other';
+            } 
+            echo "<p>$tsex</p>";
+
+            if ($gender == 1){
+                $tgender = 'He/Him';
+            } elseif ($gender == 2) {
+                $tgender = 'She/Her';
+            } elseif ($gender == 3) {
+                $tgender = 'They/Them';
+            }   
+            echo "<p>$tgender</p>";
+
+        echo "  </header>
+                <div class='placeholder'></div>
+                <div class='fullGrid'>
+                <div class='whiteCard' class='gridItem1'>
+                    <h2>Edit Patient</h2>";
+                    
+        $result->free_result();
+
+        //Get Emergency Contacts.
+        $qstr = "SELECT contact_name, relationship, phone FROM EmergencyContact WHERE contact_id = $ec1 OR contact_id = $ec2 ";
+        $qselect = $conn->prepare($qstr);
+        if(! $qselect){
+            echo "<p>Error: could not execute query. <br> </p>";
+            echo "<pre> Error Number: " .$conn -> errno. "\n";
+            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+            exit;
+        }
+        $qselect->execute();
+        $qselect->store_result();
+        $qselect->bind_result($name, $relationship, $phone);
+        $i = 1;                            
+        while($qselect->fetch()){
+            if($i === 1){
+                $ecName1 = $name;
+                $ecRelationship1 = $relationship;
+                $ecPhone1 = $phone;
+            } elseif ($i === 2){
+                $ecName2 = $name;
+                $ecRelationship2 = $relationship;
+                $ecPhone2 = $phone;
+            }
+            $i = $i + 1;
+        }
+        $qselect->free_result();
+
+        //Get Guardian
+        if(!$minor){
+            $guardian = '';
+        } else {
+            if($guard_id === $ec1){
+                $guardian = $ecName1;
+            } elseif ($guard_id === $ec2){
+                $guardian = $ecName2;
+            } else {
+                $qstr = "SELECT contact_name FROM EmergencyContact WHERE contact_id = $guard_id ";
                 $qselect = $conn->prepare($qstr);
                 if(! $qselect){
                     echo "<p>Error: could not execute query. <br> </p>";
@@ -148,39 +236,133 @@
                 $qselect->execute();
                 $result = $qselect->get_result();
                 $row = $result->fetch_row();
-                $ec1 = $row[0];
-                $result->free_result();
+                $guardian = $row[0];
+            }
+        }
+    
+    } else {
+        echo "  <header>Edit Patient</header>
+                <div class='placeholder'></div>
+                <div class='fullGrid'>
+                <div class='whiteCard' class='gridItem1'>
+                <h2>Edit Patient</h2>";
+    } 
+
+    //Debug: echo "<br><br><br><br><pre>"; print_r($_POST); echo "</pre>";    
+
+    if(!isset($_POST['npSave']) || $_POST['npSave'] != 'Save'){
+        $_POST['npSave'] = '';
+    }
+    if(isset($_POST['fname']) && $_POST['fname'] !== ''){
+        $fname = $_POST['fname'];
+    }
+    if(isset($_POST['mname']) && $_POST['mname'] !== ''){
+        $mname = $_POST['mname'];
+    }
+    if(isset($_POST['lname']) && $_POST['lname'] !== ''){
+        $lname = $_POST['lname'];
+    }
+    if(isset($_POST['pname']) && $_POST['pname'] !== ''){
+        $preferred = $_POST['pname'];
+    }
+    if(isset($_POST['dob']) && $_POST['dob'] !== ''){
+        $dob = $_POST['dob'];
+    }
+    if(isset($_POST['sex'])){
+        $sex = $_POST['sex'];
+    }
+    if(isset($_POST['gender'])){
+        $gender = $_POST['gender'];
+    }
+    if(isset($_POST['phone1']) && $_POST['phone1'] !== ''){
+        $phone1 = $_POST['phone1'];
+    }
+    if(isset($_POST['phone2']) && $_POST['phone2'] !== ''){
+        $phone2 = $_POST['phone2'];
+    }
+    if(isset($_POST['email']) && $_POST['email'] !== ''){
+        $email = $_POST['email'];
+    }
+    if(isset($_POST['street']) && $_POST['street'] !== ''){
+        $street = $_POST['street'];
+    }
+    if(isset($_POST['city']) && $_POST['city'] !== ''){
+        $city = $_POST['city'];
+    }
+    if(isset($_POST['state']) && $_POST['state'] !== ''){
+        $state = $_POST['state'];
+    }
+    if(isset($_POST['zip']) && $_POST['zip'] !== ''){
+        $zip = $_POST['zip'];
+    }
+    if(isset($_POST['minor']) && $_POST['minor'] !== ''){
+        $minor = $_POST['minor'];
+    }
+    if(isset($_POST['guardian']) && $_POST['guardian'] !== ''){
+        $guardian = $_POST['guardian'];
+    }
+    if(isset($_POST['pcp']) && $_POST['pcp'] !== ''){
+        $pcp = $_POST['pcp'];
+    }
+    if(isset($_POST['ecName1']) && $_POST['ecName1'] !== ''){
+        $ecName1 = $_POST['ecName1'];
+    }
+    if(isset($_POST['ecRelationship1']) && $_POST['ecRelationship1'] !== ''){
+        $ecRelationship1 = $_POST['ecRelationship1'];
+    }
+    if(isset($_POST['ecPhone1']) && $_POST['ecPhone1'] !== ''){
+        $ecPhone1 = $_POST['ecPhone1'];
+    }
+    if(isset($_POST['ecName2']) && $_POST['ecName2'] !== ''){
+        $ecName2 = $_POST['ecName2'];
+    }
+    if(isset($_POST['ecRelationship2']) && $_POST['ecRelationship2'] !== ''){
+        $ecRelationship2 = $_POST['ecRelationship2'];
+    }
+    if(isset($_POST['ecPhone2']) && $_POST['ecPhone2'] !== ''){
+        $ecPhone2 = $_POST['ecPhone2'];
+    }
+
+    //Save data.
+    if(isset($_POST['epSave']) && $_POST['epSave'] == 'Save'){
+        if($patient_id !== ''){
+                        
+            //Update Emergency Contacts.
+            if($ecName1 !== ''){
+                $qstr = "UPDATE EmergencyContact 
+                        SET contact_name = ?, relationship = ?, phone = ?  
+                        WHERE contact_id = $ec1 ";
+                //Debug: echo $qstr;
+                $qupdate = $conn->prepare($qstr);
+                if(!$qupdate){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qupdate->bind_param("sss", $ecName1, $ecRelationship1, $ecPhone1);
+                $qupdate->execute();
+                $qupdate->store_result();
+                $qupdate->free_result();
             }
             if($ecName2 !== ''){
-                $qstr = "INSERT INTO EmergencyContact (contact_name, relationship, phone) VALUES (?, ?, ?) ";
-                $qinsert = $conn->prepare($qstr);
-                if(!$qinsert){
+                $qstr = "UPDATE EmergencyContact 
+                        SET contact_name = ?, relationship = ?, phone = ? 
+                        WHERE contact_id = $ec2 ";
+                $qupdate = $conn->prepare($qstr);
+                if(!$qupdate){
                     echo "<p>Error: could not execute query. <br> </p>";
                     echo "<pre> Error Number: " .$conn -> errno. "\n";
                     echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                     exit;
                 }
-                $qinsert->bind_param("sss", $ecName2, $ecRelationship2, $ecPhone2);
-                $qinsert->execute();
-                $qinsert->store_result();
-                $qinsert->free_result();
-                //Get new emergency contact_id.
-                $qstr = "SELECT DISTINCT contact_id FROM EmergencyContact WHERE contact_name = '$ecName2' AND relationship = '$ecRelationship2' AND phone = '$ecPhone2' ";
-                $qselect = $conn->prepare($qstr);
-                if(! $qselect){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qselect->execute();
-                $result = $qselect->get_result();
-                $row = $result->fetch_row();
-                $ec2 = $row[0];
-                $result->free_result();
+                $qupdate->bind_param("sss", $ecName2, $ecRelationship2, $ecPhone2);
+                $qupdate->execute();
+                $qupdate->store_result();
+                $qupdate->free_result();
             }
 
-            //Insert Guardian.
+            //Update Guardian.
             if(!$minor){
                 $guard_id = 0;
             } else {
@@ -189,66 +371,43 @@
                 } elseif ($guardian === $ecName2){
                     $guard_id = $ec2;
                 } else {
-                    $qstr = "INSERT INTO EmergencyContact (contact_name, relationship, phone) VALUES (?, '', ?) ";
-                    $qinsert = $conn->prepare($qstr);
-                    if(!$qinsert){
+                    $qstr = "UPDATE EmergencyContact 
+                            SET contact_name = ?, phone = ? 
+                            WHERE contact_id = $guard_id ";
+                    $qupdate = $conn->prepare($qstr);
+                    if(!$qupdate){
                         echo "<p>Error: could not execute query. <br> </p>";
                         echo "<pre> Error Number: " .$conn -> errno. "\n";
                         echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                         exit;
                     }
-                    $qinsert->bind_param("ss", $guardian, $phone1);
-                    $qinsert->execute();
-                    $qinsert->store_result();
-                    $qinsert->free_result();
-                    //Get new emergency contact_id.
-                    $qstr = "SELECT DISTINCT contact_id FROM EmergencyContact WHERE contact_name = '$guardian' AND phone = '$phone1' ";
-                    $qselect = $conn->prepare($qstr);
-                    if(! $qselect){
-                        echo "<p>Error: could not execute query. <br> </p>";
-                        echo "<pre> Error Number: " .$conn -> errno. "\n";
-                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                        exit;
-                    }
-                    $qselect->execute();
-                    $result = $qselect->get_result();
-                    $row = $result->fetch_row();
-                    $guard_id = $row[0];
-                    $result->free_result();
+                    $qupdate->bind_param("ss", $guardian, $phone1);
+                    $qupdate->execute();
+                    $qupdate->store_result();
+                    $qupdate->free_result();
                 }
             }
-            
-            //Insert Address.
+
+            //Update Address.            
             if($street !== ''){
-                $qstr = "INSERT INTO Addresses (street, city, state_abbr, zip) VALUES (?, ?, ?, ?) ";
-                $qinsert = $conn->prepare($qstr);
-                if(!$qinsert){
+                $qstr = "UPDATE Addresses 
+                        SET street = ?, city = ?, state_abbr = ?, zip = ? 
+                        WHERE address_id = $address ";
+                //Debug: echo $qstr;
+                $qupdate = $conn->prepare($qstr);
+                if(!$qupdate){
                     echo "<p>Error: could not execute query. <br> </p>";
                     echo "<pre> Error Number: " .$conn -> errno. "\n";
                     echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                     exit;
                 }
-                $qinsert->bind_param("ssss", $street, $city, $state, $zip);
-                $qinsert->execute();
-                $qinsert->store_result();
-                $qinsert->free_result();
-                //Get new address_id.
-                $qstr = "SELECT DISTINCT address_id FROM Addresses WHERE street = '$street' AND city = '$city' AND state_abbr = '$state' AND zip = '$zip' ";
-                $qselect = $conn->prepare($qstr);
-                if(! $qselect){
-                    echo "<p>Error: could not execute query. <br> </p>";
-                    echo "<pre> Error Number: " .$conn -> errno. "\n";
-                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                    exit;
-                }
-                $qselect->execute();
-                $result = $qselect->get_result();
-                $row = $result->fetch_row();
-                $address = $row[0];
-                $result->free_result();
+                $qupdate->bind_param("ssss", $street, $city, $state, $zip);
+                $qupdate->execute();
+                $qupdate->store_result();
+                $qupdate->free_result();
             }
-            
-            //Get Primary Care Provider id.
+
+            //Change Primary Care Provider.
             if($pcp !== ''){
                 $tpcp = explode(" ", $pcp, 2); //Problematic if user's first name has any spaces. 
                 $pcp_first = $tpcp[0];
@@ -272,43 +431,32 @@
 
             $dob = validateDate($dob);
 
-            //Insert Patient.
-            $qstr = "INSERT INTO Patient (gender, preferred, first_name, middle_name, last_name, DOB, sex, primary_phone, secondary_phone, email, address_id, insurance_id, pharmacy_id, labdest_id, pcp_id, prev_note_id, minor, guardian, emergency_contact1, emergency_contact2) 
-                    VALUES($gender, ?, ?, ?, ?, '$dob', '$sex', ?, ?, ?, $address, $insurance, $pharm, $lab, $pcp_id, $note, $minor, $guard_id, $ec1, $ec2) ";
+            //Update Patient.
+            $qstr = "UPDATE Patient 
+                    SET gender = $gender, preferred = ?, first_name = ?, middle_name = ? , last_name = ? , DOB = '$dob', sex = '$sex', primary_phone = ? , secondary_phone = ? , email = ? , insurance_id = $insurance, pharmacy_id = $pharm, labdest_id = $lab, pcp_id = $pcp_id, minor = $minor, guardian = $guard_id
+                    WHERE patient_id = $patient_id ";
             //Debug: echo $qstr;
-            $qinsert = $conn->prepare($qstr);
-            if(!$qinsert){
+            $qupdate = $conn->prepare($qstr);
+            if(!$qupdate){
                 echo "<p>Error: could not execute query. <br> </p>";
                 echo "<pre> Error Number: " .$conn -> errno. "\n";
                 echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                 exit;
             }
-            $qinsert->bind_param("sssssss", $preferred, $fname, $mname, $lname, $phone1, $phone2, $email);
-            $qinsert->execute();
-            $qinsert->store_result();
-            $qinsert->free_result();
-            //Get New Patient Id.
-            $qstr = "SELECT DISTINCT patient_id FROM Patient WHERE first_name = ? AND last_name = ? AND DOB = ? ";
-            $qselect = $conn->prepare($qstr);
-            if(!$qselect){
-                echo "<p>Error: could not execute query. <br> </p>";
-                echo "<pre> Error Number: " .$conn -> errno. "\n";
-                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                exit;
-            }
-            $qselect->bind_param("sss", $fname, $lname, $dob);
-            $qselect->execute();
-            $result = $qselect->get_result();
-            $row = $result->fetch_row();
-            $_POST['patient_id'] = $row[0];
-            $result->free_result();
+            $qupdate->bind_param("sssssss", $preferred, $fname, $mname, $lname, $phone1, $phone2, $email);
+            $qupdate->execute();
+            $qupdate->store_result();
+            $qupdate->free_result();
         }
     }
-    ?>
 
-    <form action="./newPatient.php" method="post" id="newPForm">
-        <div class="newPGrid">
-            <div class="newPItem">
+    //Debug: echo "<pre>"; print_r($_POST); echo" </pre>";
+
+    ?>                    
+                    
+    <form action="./editPatient.php" method="post" id="editForm">
+    <div class="newPGrid">
+        <div class="newPItem">
                 <div class="newItem">
                     <label>First Name:</label>
                     <input type="text" name="fname" maxlength="30" value="<?php echo $fname; ?>">
@@ -465,14 +613,14 @@
             </div>
         </div>
         <div class="saveButton">
-            <input type="submit" name="npSave" value="Save">
+            <input type="submit" name="epSave" value="Save">
         </div>
             <?php echo "<input type='hidden' name='patient_id' value='$patient_id'>
                         <input type='hidden' name='appointment_id' value='$appointment_id'>
                         <input type='hidden' name='user_id' value='$user_id'>"; ?>
         </form>
     </div>
-    <div class="whiteCard" class="gridItem2">
+    <div class="whiteCard" class='gridItem2'>
         <h2>Insurance Information</h2>
         <?php
             if(!isset($_POST['iSave']) || $_POST['iSave'] != 'Save'){
@@ -487,12 +635,12 @@
             if(isset($_POST['policyNum']) && $_POST['policyNum'] !== ''){
                 $policyNum = $_POST['policyNum'];
             }
-            $iName = $_POST['iName'] ?? '';
-            $policyName = $_POST['policyName'] ?? '';
-            $policyNum = $_POST['policyNum'] ?? '';
+            $iName = $_POST['iName'] ?? 'Blue Cross Blue Shield';
+            $policyName = $_POST['policyName'] ?? $fname.' '.$lname;
+            $policyNum = $_POST['policyNum'] ?? '880-65-9090-444';
         ?>
         <iframe style="display: none; " name='insuranceForm'></iframe>
-        <form action="./newPatient.php" method="post" target='insuranceForm'>
+        <form action="./editPatient.php" method="post" target='insuranceForm'>
         <div class="npItem">
              <p>Insurance Company Name:</p>
              <input type="text" maxlength="50" name="iName" value="<?php echo $iName; ?>">
@@ -509,7 +657,7 @@
                         <input type='hidden' name='user_id' value='$user_id'>"; ?>
         </form>
     </div>
-    <div class="whiteCard" class="gridItem3"> 
+    <div class="whiteCard" class='gridItem3'> 
         <h2>Billing Information</h2>
         <?php
             if(!isset($_POST['bSave']) || $_POST['bSave'] != 'Save'){
@@ -537,7 +685,7 @@
             $bill = $_POST['bill'] ?? 'true';
         ?>
         <iframe style="display: none; " name='billForm'></iframe>
-        <form action="./newPatient.php" method="post" target="billForm">
+        <form action="./editPatient.php" method="post" target="billForm">
             <div class="npItem">
                 <fieldset>
                     <legend>Same as Home Address:</legend>
@@ -553,7 +701,7 @@
                 <?php
                 if($bill == 'true'){
                     echo "
-                    <h3>Address:</h3><br>
+                    <legend>Address:</legend><br>
                     <label>Street:</label>
                     <input type='text' maxlength='40' name='street' value='$street'>
                     <label>City:</label>
@@ -564,7 +712,7 @@
                     <input type='text' maxlength='5' placeholder='00000' name='zip' value='$zip'>";
                 } else {
                     echo "
-                    <h3>Address:</h3><br>
+                    <legend>Address:</legend><br>
                     <label>Street:</label>
                     <input type='text' maxlength='40' name='bstreet' value='$bstreet'>
                     <label>City:</label>
@@ -602,4 +750,4 @@
         $conn->close();
     ?>
 </body>
-</html> 
+</html>
