@@ -95,7 +95,6 @@ if ($getlabids_result->num_rows > 0){
         echo($lab_order_text);
     }
 } else {
-    echo('Unable to find lab orders for this patient. Please contact an administrator');
-    exit(1);
+    echo('Unable to find lab orders for this patient. Please contact an administrator.');
 }
 ?>
