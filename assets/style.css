@@ -1,0 +1,394 @@
+@import url("https://fonts.googleapis.com/css2?family=Bitter&family=Crimson+Text&display=swap");
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: "Crimson Text", serif;
+}
+
+body {
+    background-color: #d8e0d7;
+}
+
+header {
+    position: fixed;
+    align-items: flex-start;
+    background-color: #27474e;
+    border: 0;
+    color: #d89a47;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 2em;
+    gap: 1em;
+    justify-content: flex-start;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+}
+
+footer {
+    background-color: #27474e;
+    border: 0;
+    color: #d89a47;
+    font-size: 1em;
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 1em;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+a:link,
+a:visited {
+    background-color: #d89a47;
+    color: #27474e;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.5em;
+    display: inline-block;
+}
+
+a:hover,
+a:active {
+    background-color: #d8e0d7;
+}
+
+h2 {
+    color: #c17817;
+    font-size: 3em;
+}
+
+.placeholder {
+    height: 75px;
+    width: 100%;
+}
+
+.whiteCard {
+    background-color: whitesmoke;
+    border-radius: 0.5em;
+    margin: 1em;
+    padding: 1.5em;
+}
+
+.saveButton {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 1em;
+    gap: 3em;
+    padding: 0.5em;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #d89a47;
+    border: none;
+    border-radius: 0.5em;
+    color: #27474e;
+    font-size: 1.5em;
+    padding: 6px 12px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    border: 2px solid #d89a47;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/*********** Begin Medical Profile Page **************/
+
+#profileGrid {
+    border: 0;
+    color: #27474e;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 720px;
+}
+
+.profileItem {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 1em;
+    gap: 1em;
+    padding: 0.5em;
+    justify-content: flex-end;
+    width: 75%;
+}
+
+#kglabel{
+  margin-right: 45px;
+}
+
+#reviewGrid {
+    border: 0;
+    color: #27474e;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 100%;
+}
+
+.reviewItem {
+    align-items: flex-start;
+    color: #27474e;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5em;
+    width: 100%;
+}
+
+.rosGroup > p {
+    font-size: 1em;
+    color: #c17817;
+    font-weight: bold;
+}
+
+.commentBox > textarea {
+    width: 100%;
+    height: 100px;
+    color: #27474e;
+    border: 2px solid #d89a47;
+    padding: 10px;
+    font-size: 1em;
+    resize: none;
+}
+
+.commentBox > label {
+    font-size: 1em;
+    color: #c17817;
+    font-weight: bold;
+}
+
+.dropBox > label {
+    font-size: 1em;
+    color: #c17817;
+    font-weight: bold;
+}
+
+.dropBox > input {
+  font-size: 1em;
+  padding: 2px;
+  margin-left: 5px;
+  color: #27474e;
+  border: 2px solid #d89a47;
+  border-radius: 2px;
+}
+
+#familyHistory {
+  align-items: flex-start;
+  color: #27474e;
+  border-top: 2px solid #27474e;
+  border-bottom: 2px solid #27474e;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1em;
+  margin-bottom: 1.5em;
+  width: 100%;
+}
+
+.familyMember{
+  margin: 12px;
+  padding: 5px;
+  border: 2px solid #d89a47;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+#lab_checkboxes label {
+    padding-left:2%;
+}
+
+/*********** End Medical Profile Page **************/
+
+/*********** Begin Patient Page **************/
+
+.patientBody {
+    display: flex;
+    height: 89vh;
+}
+
+.btn-primary {
+    background-color: #d89a47;
+    border-color: #d89a47;
+}
+
+.patientNote {
+    flex-grow: 1;
+    margin: 10px 10px 10px 5px;
+    border-radius: 5px;
+    height: 100%;
+    transition: 0.2s;
+}
+
+#patientFormCard,
+.card-body,
+#patientNoteForm {
+    height: 100%;
+}
+
+#patientFormCard {
+    background-color: whitesmoke;
+    border-radius: 0.5em;
+}
+
+#patientNoteForm {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#patientNoteForm .formField {
+    width: 45%;
+}
+
+#patientFormSubmit {
+    place-self: flex-end;
+    margin-right: 15px;
+}
+
+.patientSideMenu {
+    margin: 5px 0px 5px 5px;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    overflow: auto;
+}
+
+.patientSideMenuBtn {
+    margin: 5px;
+    width: 150px;
+    transition: 0.2s;
+}
+
+.patientSideMenuBtn:hover,
+.patientSideMenuBtn:focus,
+.patientSideMenuBtn:focus-visible,
+.patientSideMenuBtn:active {
+    background-color: #c17817;
+    border-color: #c17817;
+}
+
+a.patientSideMenuLink {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    color: #fff;
+    margin: 5px;
+    width: 150px;
+    transition: 0.2s;
+}
+
+a.patientSideMenuLink:hover,
+a.patientSideMenuLink:focus,
+a.patientSideMenuLink:focus-visible,
+a.patientSideMenuLink:active,
+.patientSideMenuBtn:hover,
+.patientSideMenuBtn:focus,
+.patientSideMenuBtn:focus-visible,
+.patientSideMenuBtn:active,
+#patientFormSubmit:hover,
+#patientFormSubmit:active,
+#patientFormSubmit:focus,
+#patientFormSubmit:focus-visible {
+    background-color: #c17817;
+    border-color: #c17817;
+}
+
+.patientMenuBox {
+    transition: 0.2s;
+    margin: 0px 5px 5px 5px;
+    top: -5px;
+    width: 150px;
+    height: 0px;
+}
+
+.patientMenuItem {
+    top: -5px;
+}
+
+.expandedWidth {
+    width: 600px;
+}
+
+.expandedHeight {
+    height: auto;
+}
+
+#patientHeader {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.hideContent {
+    height: 0;
+    width: 0;
+    display: none;
+}
+
+/********* End Patient Page ************/
+
+/********* Start Index Page ************/
+
+#searchGrid {
+    border: 0;
+    color: #27474e;
+    display: grid;
+    grid-template-columns: auto;
+    width: 100%;
+}
+
+.searchItem {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 1.5em;
+    gap: 3em;
+    padding: 0.5em;
+    justify-content: flex-end;
+    width: 75%;
+}
+
+/********* End Index Page ************/
+
+/********* Begin New Patient Page ************/
+
+#newPGrid {
+    border: 0;
+    color: #27474e;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
+}
+
+.newPItem {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 1.5em;
+    gap: 1em;
+    padding: 0.5em;
+    justify-content: flex-start;
+    width: 75%;
+}
+
+/********* End New Patient Page ************/
