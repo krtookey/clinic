@@ -46,7 +46,7 @@
         include_once "laborderform.php"
         ?>
 
-        <form action="addnewmeds.php" method="post" id="adddrugtodatabase">
+        <form action="addnewmeds.php" method="post" target="addnewdrugframe" id="adddrugtodatabase">
             <b>Add Drug to Database</b> 
             <br>
             <label for="brandname">Brand Name:</label>
@@ -54,9 +54,10 @@
             <label for="genericname">Generic Name:</label>
             <input type="text" id="genericname" name="genericname">
             <input type="submit" value="Submit">
+            <iframe name="addnewdrugframe"></iframe>
         </form>
         
-        <form action="addnewpharmacy.php" method="post" target="" id="addpharmacyform">
+        <form action="addnewpharmacy.php" method="post" target="addnewpharmacyframe" id="addpharmacyform">
             <b>Add Pharmacy</b>
             <br>
             <label for="pharmacy_name">Pharmacy Name:</label>
@@ -78,10 +79,11 @@
             <label for="pharmacy_email">Email:</label>
             <input type="email" id="pharmacy_email" name="pharmacy_email">
             <input type="submit" value="Submit">
+            <iframe name="addnewpharmacyframe"></iframe>
         </form>
 
 
-        <form action="addnewlabdest.php" method="post" target="" id="addlabdestform">
+        <form action="addnewlabdest.php" method="post" target="addnewlabdestframe" id="addlabdestform">
             <b>Add Lab Destination</b>
             <br>
             <label for="labdest_name">Lab Name:</label>
@@ -103,8 +105,8 @@
             <label for="labdest_email">Email:</label>
             <input type="email" id="labdest_email" name="labdest_email">
             <input type="submit" value="Submit">
+            <iframe name="addnewlabdestframe"></iframe>
         </form>
-
 
         <form action="insertlabresults.php" method="post" target="insertlabresultsframe" id="insertlabresultsform">
             <b>Insert Lab Results</b>

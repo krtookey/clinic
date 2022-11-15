@@ -12,12 +12,12 @@ $labdest_email = $_POST["labdest_email"];
 
 
 $labdest_addr_sql = <<<PH_ADDR
-INSERT INTO Addresses (street, city, state, zip) Values ('$labdest_street', '$labdest_city', '$labdest_state', '$labdest_zip');
+INSERT INTO Addresses (street, city, state_abbr, zip) Values ('$labdest_street', '$labdest_city', '$labdest_state', '$labdest_zip');
 PH_ADDR;
 // Insert address data into Addresses
 if ($conn->query($labdest_addr_sql) === TRUE){
     $addr_id_sql = <<<SELECTLABORDER
-    SELECT address_id FROM Addresses WHERE street='$labdest_street' AND city='$labdest_city' AND state='$labdest_state';
+    SELECT address_id FROM Addresses WHERE street='$labdest_street' AND city='$labdest_city' AND state_abbr='$labdest_state';
     SELECTLABORDER;
     // Get address id to put into LabDest
     $addrid_result = $conn->query($addr_id_sql);
@@ -29,8 +29,10 @@ if ($conn->query($labdest_addr_sql) === TRUE){
     // Insert LabDest info into table
     if($conn->query($sql) === TRUE){
         // The pharmacy failed to be added to the database.
+        echo("The data was inserted into the database correctly. All is well!");
     } else {
         //Pharmacy was added to database successfully.
+        echo("The data was not inserted into the database correctly. Please contact an administrator.");
     }
 }
 

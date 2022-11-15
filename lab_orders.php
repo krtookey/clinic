@@ -12,7 +12,7 @@ $user_id = $_POST["user_id"] ?? 1;
 $labdest = $_POST["labdest"];
 $providers_to_cc = $_POST["providers_to_cc"];
 $diagnosis = $_POST["diagnosis"];
-if (is_null($_POST["labs"])){
+if (!isset($_POST["labs"])){
     echo("No labs selected. Please select a lab before ordering.");
     exit(1);
 }
@@ -147,10 +147,13 @@ LABDATABASE;
 
 if ($conn->query($scrip_database) === TRUE){
     // If lab order data was inserted into LabOrders correctly, grab the laborder_id that the database assigns
-    $laborderid_sql = <<<SELECTLABORDER
+    $laborderid_sql1 = <<<SELECTLABORDER
     SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$user_id' AND diagnosis='$diagnosis' AND orderdate='$orderdate';
     SELECTLABORDER;
-    $laborderid_result = $conn->query($laborderid_sql);
+    $laborderid_sql2 = <<<SELECTLABORDER2
+    SELECT laborder_id FROM LabOrders WHERE laborder_id = (SELECT MAX(laborder_id) FROM LabOrders WHERE patient_id='$patient_id');
+    SELECTLABORDER2;
+    $laborderid_result = $conn->query($laborderid_sql2);
     if ($row = $laborderid_result->fetch_assoc()){
         $laborder_id = $row["laborder_id"];
         //echo("laborderid = " . $laborder_id);

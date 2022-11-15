@@ -11,7 +11,9 @@ INSERT INTO DrugList (medication_name, generic_name) VALUES ('$brandname', '$gen
 NEWMEDS;
 if($conn->query($sql) === TRUE){
     // The medication failed to be added to the database.
+    echo("The data was inserted into the database correctly. All is well!");
 } else {
     //Medication was added to database successfully.
+    echo("The data was not inserted into the database correctly. Please contact an administrator.");
 }
 ?>
