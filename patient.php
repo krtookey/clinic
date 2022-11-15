@@ -198,6 +198,82 @@
                 href="noteHistory.php">
                     Note History
                 </a>
+                <!-- Insert Lab Results Form -->
+                <button
+                class="btn btn-primary patientSideMenuBtn"
+                type="button"
+                data-button-name='insertLabResults'
+                aria-expanded="false"
+                aria-controls="insertLabResultsBox">
+                    Insert Lab Results
+                </button>
+                <div
+                class="collapse card card-body patientMenuBox hideContent"
+                id="insertLabResultsBox">
+                    <div class="insertLabResults patientMenuItem">
+                        <!-- Put code here -->
+                        <?php
+                        include_once 'insertlabresultsform.php'
+                        ?>
+                    </div>
+                </div>
+                <!-- Add Pharmacy Form -->
+                <button
+                class="btn btn-primary patientSideMenuBtn"
+                type="button"
+                data-button-name='addPharmacy'
+                aria-expanded="false"
+                aria-controls="addPharmacyBox">
+                    Add Pharmacy
+                </button>
+                <div
+                class="collapse card card-body patientMenuBox hideContent"
+                id="addPharmacyBox">
+                    <div class="addPharmacy patientMenuItem">
+                        <!-- Put code here -->
+                        <?php
+                        include_once 'addpharmacyform.php'
+                        ?>
+                    </div>
+                </div>
+                <!-- Add LabDest Form -->
+                <button
+                class="btn btn-primary patientSideMenuBtn"
+                type="button"
+                data-button-name='addLabDest'
+                aria-expanded="false"
+                aria-controls="addLabDestBox">
+                    Add Lab Destination
+                </button>
+                <div
+                class="collapse card card-body patientMenuBox hideContent"
+                id="addLabDestBox">
+                    <div class="addLabDest patientMenuItem">
+                        <!-- Put code here -->
+                        <?php
+                        include_once 'addlabdestform.php'
+                        ?>
+                    </div>
+                </div>
+                <!-- Add Drug Form -->
+                <button
+                class="btn btn-primary patientSideMenuBtn"
+                type="button"
+                data-button-name='addDrug'
+                aria-expanded="false"
+                aria-controls="addDrugBox">
+                    Add Drug To List
+                </button>
+                <div
+                class="collapse card card-body patientMenuBox hideContent"
+                id="addDrugBox">
+                    <div class="addDrug patientMenuItem">
+                        <!-- Put code here -->
+                        <?php
+                        include_once 'adddrugform.php'
+                        ?>
+                    </div>
+                </div>
             </section>
 
             <!-- Current patient Note -->
