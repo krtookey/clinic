@@ -185,7 +185,6 @@ ALTER TABLE MedicalProfile ADD weight_meas char(3);
 -- End of Update ------------------
 
 
-
 -- Add date to Prescriptions and LabOrders -- November 10, 2022 --------------
 
 ALTER TABLE LabOrders ADD orderdate date;

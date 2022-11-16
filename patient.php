@@ -114,7 +114,9 @@
                 </button>
                 <div class="collapse hideContent patientMenuBox" id="personalHistoryBox">
                     <div class="personalHistory card card-body patientMenuItem">
-                        Personal History
+                        <?php
+                            include_once 'familyHistory.php';
+                        ?>
                     </div>
                 </div>
 
