@@ -204,7 +204,7 @@
         </div>";
     ?>
     <?php
-        $conn->close();
+        //$conn->close();
     ?>
 
 </body>
