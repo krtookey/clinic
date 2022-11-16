@@ -129,8 +129,8 @@ input[type="text"] {
     width: 75%;
 }
 
-#kglabel{
-  margin-right: 45px;
+#kglabel {
+    margin-right: 45px;
 }
 
 #reviewGrid {
@@ -181,38 +181,38 @@ input[type="text"] {
 }
 
 .dropBox > input {
-  font-size: 1em;
-  padding: 2px;
-  margin-left: 5px;
-  color: #27474e;
-  border: 2px solid #d89a47;
-  border-radius: 2px;
+    font-size: 1em;
+    padding: 2px;
+    margin-left: 5px;
+    color: #27474e;
+    border: 2px solid #d89a47;
+    border-radius: 2px;
 }
 
 #familyHistory {
-  align-items: flex-start;
-  color: #27474e;
-  border-top: 2px solid #27474e;
-  border-bottom: 2px solid #27474e;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 1em;
-  margin-bottom: 1.5em;
-  width: 100%;
+    align-items: flex-start;
+    color: #27474e;
+    border-top: 2px solid #27474e;
+    border-bottom: 2px solid #27474e;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1em;
+    margin-bottom: 1.5em;
+    width: 100%;
 }
 
-.familyMember{
-  margin: 12px;
-  padding: 5px;
-  border: 2px solid #d89a47;
-  background-color: #fff;
-  border-radius: 5px;
+.familyMember {
+    margin: 12px;
+    padding: 5px;
+    border: 2px solid #d89a47;
+    background-color: #fff;
+    border-radius: 5px;
 }
 
 #lab_checkboxes label {
-    padding-left:2%;
+    padding-left: 2%;
 }
 
 /*********** End Medical Profile Page **************/
@@ -222,6 +222,7 @@ input[type="text"] {
 .patientBody {
     display: flex;
     height: 89vh;
+    padding: 10px;
 }
 
 .btn-primary {
@@ -231,7 +232,6 @@ input[type="text"] {
 
 .patientNote {
     flex-grow: 1;
-    margin: 10px 10px 10px 5px;
     border-radius: 5px;
     height: 100%;
     transition: 0.2s;
@@ -265,11 +265,11 @@ input[type="text"] {
 }
 
 .patientSideMenu {
-    margin: 5px 0px 5px 5px;
     display: flex;
     flex-direction: column;
     width: auto;
     overflow: auto;
+    margin-right: 10px;
 }
 
 .patientSideMenuBtn {
@@ -338,8 +338,6 @@ a.patientSideMenuLink:active,
 }
 
 .hideContent {
-    height: 0;
-    width: 0;
     display: none;
 }
 
@@ -391,17 +389,17 @@ a.patientSideMenuLink:active,
     width: 100%;
 }
 
-.npItem{
-  color: #27474e;
-  align-items: flex-end;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  font-size: 1em;
-  gap: 1em;
-  padding: 0.5em;
-  justify-content: flex-end;
-  width: 100%;
+.npItem {
+    color: #27474e;
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    font-size: 1em;
+    gap: 1em;
+    padding: 0.5em;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 /********* End New Patient Page ************/

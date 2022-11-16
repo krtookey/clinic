@@ -22,6 +22,15 @@
     <body>
         <header id='patientHeader'>
             <?php
+            //Store globals in POST buffer.
+            $patient_id = $_POST['patient_id'] ?? ''; 
+            $appointment_id = $_POST['appointment_id'] ?? ''; 
+            $userPermission = 0;
+            $user_id = $_POST['user_id'] ?? '1';    //For Testing
+            $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
+            $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
+            $nursePermission = 1;                   // Permission Level for nurses - access to limited patient information.
+
             //SQL
             $sql = "SELECT Patient.first_name, Patient.last_name, Patient.DOB, Patient.sex, Patient.preferred
             FROM Patient
@@ -231,12 +240,6 @@
                         ?>
                     </div>
                 </div>
-                <!-- Note History -->
-                <a
-                class="btn btn-primary patientSideMenuLink"
-                href="noteHistory.php">
-                    Note History
-                </a>
                 <!-- Insert Lab Results Form -->
                 <button
                 class="btn btn-primary patientSideMenuBtn"
@@ -313,6 +316,14 @@
                         ?>
                     </div>
                 </div>
+                <!-- Links -->
+                <hr>
+                <!-- Note History -->
+                <a
+                class="btn btn-primary patientSideMenuLink"
+                href="noteHistory.php">
+                    Note History
+                </a>
             </section>
 
             <!-------------------------- Current patient Note ------------------------------>
@@ -501,6 +512,19 @@
                 </div>
             </section>
         </div>
+        <footer>
+        <div>
+            <form action="./index.php" method="POST">
+                <input type="submit" name="submitI" value="Home">
+                <?php
+                    
+                    echo "  <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>";
+                ?>
+            </form>
+        </div>
+    </footer>
 
         <!-- Bootstrap JS -->
         <script
