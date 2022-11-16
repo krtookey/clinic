@@ -103,6 +103,7 @@ CREATE TABLE Note (
 	labdest_id  int, 
 	demographics TEXT,
 	comments    TEXT,
+	substance_hist TEXT,
 	PRIMARY KEY (note_id)
 );
 
