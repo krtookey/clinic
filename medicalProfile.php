@@ -1065,9 +1065,8 @@
         // Debug: echo "User Permission: $userPermission";
         if($userPermission >= $doctorPermission){
             include_once 'familyHistory.php';
-        } else {
-            $conn->close();         
         }
+        $conn->close();        
     ?>
     <footer>
         <div>
