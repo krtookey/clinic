@@ -31,7 +31,7 @@ if ($laborderid_row = $laborderid_result->fetch_assoc()){
                 */
                 $lab_name = $labname_row['lab_name'] ?? "Unknown Name";
                 $results_info = <<<RESULTSINFO
-                <br><br><p><u>$lab_name</u><br>$results</p>
+                <p><u>$lab_name</u><br>$results</p>
                 RESULTSINFO;
                 echo($results_info);
             } 

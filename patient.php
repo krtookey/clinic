@@ -18,6 +18,7 @@
         <title>Patient</title>
         <script src="./patient.js" defer></script>
         <link rel="stylesheet" href="./style.css" />
+        <script src="./refreshelement.js"></script>
     </head>
     <body>
         <header id='patientHeader'>
@@ -78,9 +79,16 @@
                 class="collapse card card-body patientMenuBox hideContent medicationList"
                 id="medicationListBox">
                     <div class="medicationList patientMenuItem">
-                        <?php
-                        include_once "showmedicationlist.php";
-                        ?>
+                        <div id="medicationListItems">
+                            <?php
+                            include_once "showmedicationlist.php";
+                            ?>
+                        </div>
+                        <div id="medicationListAddForm">
+                            <?php
+                            include_once "adddrugtomedlistform.php";
+                            ?>
+                        </div>
                     </div>
                 </div>
                 <!-- Review Of Systems -->
@@ -144,9 +152,16 @@
                 </button>
                 <div class="collapse hideContent patientMenuBox" id="labResultsBox">
                     <div class="labResults card card-body patientMenuItem">
-                        <?php
-                        include_once 'showlabresults.php';
-                        ?>
+                        <div id="labResultsItems">
+                            <?php
+                            include_once "showlabresults.php";
+                            ?>
+                        </div>
+                        <div id="labResultsInsertForm">
+                            <?php
+                            include_once "insertlabresultsform.php";
+                            ?>
+                        </div>
                     </div>
                 </div>
                 <!-- Family History -->
@@ -239,26 +254,7 @@
                         include_once 'viewprescriptions.php'
                         ?>
                     </div>
-                </div>
-                <!-- Insert Lab Results Form -->
-                <button
-                class="btn btn-primary patientSideMenuBtn"
-                type="button"
-                data-button-name='insertLabResults'
-                aria-expanded="false"
-                aria-controls="insertLabResultsBox">
-                    Insert Lab Results
-                </button>
-                <div
-                class="collapse card card-body patientMenuBox hideContent"
-                id="insertLabResultsBox">
-                    <div class="insertLabResults patientMenuItem">
-                        <!-- Put code here -->
-                        <?php
-                        include_once 'insertlabresultsform.php'
-                        ?>
-                    </div>
-                </div>
+                </div>            
                 <!-- Add Pharmacy Form -->
                 <button
                 class="btn btn-primary patientSideMenuBtn"

@@ -14,7 +14,7 @@ $patient_id = $_POST["patient_id"] ?? 1;
 $user_id = $_POST["user_id"] ?? 1;
 $pharmacy = $_POST["pharmacy"] ?? '';
 $drugname = $_POST["drugname"] ?? '';
-$dosage = $_POST["dosage_num"] . $_POST["unit"] . " " .$_POST["dosage_type"] ?? '';
+$dosage = $_POST["dosage_num"] . $_POST["unit"] . " " . $_POST["dosage_type"] ?? '';
 $route = $_POST["route"] ?? '';
 $qtyperdose = $_POST["qtyperdose"] ?? 1;
 $frequency = $_POST["frequency"] ?? 1;
@@ -25,8 +25,8 @@ $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*i
 
 //echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
 
-$refills = $_POST["refills"];
-$usage_info = $_POST["usage_info"];
+$refills = $_POST["refills"] ?? 1;
+$usage_info = $_POST["usage_info"] ?? '';
 
 
 //echo ("<br>pharmacy " . $pharmacy . "<br>" . "drugname " . $drugname . "<br>" . "dosage " . $dosage . "<br>" . "route " . $route . "<br>" . "usage_details " .$usage_details . "<br>" . "quantity " . $quantity . "<br>" . "quantity_calc " . $quantity_calc . "<br>" . "refills " . $refills . "<br>" . "Usageinfo " . $usage_info);
@@ -68,25 +68,22 @@ if ($row = $result->fetch_assoc()){
 //$doctor_id = "1"; // PLACEHOLDER
 
 // Grabbing doctor name based on doctor_id
-
 $drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
 $drname_result = $conn->query($drname_sql);
-$row = $drname_result->fetch_assoc();
-$doctor_name = $row["user_name"];
+if ($row = $drname_result->fetch_assoc()){
+    $doctor_name = $row["user_name"];
+} else {
+    echo("There is no user name for the current user. Please contact an administrator.");
+}
+
 
 // Getting medication ID for drugname
 $drugid_sql = "SELECT medication_id FROM DrugList WHERE medication_name='" . $drugname . "' OR generic_name='" . $drugname . "';";
 $drugid_result = $conn->query($drugid_sql);
-$row = $drugid_result->fetch_assoc();
-    
-if ($drugid_result->num_rows == 1){
-    $drug_id = $row["medication_id"];
-} else if ($drugid_result->num_rows > 1){
-    // How will we handle if there is more than 1 drug with a certain name?
+if ($row = $drugid_result->fetch_assoc()){
     $drug_id = $row["medication_id"];
 } else {
-    // Reject form, tell user to enter another drug name, have a form to add new drug
-    echo("<br>There is no drug with that name in our system. Please add the drug to the system using the form on this page: <a href='patient.php'>Patient</a><br><br>");
+    echo("<br>There is no drug with that name in our system. Please add the drug to the system using the Add Drug To List form");
     exit(1);
 }
 
@@ -95,16 +92,11 @@ if ($drugid_result->num_rows == 1){
 $pharmacy_id = 0;
 $pharmaid_sql = 'SELECT pharmacy_id FROM pharmacy WHERE pharmacy_name="' . $pharmacy . '";';
 $pharmaid_result = $conn->query($pharmaid_sql);
-$row = $pharmaid_result->fetch_assoc();
-    
-if ($pharmaid_result->num_rows == 1){
-    $pharmacy_id = $row["pharmacy_id"];
-} else if ($pharmaid_result->num_rows > 1){
-    // How will we handle if there is more than 1 pharmacy with a certain name?
-    echo("More than 1 pharmacy with the same name. The id of the first row with that name will be used.");
+if ($row = $pharmaid_result->fetch_assoc()){
     $pharmacy_id = $row["pharmacy_id"];
 } else {
-        // Reject form, tell user to enter another pharmacy name, have a form to add new pharmacy
+    echo("There is no pharmacy with that name in our system. Please check the spelling or add the pharmacy with the Add Pharmacy form.");
+    exit(1);
 }
 
 

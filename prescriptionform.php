@@ -183,6 +183,6 @@
         <br>
         <textarea rows="10" cols="40" id="usage_info" name="usage_info" maxlength="4900"></textarea>     
         <br>
-        <input type="submit" value="Submit"> 
-        <iframe name="prescriptionlinkdisplay"></iframe>
+        <input type="submit" value="Submit" onclick="refreshElement('prescriptionsBox');"> 
+        <iframe name="prescriptionlinkdisplay" class="results_iframe"></iframe>
     </form>

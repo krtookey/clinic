@@ -2,13 +2,13 @@
 include_once 'dbConnection.php';
 
 // Grabbing data from form
-$pharmacy_name = $_POST["pharmacy_name"];
-$pharmacy_street = $_POST["pharmacy_street"];
-$pharmacy_city = $_POST["pharmacy_city"];
-$pharmacy_state = $_POST["pharmacy_state"];
-$pharmacy_zip = $_POST["pharmacy_zip"];
-$pharmacy_phone = $_POST["pharmacy_phone"];
-$pharmacy_email = $_POST["pharmacy_email"];
+$pharmacy_name = $_POST["pharmacy_name"] ?? '';
+$pharmacy_street = $_POST["pharmacy_street"] ?? '';
+$pharmacy_city = $_POST["pharmacy_city"] ?? '';
+$pharmacy_state = $_POST["pharmacy_state"] ?? '';
+$pharmacy_zip = $_POST["pharmacy_zip"] ?? '';
+$pharmacy_phone = $_POST["pharmacy_phone"] ?? '';
+$pharmacy_email = $_POST["pharmacy_email"] ?? '';
 
 
 $pharm_addr_sql = <<<PH_ADDR

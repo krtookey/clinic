@@ -1,6 +1,8 @@
 <?php
 //#$medicationlist
+
 $patient_id = $_POST['patient_id'] ?? 1;
+//$patient_id = 1;
 $sql = <<<SCRIP_LIST_FOR_PATIENT
 SELECT medication_id, dosage, status FROM MedicationList WHERE patient_id = '$patient_id';
 SCRIP_LIST_FOR_PATIENT;
@@ -28,7 +30,7 @@ if ($medlist_result->num_rows > 0){
             $generic_name = $row['generic_name'];
             //echo("<br>brand_name: " . $brand_name . " generic_name: " . $generic_name);
             $medication_info = <<<MEDINFO
-            <p>$brand_name -- $generic_name<br>$dosage<br>$status_str</p>
+            <p class="medListItem">$brand_name -- $generic_name<br>$dosage -- $status_str</p>
             MEDINFO;
             echo($medication_info);
         } else {
@@ -36,6 +38,6 @@ if ($medlist_result->num_rows > 0){
         }
     }
 } else {
-    echo('Unable to retrieve medication list for this user.');
+    echo("This user's medication list is empty.");
 }
 ?>

@@ -1,4 +1,5 @@
 <form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform">
+    <script src="checkboxes.js"></script>
     <div id="patient_info">
         <?php 
             //#$orderlab
@@ -75,63 +76,66 @@
     <input type="text" id="providers_to_cc" name="providers_to_cc">
     <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
         <legend>Labs</legend>
+        <label for="toggleAllCheckboxes">Toggle All</label>
+        <input type="checkbox" onclick="toggleCheckboxes(this);">
+        <br>
         <label for="cbc">CBC</label>
-        <input type="checkbox" id="cbc" name="labs[]" value="CBC">
+        <input type="checkbox" id="cbc" name="labs[]" value="CBC" class="labcheckbox">
         <label for="cmp">CMP</label>
-        <input type="checkbox" id="cmp" name="labs[]" value="CMP">
+        <input type="checkbox" id="cmp" name="labs[]" value="CMP" class="labcheckbox">
         <label for="tsh">TSH</label>
-        <input type="checkbox" id="tsh" name="labs[]" value="TSH">
+        <input type="checkbox" id="tsh" name="labs[]" value="TSH" class="labcheckbox">
         <label for="free_t4">Free T4</label>
-        <input type="checkbox" id="free_t4" name="labs[]" value="Free T4">
+        <input type="checkbox" id="free_t4" name="labs[]" value="Free T4" class="labcheckbox">
         <label for="hemoglobin_a1c">Hemoglobin A1C</label>
-        <input type="checkbox" id="hemoglobin_a1c" name="labs[]" value="Hemoglobin A1C">
+        <input type="checkbox" id="hemoglobin_a1c" name="labs[]" value="Hemoglobin A1C" class="labcheckbox">
         <label for="lipids">Lipids</label>
-        <input type="checkbox" id="lipids" name="labs[]" value="Lipids">
+        <input type="checkbox" id="lipids" name="labs[]" value="Lipids" class="labcheckbox">
         <label for="ferritin">Ferritin</label>
-        <input type="checkbox" id="ferritin" name="labs[]" value="Ferritin">
+        <input type="checkbox" id="ferritin" name="labs[]" value="Ferritin" class="labcheckbox">
         <label for="iron_sat">Iron Sat</label>
-        <input type="checkbox" id="iron_sat" name="labs[]" value="Iron Sat">
+        <input type="checkbox" id="iron_sat" name="labs[]" value="Iron Sat" class="labcheckbox">
         <label for="magnesium">Magnesium</label>
-        <input type="checkbox" id="magnesium" name="labs[]" value="Magnesium">
+        <input type="checkbox" id="magnesium" name="labs[]" value="Magnesium" class="labcheckbox">
         <label for="crp">CRP</label>
-        <input type="checkbox" id="crp" name="labs[]" value="CRP">
+        <input type="checkbox" id="crp" name="labs[]" value="CRP" class="labcheckbox">
         <label for="prolactin">Prolactin</label>
-        <input type="checkbox" id="prolactin" name="labs[]" value="Prolactin">
+        <input type="checkbox" id="prolactin" name="labs[]" value="Prolactin" class="labcheckbox">
         <label for="copper">Copper</label>
-        <input type="checkbox" id="copper" name="labs[]" value="Copper">
+        <input type="checkbox" id="copper" name="labs[]" value="Copper" class="labcheckbox">
         <label for="zinc">Zinc</label>
-        <input type="checkbox" id="zinc" name="labs[]" value="Zinc">
+        <input type="checkbox" id="zinc" name="labs[]" value="Zinc" class="labcheckbox">
         <label for="ekg">EKG</label>
-        <input type="checkbox" id="ekg" name="labs[]" value="EKG">
+        <input type="checkbox" id="ekg" name="labs[]" value="EKG" class="labcheckbox">
         <br>
         <fieldset id="vitaminlabs">
             <legend>Vitamin Labs</legend>
             <label for="vitamin_d">Vitamin D</label>
-            <input type="checkbox" id="vitamin_d" name="labs[]" value="Vitamin D">
+            <input type="checkbox" id="vitamin_d" name="labs[]" value="Vitamin D" class="labcheckbox">
             <label for="vitamin_b12">Vitamin B12</label>
-            <input type="checkbox" id="vitamin_b12" name="labs[]" value="Vitamin B12">
+            <input type="checkbox" id="vitamin_b12" name="labs[]" value="Vitamin B12" class="labcheckbox">
             <label for="vitamin_b1">Vitamin B1</label>
-            <input type="checkbox" id="vitamin_b1" name="labs[]" value="Vitamin B1">
+            <input type="checkbox" id="vitamin_b1" name="labs[]" value="Vitamin B1" class="labcheckbox">
             <label for="vitamin_b2">Vitamin B2</label>
-            <input type="checkbox" id="vitamin_b2" name="labs[]" value="Vitamin B2">
+            <input type="checkbox" id="vitamin_b2" name="labs[]" value="Vitamin B2" class="labcheckbox">
         </fieldset>
         <fieldset>
             <legend>STI Tests</legend>
             <label for="lab4">Gonorrhea</label>
-            <input type="checkbox" id="gonorrhea" name="labs[]" value="Gonorrhea">
+            <input type="checkbox" id="gonorrhea" name="labs[]" value="Gonorrhea" class="labcheckbox">
             <label for="lab4">Chlamydia</label>
-            <input type="checkbox" id="chlamydia" name="labs[]" value="Chlamydia">
+            <input type="checkbox" id="chlamydia" name="labs[]" value="Chlamydia" class="labcheckbox">
             <label for="lab4">HIV</label>
-            <input type="checkbox" id="hiv" name="labs[]" value="HIV">
+            <input type="checkbox" id="hiv" name="labs[]" value="HIV" class="labcheckbox">
             <label for="lab4">Syphilis</label>
-            <input type="checkbox" id="syphilis" name="labs[]" value="Syphilis">
+            <input type="checkbox" id="syphilis" name="labs[]" value="Syphilis" class="labcheckbox">
         </fieldset>
         <label for="pregnancy">Pregnancy</label>
-        <input type="checkbox" id="pregnancy" name="labs[]" value="Pregnancy">
+        <input type="checkbox" id="pregnancy" name="labs[]" value="Pregnancy" class="labcheckbox">
     </fieldset>
     <label for="diagnosis">Diagnosis:</label>
     <input type="text" id="diagnosis" name="diagnosis" required>
     <br>
-    <input type="submit" value="Submit">
-    <iframe name="laborderlinkdisplay"></iframe>
+    <input type="submit" value="Submit" onclick="refreshElement('labOrderHistoryBox'); refreshElement('insertLabResultsBox');">
+    <iframe name="laborderlinkdisplay" class="results_iframe"></iframe>
 </form>

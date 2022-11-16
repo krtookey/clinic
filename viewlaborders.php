@@ -40,31 +40,37 @@ if ($getlabids_result->num_rows > 0){
         SELECT labdest_id, doctor_id, cc_recipients, diagnosis, orderdate FROM LabOrders WHERE laborder_id = '$laborder_id'; 
         LABORDERINFO;
         $laborderinfo_results = $conn->query($laborderinfo_sql);
-        $laborderinfo_row = $laborderinfo_results->fetch_assoc(); 
+        if ($laborderinfo_row = $laborderinfo_results->fetch_assoc()){
         // Assign variables from laborderinfo
         $labdest_id = $laborderinfo_row['labdest_id'];
         $doctor_id = $laborderinfo_row['doctor_id'];
         $cc_recipients = $laborderinfo_row['cc_recipients'];
         $diagnosis = $laborderinfo_row['diagnosis'];
         $orderdate = $laborderinfo_row['orderdate'];
+            // Get labdest_name from labdest_id
+            $labdestname_sql = <<<LABDESTNAME
+            SELECT labdest_name from LabDest WHERE labdest_id = '$labdest_id';
+            LABDESTNAME;
+            $labdestname_results = $conn->query($labdestname_sql);
+            if ($labdestname_row = $labdestname_results->fetch_assoc()){
+                $labdest_name = $labdestname_row['labdest_name'] ?? "Unknown";
+            } else {
+                $labdest_name = "Unknown";
+            }
+            
 
-
-        // Get labdest_name from labdest_id
-        $labdestname_sql = <<<LABDESTNAME
-        SELECT labdest_name from LabDest WHERE labdest_id = '$labdest_id';
-        LABDESTNAME;
-        $labdestname_results = $conn->query($labdestname_sql);
-        $labdestname_row = $labdestname_results->fetch_assoc(); 
-        $labdest_name = $labdestname_row['labdest_name'];
-
-
-        // Get doctor name from doctor_id
-        $doctorname_sql = <<<DOCTORNAME
-        SELECT user_name from Users WHERE user_id = '$doctor_id';
-        DOCTORNAME;
-        $doctorname_results = $conn->query($doctorname_sql);
-        $doctorname_row = $doctorname_results->fetch_assoc(); 
-        $doctor_name = $doctorname_row['user_name'];
+            // Get doctor name from doctor_id
+            $doctorname_sql = <<<DOCTORNAME
+            SELECT user_name from Users WHERE user_id = '$doctor_id';
+            DOCTORNAME;
+            $doctorname_results = $conn->query($doctorname_sql);
+            if ($doctorname_row = $doctorname_results->fetch_assoc()){
+                $doctor_name = $doctorname_row['user_name'] ?? "Unknown";
+            } else {
+                $doctor_name = "Unknown";
+            }
+            
+        }
 
 
         $lab_order_text1 = <<<PRESCRIPTIONTEXT

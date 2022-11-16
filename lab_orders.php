@@ -50,11 +50,13 @@ if ($pinfo_row = $pinfo_result->fetch_assoc()){
 //$doctor_id = "1"; // PLACEHOLDER
 
 // Grabbing doctor name based on doctor_id
-
-$sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
-$doctor_name = $row["user_name"];
+$drname_sql = "SELECT user_name FROM Users WHERE user_id='" . $user_id . "';";
+$drname_result = $conn->query($drname_sql);
+if ($row = $drname_result->fetch_assoc()){
+    $doctor_name = $row["user_name"];
+} else {
+    echo("There is no user name for the current user. Please contact an administrator.");
+}
 
 // Grabbing lab_id for lab_name
 $lab_ids = array();
@@ -67,22 +69,16 @@ foreach($all_labs as $x => $val){
         echo("Unable to find lab id for lab name specified. Pleae contact an administrator.");
     }
 }
-// Getting labdest_id for LabDest
 
+// Getting labdest_id for LabDest
 $labdestid_sql = "SELECT labdest_id FROM LabDest WHERE labdest_name='" . $labdest . "';";
 //echo('I like to move it move it: ' . $labdestid_sql . " -- ");
 $labdestid_result = $conn->query($labdestid_sql);
-$row = $labdestid_result->fetch_assoc();
-
-if ($result->num_rows == 1){
-    $labdest_id = $row['labdest_id'];
-} else if ($result->num_rows > 1){
-    // How will we handle if there is more than 1 labdest with the same name?
-    echo("More than 1 labdest with the same name. The id of the first row with that name will be used.");
+if ($row = $labdestid_result->fetch_assoc()){
     $labdest_id = $row['labdest_id'];
 } else {
-    echo("No labdest with the same name");
-        // How will we handle if there is not a labdest with the name entered?
+    echo("There is no lab destination with that name in our system. Please check the spelling or add the lab destination with the Add Lab Destination form.");
+    exit(1);
 }
 
 // Getting date of order

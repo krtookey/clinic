@@ -2,13 +2,13 @@
 include_once 'dbConnection.php';
 
 // Grabbing data from form
-$labdest_name = $_POST["labdest_name"];
-$labdest_street = $_POST["labdest_street"];
-$labdest_city = $_POST["labdest_city"];
-$labdest_state = $_POST["labdest_state"];
-$labdest_zip = $_POST["labdest_zip"];
-$labdest_phone = $_POST["labdest_phone"];
-$labdest_email = $_POST["labdest_email"];
+$labdest_name = $_POST["labdest_name"] ?? '';
+$labdest_street = $_POST["labdest_street"] ?? '';
+$labdest_city = $_POST["labdest_city"] ?? '';
+$labdest_state = $_POST["labdest_state"] ?? '';
+$labdest_zip = $_POST["labdest_zip"] ?? '';
+$labdest_phone = $_POST["labdest_phone"] ?? '';
+$labdest_email = $_POST["labdest_email"] ?? '';
 
 
 $labdest_addr_sql = <<<PH_ADDR

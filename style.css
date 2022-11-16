@@ -211,9 +211,6 @@ input[type="text"] {
     border-radius: 5px;
 }
 
-#lab_checkboxes label {
-    padding-left: 2%;
-}
 
 /*********** End Medical Profile Page **************/
 
@@ -339,6 +336,10 @@ a.patientSideMenuLink:active,
 
 .hideContent {
     display: none;
+}
+
+#lab_checkboxes label {
+    padding-left: 2%;
 }
 
 /********* End Patient Page ************/

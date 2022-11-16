@@ -1,7 +1,7 @@
 <?php
 // Grab data from form
-$brandname = $_POST["brandname"];
-$genericname = $_POST["genericname"];
+$brandname = $_POST["brandname"] ?? '';
+$genericname = $_POST["genericname"] ?? '';
 
 include_once 'dbConnection.php';
 
