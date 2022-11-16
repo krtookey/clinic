@@ -77,7 +77,7 @@
     <fieldset id="lab_checkboxes"> <!-- Figure out how to automatically generate this based upon LabList, with the value being the lab_id and id, name, and the label being the lab_name-->
         <legend>Labs</legend>
         <label for="toggleAllCheckboxes">Toggle All</label>
-        <input type="checkbox" onclick="toggleCheckboxes(this);">
+        <input type="checkbox" onclick="toggle(this);">
         <br>
         <label for="cbc">CBC</label>
         <input type="checkbox" id="cbc" name="labs[]" value="CBC" class="labcheckbox">
