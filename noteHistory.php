@@ -17,20 +17,15 @@
       $query = "SELECT Patient.first_name, Patient.last_name, Patient.DOB, Patient.sex, Patient.preferred
       FROM Patient
       WHERE Patient.patient_id = ?";
-
       //Prepare statment
       $stmt = $conn->prepare($query);
-
       //Bind ? with the POST variable from the prvious page
       $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
       $stmt->bind_param("i", $patient_id);
-
       //Execute and get resutls from database
       $stmt->execute();
-
       $result = $stmt->get_result();
       $row = $result->fetch_row();
-
       $patient_firstName = $row[0];
       $patient_lastName = $row[1];
       $patient_DOB = date_create($row[2]);
@@ -39,59 +34,66 @@
       $patientYears = $now->diff($patient_DOB);
       $patient_sex = $row[3];
       $patient_preferred = $row[4];
-
-
       echo "<p>$patient_firstName</p>
       <p>$patient_lastName</p>
       <p>pref: $patient_preferred</p>
       <p>DOB: $patient_DOBFormatted</p>
       <p>$patientYears->y" . "y</p>
       <p>$patient_sex</p>";
-
       ?>
   </header>
 
-  <div id="noteHistory">
-      <h2>Notes</h2> <br>
-
 <form method='post' action='NoteHistory.php'>
-<?php
-//grabbing row of patient data
-$query = "SELECT *
-FROM Note
-WHERE Note.patient_id = ?";
-$stmt = $conn->prepare($query);
-
-$patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
-$stmt->bind_param("i", $patient_id);
-
-//Execute and get results from database
-$stmt->execute();
-
-$stmt->store_result();
-$stmt->bind_result($note_id, $patient_id, $appoint_id, $cc, $hist_illness, $ros_id, $med_profile_id, $social_hist, $med_hist, $psych_hist, $assessment, $plan, $laborder_id, $lab_destid, $demographics, $comments);
-
-//be able to swap notes
-//show only certain parts of a note
-//order it by most recent
-//figure out how to go and edit the selected note
-
-//Attempts on trying to get multiple column data
-while ($stmt->fetch()){
-  echo "<table border='1'>";
-
-//debugging for right now, need to remove ids
-  echo "<tr><td>$note_id</td> <td>$patient_id</td><td>$appoint_id</td><td>$cc</td><td>$hist_illness</td><td>$ros_id</td><td>$med_profile_id</td><td>$social_hist</td><td>$med_hist</td><td>$psych_hist</td><td>$assessment</td><td>$plan</td><td>$laborder_id</td><td>$lab_destid</td><td>$demographics</td><td>$comments</td> </tr>";
-  echo "<table></br>";
-
-}
-
-?>
-
+<section class= "noteHistory">
+  <div id="noteHistory">
+          <div class="card" id='patientFormCard'>
+              <div class="card-body">
+                  <h3 class="card-title">
+                      Notes
+                  </h3>
+                  <form id='patientNoteForm'>
+                      <div class="mb-3 formField" id="noteContainer">
+                        <?php
+                        $query = "SELECT Note.cc, Note.assessment, Note.plan, Note.comments, Appointment.date_time
+                        FROM Note
+                        INNER JOIN Appointment
+                        ON Note.appointment_id = Appointment.appointment_id
+                        WHERE Note.patient_id = ?";
+                        $stmt = $conn->prepare($query);
+                        $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
+                        $stmt->bind_param("i", $patient_id);
+                        //Execute and get results from database
+                        $stmt->execute();
+                        //Store results in values
+                        $stmt->store_result();
+                        $stmt->bind_result($cc, $assessment, $plan, $comments, $date_time);
+                        while ($stmt->fetch()){
+                          echo "<table border='1'>";
+                          //Needs formatting for each table
+                          echo "<tr><td>$date_time</td>
+                          <td>$cc</td
+                          ><td>$assessment</td>
+                          <td>$plan</td>
+                          <td>$comments</td>
+                          <td>
+                          <form method=GET action=openNote.php>
+                          <input type=submit value ='Open'>
+                          </td>
+                          </tr>";
+                          echo "</table>";
+                          echo "</br>";
+                          $note_id = $POST['note_id'] ?? 2; //TODO Remove after testing and change to autoset to value
+                        }
+                        ?>
+                      </div>
+                  </form>
+              </div>
+          </div>
   </div>
+</section>
   <footer>
       <div>
-          <a href="./index.php">Home</a>
+          <a href="./patient.php">Back to Patient Note</a>
       </div>
   </footer>
   <?php
