@@ -40,14 +40,18 @@
       <p>DOB: $patient_DOBFormatted</p>
       <p>$patientYears->y" . "y</p>
       <p>$patient_sex</p>";
+      if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
+          $note_id = $_POST['note_id'];
+      }
+      $note_id = $POST['note_id'] ?? 2;
       ?>
   </header>
 
 
 
-<form method='post' action='NoteHistory.php'>
-<section class= "noteHistory">
-  <div id="noteHistory">
+<form method='post' action='openNote.php'>
+<section class= "openNote">
+  <div id="openNote">
           <div class="card" id='patientFormCard'>
               <div class="card-body">
                   <form id='patientNoteForm'>
@@ -57,7 +61,7 @@
                         FROM Note
                         INNER JOIN Appointment
                         ON Note.appointment_id = Appointment.appointment_id
-                        WHERE Note.note_id = 2"; //This needs to grab $note_id from post
+                        WHERE Note.note_id = $note_id"; //This needs to grab $note_id from post
                         $stmt = $conn->prepare($query);
                         //Execute and get results from database
                         $stmt->execute();
@@ -93,7 +97,6 @@
                 </div>
                 <!-- History Of Illness -->
                 <div class="mb-3 formField" id="histOfIllnessContainer">
-
                     <p> <?php echo "$illness_hist" ?> </p>
                 </div>
                 <!-- Social -->
