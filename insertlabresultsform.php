@@ -53,6 +53,6 @@
     <label for="enter_results">Enter Results</label>
     <br>
     <textarea rows="6" cols="30" id="enter_results" name="enter_results" maxlength="4900"></textarea>   
-    <input type="submit" value="Submit" onclick="refreshElement('labResultsBox');">
+    <input type="submit" value="Submit">
     <iframe name="insertlabresultsframe" class="results_iframe"></iframe>
 </form>

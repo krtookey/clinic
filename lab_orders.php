@@ -140,6 +140,8 @@ $scrip_database = <<<LABDATABASE
 INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis, orderdate)
 VALUES ("$patient_id", "$user_id", "$labdest_id", "$providers_to_cc", "$diagnosis", "$orderdate");
 LABDATABASE;
+//##testdata
+//echo("---Here is the laborders statement: " . $scrip_database . "   ----");
 
 if ($conn->query($scrip_database) === TRUE){
     // If lab order data was inserted into LabOrders correctly, grab the laborder_id that the database assigns
@@ -157,6 +159,8 @@ if ($conn->query($scrip_database) === TRUE){
             $order_into_table = <<<ORDERINTOTABLE
             INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES ('$laborder_id', '$val');
             ORDERINTOTABLE;
+            //##testdata
+            //echo(" ordertable statement: " . $order_into_table);
             if ($conn->query($order_into_table) === TRUE){
                 // Things went well
                 //echo("The data was inserted into the database correctly. All is well!");

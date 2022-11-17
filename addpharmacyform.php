@@ -19,6 +19,6 @@
     <br>
     <label for="pharmacy_email">Email:</label>
     <input type="email" id="pharmacy_email" name="pharmacy_email">
-    <input type="submit" value="Submit" onclick="refreshElement('orderLabBox')">
+    <input type="submit" value="Submit"">
     <iframe name="addnewpharmacyframe" class="results_iframe"></iframe>
 </form>

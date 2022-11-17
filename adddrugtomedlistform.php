@@ -55,6 +55,6 @@
     <label for="taking">Taking?</label>
     <input type="checkbox" id="taking" name="taking" value="1">
     <br>
-    <input type="submit" value="Submit" onclick="refreshElement('labResultsBox');">
+    <input type="submit" value="Submit">
     <iframe name="adddrugtomedlistframe" class="results_iframe"></iframe>
 </form>

@@ -22,14 +22,35 @@ INSERT INTO Addresses (street, city, state_abbr, zip) VALUES
   ('863 Harvest Ln', 'Williston', 'VT', '05495');
 
 
-INSERT INTO ProblemList (patient_id, problem, category, timeframe)VALUES	
+INSERT INTO ProblemList (patient_id, problem, category, timeframe) VALUES	
   ('2', 'Cold Urticaria', 'allergy', 'present'), 
 	('2', 'Covid-19', 'virus', 'past'),
 	('3', 'Hypertension', 'cardiovascular', 'present');
 
 INSERT INTO MedicationList (patient_id, medication_id, dosage, status) VALUES 	
   ('3', '8', '50 ml', '1'),
-	('2', '4', '20 ml', '1');
+	('2', '4', '20 ml', '1'),
+  ('1', '192', '120 mg', '1'),
+  ('1', '131', '40 mg', '1'),
+  ('1', '69', '60 mg', '1'),
+  ('1', '97', '100 mg', '1');
+
+INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, orderdate, status) VALUES 
+  ("1", "1", "1", "2", "202", "100mg Liquid", "IV", "1 3 30", "90", "8", "Don't take all at once!", "2022-11-16", "1"),
+  ("1", "1", "1", "86", "10mg Tablet", "Oral", "2 1 28", "56", "2", "You better stay out of the donuts!!", "2022-11-17", "1"), 
+  ("1", "1", "1", "52", "20mg Tablet", "Oral", "3 2 28", "168", "2", "Don't take them before driving or operating a forklift!!", "2022-11-11", "1");   
+
+INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis, orderdate) VALUES 
+("1", "1", "1", "Bob Duncan", "Some STI", "2022-11-17"),
+("1", "1", "2", "Jeff Dunham", "Copper Poisoning", "2022-11-17");
+
+INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES 
+('1', '19'),
+('1', '20'),
+('1', '21'),
+('1', '22'),
+('2', '12'), 
+('2', '14');
 
 INSERT INTO Note (patient_id, appointment_id, cc, hist_illness, ros_id, med_profile_id, social_hist, med_hist, psych_hist, assessment, plan, laborder_id, labdest_id, demographics, comments, substance_hist) VALUES 
   ('2', '1', 'Headache', 'History of Illness: Has been getting bad headaches for a few weeks now.', '1', '1', 'Social History: former smoker.  Drink 8 cups of coffee a day.', 'Medical History: ...blah, blah, blah', 'Phych History: suffers from anxiety', 'Assessment: drinks too much coffee.', 'Plan: Reduce caffine intake. Return in a month if headaches have not subsided', '1', '2', 'Demographic: Married', 'Comments: Blah...', 'Substance history'),
@@ -51,12 +72,12 @@ INSERT INTO Pharmacy (pharmacy_name, address_id, phone, email) VALUES
   ("Nick's Funky Pharmacy", '6', '18027678888', 'nickfunkypharmacy@gmail.com'),
   ('Rite Aid Bethel', '8', '18022345289', '05032@riteaid.com'),
   ('Walmart Williston', '9', '18028787224', '05495pharmacy@walmart.com');
-  
 
 
 INSERT INTO LabDest (labdest_name, address_id, phone, email) VALUES 
   ('A Shack In The Woods', '3', '18024853788', 'shackinthewoods@gmail.com'),
   ('Gifford Medical Center', '7', '18027287000', 'labs@gifford.com');
+
 
 INSERT INTO LabList (lab_id, lab_name) VALUES ('1', 'CBC'); 
 INSERT INTO LabList (lab_id, lab_name) VALUES ('2', 'CMP');
@@ -184,103 +205,105 @@ INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pepcid', 'Famotidi
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cardizem', 'Diltiazem');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lantus', 'Insulin Glargine');
 INSERT INTO DrugList (medication_name, generic_name) VALUES ('Prinizide', 'Lisinopril+HCTZ');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Wellbutrin®', 'Bupropion');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zyrtec®', 'Cetirizine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Topamax®', 'Topiramate');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Valtrex®', 'Valacyclovir');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lunesta®', 'Eszopiclone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zovirax®', 'Acyclovir');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Omnicef®', 'Cefdinir');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cleocin®', 'Clindamycin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Keppra®', 'Levetiracetam');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lopid®', 'Gemfibrozil');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Robitussin®', 'Guaifenesin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Glucotrol®', 'Glipizide');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Avapro®', 'Irbesartan');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Reglan®', 'Metoclopramide');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cozaar®', 'Losartan');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Dramamine®', 'Meclizine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Flagyl®', 'Metronidazole');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Caltrate®', 'Vitamin D');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('AndroGel®', 'Testosterone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Requip®', 'Ropinirole');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Risperdal®', 'Risperidone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Patanol®', 'Olopatadine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aricept®', 'Donepezil');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Focalin®', 'Dexmethylphenidate');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lovenox®', 'Enoxaparin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Duragesic®', 'Fentanyl');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Bentyl®', 'Dicyclomine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Xopenex®', 'Levalbuterol');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Strattera®', 'Atomoxetine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Altace®', 'Ramipril');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Restoril®', 'Temazepam');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Adipex® P', 'Phentermine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Accupril®', 'Quinapril');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Viagra®	', 'Sildenafil');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zofran®', 'Ondansetron');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Tamiflu®', 'Oseltamivir');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Rheumatrex®', 'Methotrexate');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pradaxa®', 'Dabigatran');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Uceris®', 'Budesonide');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cardura®', 'Doxazosin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pristiq®', 'Desvenlafaxine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Humalog®', 'Insulin Lispro');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Biaxin®', 'Clarithromycin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Buspar®', 'Buspirone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Proscar®', 'Finasteride');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Nizoral®', 'Ketoconazole');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('VESIcare®', 'Solifenacin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Dolophine®', 'Methadone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Minocin®', 'Minocycline');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pyridium®', 'Phenazopyridine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aldactone®', 'Spironolactone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Levitra®', 'Vardenafil');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Clovate®', 'Clobetasol');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Tessalon®', 'Benzonatate');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Depakote®', 'Divalproex');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Avodart®', 'Dutasteride');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Uloric®', 'Febuxostat');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lamictal®', 'Lamotrigine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pamelor®', 'Nortriptyline');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Amaryl®', 'Glimepiride');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aciphex®', 'Rabeprazole');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Enbrel®', 'Etanercept');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Bystolic®', 'Nebivolol');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Relafen®', 'Nabumetone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Procardia®', 'Nifedipine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Macrobid®', 'Nitrofurantoin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('NitroStat® SL', 'Nitroglycerine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Ditropan®', 'Oxybutynin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cialis®', 'Tadalifil');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Kenalog®', 'Triamcinolone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Exelon®', 'Rivastigmine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Prevacid®', 'Lansoprazole');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Ceftin®', 'Cefuroxime');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Robaxin®', 'Methocarbamol');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Travatan®', 'Travoprost');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Latuda®', 'Lurasidone');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Hytrin®', 'Terazosin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Imitrex®', 'Sumatriptan');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Evista®', 'Raloxifene');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Remeron® ', 'Mirtazepine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Humira®', 'Adalimumab');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cogentin®', 'Benztropine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Gablofen®', 'Baclofen');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Apresoline®', 'Hydralazine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Bactroban®', 'Mupirocin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Inderal®', 'Propranolol');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Mycostatin®', 'Nystatin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Verelan®', 'Verapamil');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Estrace®', 'Estradiol');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Dilantin®', 'Phenytoin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Tricor®', 'Fenofibrate');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Victoza®', 'Liraglutide');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Brilinta®', 'Ticagrelor');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Voltaren®', 'Diclofenac');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Onglyza®', 'Saxagliptin');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aleve®', 'Naproxen');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zanaflex®', 'Tizanidine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Adderall®', 'Amphetamine/Dextro-amphetamine');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ('Augmentin®', 'Amoxicillin+Clavulanate');
-INSERT INTO DrugList (medication_name, generic_name) VALUES ( 'Vytorin®', 'Ezetimibe+Simvastatin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Wellbutrin', 'Bupropion');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zyrtec', 'Cetirizine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Topamax', 'Topiramate');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Valtrex', 'Valacyclovir');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lunesta', 'Eszopiclone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zovirax', 'Acyclovir');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Omnicef', 'Cefdinir');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cleocin', 'Clindamycin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Keppra', 'Levetiracetam');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lopid', 'Gemfibrozil');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Robitussin', 'Guaifenesin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Glucotrol', 'Glipizide');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Avapro', 'Irbesartan');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Reglan', 'Metoclopramide');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cozaar', 'Losartan');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Dramamine', 'Meclizine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Flagyl', 'Metronidazole');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Caltrate', 'Vitamin D');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('AndroGel', 'Testosterone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Requip', 'Ropinirole');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Risperdal', 'Risperidone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Patanol', 'Olopatadine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aricept', 'Donepezil');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Focalin', 'Dexmethylphenidate');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lovenox', 'Enoxaparin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Duragesic', 'Fentanyl');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Bentyl', 'Dicyclomine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Xopenex', 'Levalbuterol');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Strattera', 'Atomoxetine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Altace', 'Ramipril');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Restoril', 'Temazepam');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Adipex P', 'Phentermine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Accupril', 'Quinapril');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Viagra	', 'Sildenafil');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zofran', 'Ondansetron');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Tamiflu', 'Oseltamivir');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Rheumatrex', 'Methotrexate');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pradaxa', 'Dabigatran');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Uceris', 'Budesonide');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cardura', 'Doxazosin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pristiq', 'Desvenlafaxine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Humalog', 'Insulin Lispro');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Biaxin', 'Clarithromycin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Buspar', 'Buspirone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Proscar', 'Finasteride');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Nizoral', 'Ketoconazole');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('VESIcare', 'Solifenacin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Dolophine', 'Methadone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Minocin', 'Minocycline');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pyridium', 'Phenazopyridine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aldactone', 'Spironolactone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Levitra', 'Vardenafil');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Clovate', 'Clobetasol');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Tessalon', 'Benzonatate');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Depakote', 'Divalproex');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Avodart', 'Dutasteride');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Uloric', 'Febuxostat');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lamictal', 'Lamotrigine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Pamelor', 'Nortriptyline');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Amaryl', 'Glimepiride');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aciphex', 'Rabeprazole');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Enbrel', 'Etanercept');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Bystolic', 'Nebivolol');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Relafen', 'Nabumetone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Procardia', 'Nifedipine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Macrobid', 'Nitrofurantoin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('NitroStat SL', 'Nitroglycerine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Ditropan', 'Oxybutynin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cialis', 'Tadalifil');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Kenalog', 'Triamcinolone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Exelon', 'Rivastigmine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Prevacid', 'Lansoprazole');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Ceftin', 'Cefuroxime');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Robaxin', 'Methocarbamol');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Travatan', 'Travoprost');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Latuda', 'Lurasidone');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Hytrin', 'Terazosin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Imitrex', 'Sumatriptan');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Evista', 'Raloxifene');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Remeron ', 'Mirtazepine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Humira', 'Adalimumab');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Cogentin', 'Benztropine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Gablofen', 'Baclofen');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Apresoline', 'Hydralazine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Bactroban', 'Mupirocin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Inderal', 'Propranolol');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Mycostatin', 'Nystatin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Verelan', 'Verapamil');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Estrace', 'Estradiol');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Dilantin', 'Phenytoin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Tricor', 'Fenofibrate');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Victoza', 'Liraglutide');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Brilinta', 'Ticagrelor');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Voltaren', 'Diclofenac');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Onglyza', 'Saxagliptin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Aleve', 'Naproxen');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Zanaflex', 'Tizanidine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Adderall', 'Amphetamine/Dextro-amphetamine');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Augmentin', 'Amoxicillin+Clavulanate');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Vytorin', 'Ezetimibe+Simvastatin');
+INSERT INTO DrugList (medication_name, generic_name) VALUES ('Lean', 'Codeine');
+

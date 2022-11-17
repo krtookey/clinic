@@ -174,7 +174,7 @@
                 <option value="30">30 days</option>
             </select>
             <label for="total_quantity">Quantity: </label> 
-            <input type="number" id="quantity" name="quantity" value="14" max="100"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
+            <input type="number" id="quantity" name="quantity" value="14" max="700"> <!-- Default needs to be calculated from qtyperdose * frequency * duration -->
             <label for="refills">Refills: </label>
             <input type="number" id="refills" name="refills" value="1" max="10">
         </fieldset>

@@ -154,6 +154,8 @@ $scrip_database = <<<PRESCRIPTIONDATABASE
 INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, dosage, route, usage_details, quantity, refills, general_notes, orderdate, status) 
 VALUES ("$patient_id", "$user_id", "$pharmacy_id", "$drug_id", "$dosage", "$route", "$usage_details", "$quantity", "$refills", "$usage_info", "$orderdate", "$status");
 PRESCRIPTIONDATABASE;
+//##testdata
+//echo("Here is the sql insert statement: " . $scrip_database);
 
 if($conn->query($scrip_database) === TRUE){
     echo("The data was inserted into the database correctly. All is well!");

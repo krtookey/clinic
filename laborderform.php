@@ -107,6 +107,8 @@
         <input type="checkbox" id="zinc" name="labs[]" value="Zinc" class="labcheckbox">
         <label for="ekg">EKG</label>
         <input type="checkbox" id="ekg" name="labs[]" value="EKG" class="labcheckbox">
+        <label for="pregnancy">Pregnancy</label>
+        <input type="checkbox" id="pregnancy" name="labs[]" value="Pregnancy" class="labcheckbox">
         <br>
         <fieldset id="vitaminlabs">
             <legend>Vitamin Labs</legend>
@@ -121,21 +123,19 @@
         </fieldset>
         <fieldset>
             <legend>STI Tests</legend>
-            <label for="lab4">Gonorrhea</label>
+            <label for="gonorrhea">Gonorrhea</label>
             <input type="checkbox" id="gonorrhea" name="labs[]" value="Gonorrhea" class="labcheckbox">
-            <label for="lab4">Chlamydia</label>
+            <label for="chlamydia">Chlamydia</label>
             <input type="checkbox" id="chlamydia" name="labs[]" value="Chlamydia" class="labcheckbox">
             <label for="lab4">HIV</label>
             <input type="checkbox" id="hiv" name="labs[]" value="HIV" class="labcheckbox">
-            <label for="lab4">Syphilis</label>
+            <label for="syphilis">Syphilis</label>
             <input type="checkbox" id="syphilis" name="labs[]" value="Syphilis" class="labcheckbox">
         </fieldset>
-        <label for="pregnancy">Pregnancy</label>
-        <input type="checkbox" id="pregnancy" name="labs[]" value="Pregnancy" class="labcheckbox">
     </fieldset>
     <label for="diagnosis">Diagnosis:</label>
     <input type="text" id="diagnosis" name="diagnosis" required>
     <br>
-    <input type="submit" value="Submit" onclick="refreshElement('labOrderHistoryBox'); refreshElement('insertLabResultsBox');">
+    <input type="submit" value="Submit"">
     <iframe name="laborderlinkdisplay" class="results_iframe"></iframe>
 </form>
