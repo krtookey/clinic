@@ -94,7 +94,7 @@ $lab_order_text1 = <<<PRESCRIPTIONTEXT
 <p>$address_street
 $address_city $address_state, $address_zip</p>
 <p>Ordering Doctor: $doctor_name</p>
-<p>$providers_to_cc</p> 
+<p>Providers to CC: $providers_to_cc</p> 
 
 PRESCRIPTIONTEXT;
 

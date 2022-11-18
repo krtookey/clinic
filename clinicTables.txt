@@ -363,7 +363,8 @@ DROP TABLE IF EXISTS OrderedLabs;
 CREATE TABLE OrderedLabs (
 	laborder_id int NOT NULL,
 	lab_id  int NOT NULL,
-	results varchar(5000)
+	results varchar(5000),
+	urgent boolean
 );
 
 DROP TABLE IF EXISTS DrugList;
