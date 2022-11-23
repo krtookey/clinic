@@ -1,9 +1,11 @@
 <?php
+include_once 'testinput.php';
 // Grab data from form
-$brandname = $_POST["brandname"] ?? '';
-$genericname = $_POST["genericname"] ?? '';
+$brandname = test_input($_POST["brandname"]) ?? '';
+$genericname = test_input($_POST["genericname"]) ?? '';
 
 include_once 'dbConnection.php';
+
 
 // Insert drug info into DrugList
 $sql = <<<NEWMEDS
