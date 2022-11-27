@@ -24,10 +24,19 @@
         <header id='patientHeader'>
             <?php
             //Store globals in POST buffer.
-            $patient_id = $_POST['patient_id'] ?? ''; 
-            $appointment_id = $_POST['appointment_id'] ?? ''; 
+            if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
+                $patient_id = $_POST['patient_id'];
+              }
+            $patient_id = $_POST['patient_id'] ?? '1';
+            if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
+                $appointment_id = $_POST['appointment_id'];
+              }
+            $appointment_id = $_POST['appointment_id'] ?? '1';
+            if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+                $user_id = $_POST['user_id'];
+              }
+            $user_id = $_POST['user_id'] ?? '2';
             $userPermission = 0;
-            $user_id = $_POST['user_id'] ?? '1';    //For Testing
             $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
             $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
             $nursePermission = 1;                   // Permission Level for nurses - access to limited patient information.
@@ -41,10 +50,9 @@
             $stmt = $conn->prepare($sql);
 
             //Bind ? with the POST variable from the prvious page 
-            $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
             $stmt->bind_param("i", $patient_id);
 
-            //Execute and get resutls from database
+            //Execute and get results from database
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_row();
@@ -64,6 +72,23 @@
             <p>$patient_sex</p>";
             ?>
         </header>
+        <?php
+            //Save data
+            $sql = "UPDATE Note 
+            SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?
+            WHERE Note.patient_id = $patient_id AND Note.appointment_id = $appointment_id";
+            echo $_POST['demographics']. $_POST['chiefComplaint']. $_POST['histOfIllness'].$_POST['social'].$_POST['substanceHist'].$_POST['psychHist'].$_POST['medicalHist'].$_POST['assessment'].$_POST['treatmentPlan'].$_POST['generalComments'];
+            echo "patient id: " . $patient_id . " appointment id: " . $appointment_id;
+            $stmt = $conn->prepare($sql);
+            if(!$stmt){
+                echo "<p>Error: could not execute query. <br> </p>";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                exit;
+            }
+            $stmt->bind_param("ssssssssss", $_POST['demographics'], $_POST['chiefComplaint'], $_POST['histOfIllness'],$_POST['social'],$_POST['substanceHist'],$_POST['psychHist'],$_POST['medicalHist'],$_POST['assessment'],$_POST['treatmentPlan'],$_POST['generalComments']);
+            $stmt->execute();
+        ?>
         <div class="patientBody">
             <section class="patientSideMenu">
                 <!-- Medication List -->
@@ -346,7 +371,7 @@
                         <h3 class="card-title">
                             Date from appointment table
                         </h3>
-                        <form id='patientNoteForm'>
+                        <form id="patientNoteForm" action="./patient.php" method="post">
                             
                             <!-- Demographics  -->
                             <div class="mb-3 formField" id="demographicsContainer">
@@ -471,7 +496,7 @@
                                 cols="100"
                                 class="form-control"
                                 id="treatmentPlan"
-                                name="treatmenPlan"><?php
+                                name="treatmentPlan"><?php
                                     echo $row['9'];
                                 ?></textarea>
                             </div>
@@ -502,7 +527,7 @@
                                 name="topics">Need to add this to database</textarea>
                             </div>
                             <!-- Save Note -->
-                            <button type="submit" class="btn btn-primary" id='patientFormSubmit'>Save Note</button>
+                            <input type="submit" value="Save Note" name="noteSave" class="btn btn-primary" id='patientFormSubmit'>
                         </form>
                     </div>
                 </div>
