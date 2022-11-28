@@ -7,26 +7,28 @@ ADDSCRIPT;
 echo($addscript);
 
 include_once 'dbConnection.php';
+include_once 'testinput.php';
 
 $status = 0;
 //echo ("post patient id: " . $_POST['patient_id']);
-$patient_id = $_POST["patient_id"] ?? 1;
-$user_id = $_POST["user_id"] ?? 1;
-$pharmacy = $_POST["pharmacy"] ?? '';
-$drugname = $_POST["drugname"] ?? '';
-$dosage = $_POST["dosage_num"] . $_POST["unit"] . " " . $_POST["dosage_type"] ?? '';
-$route = $_POST["route"] ?? '';
-$qtyperdose = $_POST["qtyperdose"] ?? 1;
-$frequency = $_POST["frequency"] ?? 1;
-$duration = $_POST["duration"] ?? 1;
-$usage_details = $_POST["qtyperdose"] . " " . $_POST["frequency"] . " " . $_POST["duration"];
-$quantity = $_POST["quantity"] ?? 1;
+$patient_id = test_input($_POST["patient_id"]) ?? 1;
+$user_id = test_input($_POST["user_id"]) ?? 1;
+$pharmacy = test_input($_POST["pharmacy"]) ?? '';
+$drugname = test_input($_POST["drugname"]) ?? '';
+$dosage_num = filter_var(test_input($_POST["dosage_num"]), FILTER_SANITIZE_NUMBER_INT);
+$dosage = $dosage_num . test_input($_POST["unit"]) . " " . test_input($_POST["dosage_type"]) ?? '';
+$route = test_input($_POST["route"]) ?? '';
+$qtyperdose = test_input($_POST["qtyperdose"]) ?? 1;
+$frequency = test_input($_POST["frequency"]) ?? 1;
+$duration = test_input($_POST["duration"]) ?? 1;
+$usage_details = test_input($_POST["qtyperdose"]) . " " . test_input($_POST["frequency"]) . " " . test_input($_POST["duration"]);
+$quantity = test_input($_POST["quantity"]) ?? 1;
 $quantity_calc = (floatval($_POST["qtyperdose"])*floatval($_POST["frequency"])*intval($_POST["duration"]));
 
 //echo("qtyperdose as int: " . floatval($_POST["qtyperdose"]));
 
-$refills = $_POST["refills"] ?? 1;
-$usage_info = $_POST["usage_info"] ?? '';
+$refills = filter_var($_POST["refills"], FILTER_SANITIZE_NUMBER_INT) ?? 1;
+$usage_info = test_input($_POST["usage_info"]) ?? '';
 
 
 //echo ("<br>pharmacy " . $pharmacy . "<br>" . "drugname " . $drugname . "<br>" . "dosage " . $dosage . "<br>" . "route " . $route . "<br>" . "usage_details " .$usage_details . "<br>" . "quantity " . $quantity . "<br>" . "quantity_calc " . $quantity_calc . "<br>" . "refills " . $refills . "<br>" . "Usageinfo " . $usage_info);

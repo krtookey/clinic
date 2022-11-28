@@ -7,11 +7,13 @@ ADDSCRIPT;
 echo($addscript);
 
 include_once 'dbConnection.php';
-$patient_id = $_POST["patient_id"] ?? 1;
-$user_id = $_POST["user_id"] ?? 1;
-$labdest = $_POST["labdest"];
-$providers_to_cc = $_POST["providers_to_cc"];
-$diagnosis = $_POST["diagnosis"];
+include_once 'testinput.php';
+
+$patient_id = test_input($_POST["patient_id"]) ?? 1;
+$user_id = test_input($_POST["user_id"]) ?? 1;
+$labdest = test_input($_POST["labdest"]);
+$providers_to_cc = test_input($_POST["providers_to_cc"]);
+$diagnosis = test_input($_POST["diagnosis"]);
 if (!isset($_POST["labs"])){
     echo("No labs selected. Please select a lab before ordering.");
     exit(1);
@@ -94,7 +96,7 @@ $lab_order_text1 = <<<PRESCRIPTIONTEXT
 <p>$address_street
 $address_city $address_state, $address_zip</p>
 <p>Ordering Doctor: $doctor_name</p>
-<p>$providers_to_cc</p> 
+<p>Providers to CC: $providers_to_cc</p> 
 
 PRESCRIPTIONTEXT;
 

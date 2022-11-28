@@ -25,7 +25,7 @@
         if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
             $user_id = $_POST['user_id'];
         }
-        $user_id = $_POST['user_id'] ?? '1';    //For Testing.
+        $user_id = $_POST['user_id'] ?? '2';    //For Testing.
         $user_id = 4;                           //For Testing.
         $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
         $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
@@ -60,8 +60,8 @@
         $fname = $_POST['firstname'] ?? '';
         $lname = $_POST['lastname'] ?? '';
         $dob = $_POST['dob'] ?? '';
-        if(!isset($_POST['submit']) || $_POST['submit'] != 'Search'){
-            $_POST['submit'] = '';
+        if(!isset($_POST['search']) || $_POST['search'] != 'Search'){
+            $_POST['search'] = '';
         }
 
         //Make sure the submitted dob contains a valid date string.
@@ -98,8 +98,10 @@
             return $n;
         }
 
+
+
         //See if patient search form has been submitted, and populate header accordingly.
-        if(isset($_POST['submit']) || $_POST['submit'] == 'Search'){
+        if(isset($_POST['search']) || $_POST['search'] == 'Search'){
             
             $qstr = "SELECT DISTINCT gender, preferred, patient_id, sex FROM Patient WHERE first_name = ? && last_name = ? && DOB = ? ";
             $qsearch = $conn->prepare($qstr);
@@ -142,8 +144,9 @@
             }
             echo " </header>";
             $qsearch->free_result();
-        //If Patient_Id is present and search form has not been submitted, populate header.
-        } elseif ($patient_id !== '' && !isset($_POST['submit'])) {
+        } 
+        //If Patient_Id is present and search form has not been submitted, populate header.        
+        if ($patient_id !== '') {
 
             $qstr = "SELECT DISTINCT gender, preferred, first_name, last_name, DOB, sex FROM Patient WHERE patient_id = $patient_id ";
             $qpatient = $conn->prepare($qstr);
@@ -214,7 +217,7 @@
                 </div>
             </div>
             <div class="saveButton">
-                <input type="submit" name="submit" value="Search" id="searchButton">
+                <input type="submit" name="search" value="Search" id="searchButton">
             </div>
         </form>
     </div>

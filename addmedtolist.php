@@ -1,13 +1,13 @@
 <?php
 include_once 'dbConnection.php';
-
+include_once 'testinput.php';
 // Grabbing variables from form
 
-$patient_id = $_POST["patient_id"] ?? 1;
+$patient_id = test_input($_POST["patient_id"]) ?? 1;
 //echo("patient_id: " . $patient_id);
 //$patient_id = 1;
-$drugname = $_POST["drugname"] ?? '';
-$dosage = $_POST["dosage_num"] . " " . $_POST["unit"] ?? '';
+$drugname = test_input($_POST["drugname"]) ?? '';
+$dosage = test_input($_POST["dosage_num"]) . " " . test_input($_POST["unit"]) ?? '';
 if (isset($_POST["taking"])){
     $status = 1;
 } else {

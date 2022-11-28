@@ -11,7 +11,7 @@ if ($laborderid_row = $laborderid_result->fetch_assoc()){
     $laborder_id = $laborderid_row['laborder_id']; 
     //echo("Laborder_id: " . $laborder_id);
     $labdetails_sql = <<<RESULTS
-    SELECT lab_id, results FROM OrderedLabs WHERE laborder_id = '$laborder_id';
+    SELECT lab_id, results, urgent FROM OrderedLabs WHERE laborder_id = '$laborder_id';
     RESULTS;
     // Grabbing lab id and results for specific labs based on laborder_id of current note
     $labdetails_result = $conn->query($labdetails_sql);
@@ -19,6 +19,7 @@ if ($laborderid_row = $laborderid_result->fetch_assoc()){
         while($labdetails_row = $labdetails_result->fetch_assoc()){
             $lab_id = $labdetails_row['lab_id'];
             $results = $labdetails_row['results'] ?? "No Results";
+            $urgent = $labdetails_row['urgent'] ?? 0;
             $lab_name_sql = <<<LABNAME
             SELECT lab_name from LabList WHERE lab_id = '$lab_id';
             LABNAME;  
@@ -33,7 +34,11 @@ if ($laborderid_row = $laborderid_result->fetch_assoc()){
                 $results_info = <<<RESULTSINFO
                 <p><u>$lab_name</u><br>$results</p>
                 RESULTSINFO;
+                if ($urgent == 1){
+                    echo("<span style='color:red;'>" . $results_info . "</span>");
+                } else {
                 echo($results_info);
+                }
             } 
         }
         

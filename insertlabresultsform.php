@@ -49,6 +49,8 @@
         }
     ?>
     </select>
+    <label for="urgent">Urgent?</label>
+    <input type="checkbox" id="urgent" name="urgent" value="1">
     <br>
     <label for="enter_results">Enter Results</label>
     <br>

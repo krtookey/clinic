@@ -338,11 +338,21 @@ a.patientSideMenuLink:active,
     display: none;
 }
 
+/********* End Patient Page ************/
+
+/********* Start Pharmacy Forms ************/
+
+.rowOfInputs {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+
 #lab_checkboxes label {
     padding-left: 2%;
 }
 
-/********* End Patient Page ************/
+/********* End Pharmacy Forms ************/
 
 /********* Start Index Page ************/
 
