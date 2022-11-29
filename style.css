@@ -221,7 +221,6 @@ input[type="text"] {
     font-weight: bolder;
 }
 
-
 /*********** End Medical Profile Page **************/
 
 /*********** Begin Patient Page **************/
@@ -283,6 +282,7 @@ input[type="text"] {
     margin: 5px;
     width: 150px;
     transition: 0.2s;
+    color: #27474e;
 }
 
 .patientSideMenuBtn:hover,
@@ -293,19 +293,20 @@ input[type="text"] {
     border-color: #c17817;
 }
 
-a.patientSideMenuLink {
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    color: #fff;
-    margin: 5px;
+.patientSideMenuLink {
+    padding: 0.375rem 0.75rem !important;
+    border-radius: 0.25rem !important;
+    color: #27474e;
+    margin: 5px !important;
     width: 150px;
     transition: 0.2s;
+    font-size: 1rem !important;
 }
 
-a.patientSideMenuLink:hover,
-a.patientSideMenuLink:focus,
-a.patientSideMenuLink:focus-visible,
-a.patientSideMenuLink:active,
+input.patientSideMenuLink:hover,
+input.patientSideMenuLink:focus,
+input.patientSideMenuLink:focus-visible,
+input.patientSideMenuLink:active,
 .patientSideMenuBtn:hover,
 .patientSideMenuBtn:focus,
 .patientSideMenuBtn:focus-visible,
@@ -314,8 +315,8 @@ a.patientSideMenuLink:active,
 #patientFormSubmit:active,
 #patientFormSubmit:focus,
 #patientFormSubmit:focus-visible {
-    background-color: #c17817;
-    border-color: #c17817;
+    background-color: #c17817 !important;
+    border-color: #c17817 !important;
 }
 
 .patientMenuBox {
@@ -356,7 +357,6 @@ a.patientSideMenuLink:active,
     margin-top: 8px;
     margin-bottom: 8px;
 }
-
 
 #lab_checkboxes label {
     padding-left: 2%;

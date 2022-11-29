@@ -239,3 +239,10 @@ INSERT INTO Billing (patient_id, appointment_id, note_id, bill_statement, amount
             ('2', '1', '1', 'Virus', '200.00', '1', '4');
 
 -- End of Update --------------------
+
+-- Add topics field to Note table -- November 29, 2022 ------------
+
+ALTER TABLE Note ADD topics TEXT;
+UPDATE Note SET topics = 'Topics discussed with patient';
+
+-- End of update -------------------------
