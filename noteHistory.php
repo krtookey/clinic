@@ -4,11 +4,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note History</title>
-    <link rel="stylesheet" href="./style.css">
+    <!-- Bootstrap CSS -->
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+    />
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes</title>
+    <script src="./patient.js" defer></script>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./refreshelement.js"></script>
 </head>
 <body>
   <header id='patientHeader'>
@@ -40,6 +50,13 @@
       <p>DOB: $patient_DOBFormatted</p>
       <p>$patientYears->y" . "y</p>
       <p>$patient_sex</p>";
+      //if(!isset($_POST['Open']) || $_POST['Open'] != 'Save'){
+                  //  $_POST['Open'] = '';
+              //  }
+      if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
+          $note_id = $_POST['note_id'];
+      }
+      $note_id = $POST['note_id'] ?? 2; //TODO remove after testing
       ?>
   </header>
 
@@ -54,7 +71,7 @@
                   <form id='patientNoteForm'>
                       <div class="mb-3 formField" id="noteContainer">
                         <?php
-                        $query = "SELECT Note.cc, Note.assessment, Note.plan, Note.comments, Appointment.date_time
+                        $query = "SELECT Note.cc, Note.assessment, Note.plan, Note.comments, Appointment.date_time, Note.note_id
                         FROM Note
                         INNER JOIN Appointment
                         ON Note.appointment_id = Appointment.appointment_id
@@ -66,24 +83,26 @@
                         $stmt->execute();
                         //Store results in values
                         $stmt->store_result();
-                        $stmt->bind_result($cc, $assessment, $plan, $comments, $date_time);
+                        $stmt->bind_result($cc, $assessment, $plan, $comments, $date_time, $note_id);
+                        echo "<table border='1'>";
+                        ini_set('display_errors', 1);
+                        ini_set('display_startup_errors', 1);
+                        error_reporting(E_ALL);
                         while ($stmt->fetch()){
-                          echo "<table border='1'>";
                           //Needs formatting for each table
+                          $_POST['note_id'] = $note_id;
                           echo "<tr><td>$date_time</td>
                           <td>$cc</td
                           ><td>$assessment</td>
                           <td>$plan</td>
                           <td>$comments</td>
                           <td>
-                          <form method=GET action=openNote.php>
-                          <input type=submit value ='Open'>
+                          <a href='openNote.php?note_id=$note_id'>Open</a>
+                          </form>
                           </td>
                           </tr>";
-                          echo "</table>";
-                          echo "</br>";
-                          $note_id = $POST['note_id'] ?? 2; //TODO Remove after testing and change to autoset to value
                         }
+                        echo "</table>";
                         ?>
                       </div>
                   </form>
@@ -91,7 +110,8 @@
           </div>
   </div>
 </section>
-  <footer>
+  <footer> <!--Need footer at bottom of page-->
+
       <div>
           <a href="./patient.php">Back to Patient Note</a>
       </div>
@@ -99,5 +119,10 @@
   <?php
       $conn->close();
   ?>
+  <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous">
+  </script>
 </body>
 </html>
