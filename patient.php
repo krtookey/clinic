@@ -31,7 +31,7 @@
             if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
                 $appointment_id = $_POST['appointment_id'];
               }
-            $appointment_id = $_POST['appointment_id'] ?? '1';
+            $appointment_id = $_POST['appointment_id'] ?? '3';
             if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
                 $user_id = $_POST['user_id'];
               }
@@ -74,18 +74,21 @@
         </header>
         <?php
             //Save data
-            $sql = "UPDATE Note 
-            SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?
-            WHERE Note.patient_id = $patient_id AND Note.appointment_id = $appointment_id";
-            $stmt = $conn->prepare($sql);
-            if(!$stmt){
-                echo "<p>Error: could not execute query. <br> </p>";
-                echo "<pre> Error Number: " .$conn -> errno. "\n";
-                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                exit;
+            //Test if values exist in post before saving them
+            if (!empty($_POST['demographics']) && !empty($_POST['social']) && !empty($_POST['chiefComplaint'])) {
+                $sql = "UPDATE Note 
+                SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?, topics = ?
+                WHERE Note.patient_id = $patient_id AND Note.appointment_id = $appointment_id";
+                $stmt = $conn->prepare($sql);
+                if(!$stmt){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $stmt->bind_param("sssssssssss", $_POST['demographics'], $_POST['chiefComplaint'], $_POST['histOfIllness'],$_POST['social'],$_POST['substanceHist'],$_POST['psychHist'],$_POST['medicalHist'],$_POST['assessment'],$_POST['treatmentPlan'],$_POST['generalComments'],$_POST['topics']);
+                $stmt->execute();
             }
-            $stmt->bind_param("ssssssssss", $_POST['demographics'], $_POST['chiefComplaint'], $_POST['histOfIllness'],$_POST['social'],$_POST['substanceHist'],$_POST['psychHist'],$_POST['medicalHist'],$_POST['assessment'],$_POST['treatmentPlan'],$_POST['generalComments']);
-            $stmt->execute();
         ?>
         <div class="patientBody">
             <section class="patientSideMenu">
@@ -338,16 +341,20 @@
                 <!-- Links -->
                 <hr>
                 <!-- Note History -->
-                <a
-                class="btn btn-primary patientSideMenuLink"
-                href="noteHistory.php">
-                    Note History
-                </a>
+                <form action='./noteHistory.php' method='POST'>
+                    <?php
+                        echo "  <input type='hidden' name='patient_id' value='$patient_id'>
+                        <input type='hidden' name='appointment_id' value='$appointment_id'>
+                        <input type='hidden' name='user_id' value='$user_id'>";
+                    ?>
+                    
+                    <input type="submit" class="btn btn-primary patientSideMenuLink" value="Note History">
+                </form>
             </section>
 
             <!-------------------------- Current patient Note ------------------------------>
             <?php
-                                $sql = "SELECT Note.appointment_id, Note.cc, Note.hist_illness, Note.ros_id, Note.med_profile_id, Note.social_hist, Note.med_hist, Note.psych_hist, Note.assessment, Note.plan, Note.laborder_id, Note.labdest_id, Note.demographics, Note.comments, Patient.prev_note_id, Note.substance_hist
+                                $sql = "SELECT Note.appointment_id, Note.cc, Note.hist_illness, Note.ros_id, Note.med_profile_id, Note.social_hist, Note.med_hist, Note.psych_hist, Note.assessment, Note.plan, Note.laborder_id, Note.labdest_id, Note.demographics, Note.comments, Patient.prev_note_id, Note.substance_hist, Note.topics
                                 FROM Note
                                 INNER JOIN Patient
                                 ON Patient.patient_id = Note.patient_id
@@ -516,13 +523,17 @@
                             </div>
                             <!-- Topics Discussed -->
                             <div class="mb-3 formField" id="topicsContainer">
-                                <label for="topics" id="topicsLabel">Topics Discussed With Patient</label>
+                                <label 
+                                for="topics" 
+                                id="topicsLabel">Topics Discussed With Patient</label>
                                 <textarea
                                 rows="1"
                                 cols="100"
                                 class="form-control"
                                 id="topics"
-                                name="topics">Need to add this to database</textarea>
+                                name="topics"><?php
+                                    echo $row['16'];
+                                ?></textarea>
                             </div>
                             <!-- Save Note -->
                             <input type="submit" value="Save Note" name="noteSave" class="btn btn-primary" id='patientFormSubmit'>
