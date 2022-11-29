@@ -246,3 +246,9 @@ ALTER TABLE Note ADD topics TEXT;
 UPDATE Note SET topics = 'Topics discussed with patient';
 
 -- End of update -------------------------
+
+--- User permission update ------------------ November 29, 2022 --------
+
+UPDATE Users SET permission = 3 WHERE user_id = 1 OR user_id = 2;
+
+--- End update -------------------
