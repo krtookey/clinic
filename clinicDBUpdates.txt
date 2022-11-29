@@ -228,3 +228,14 @@ INSERT INTO Note (patient_id, appointment_id, cc, hist_illness, ros_id, med_prof
 ALTER TABLE OrderedLabs ADD urgent boolean;
 
 -- End of Update --------------------
+
+-- Add billing address field to Billing table and DB data -- November 28, 2022 ---------
+
+ALTER TABLE Billing ADD bill_address int;
+
+INSERT INTO Billing (patient_id, appointment_id, note_id, bill_statement, amount_due, paid, bill_address ) 
+    VALUES  ('1', '2', '2', 'General Check Up', '350.00', '1', '3'),
+            ('1', '3', '3', 'Broken Foot', '500.82', '0', '3'),
+            ('2', '1', '1', 'Virus', '200.00', '1', '4');
+
+-- End of Update --------------------
