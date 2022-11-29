@@ -292,6 +292,7 @@ CREATE TABLE Billing (
 	bill_statement  TEXT NOT NULL,
 	amount_due  float,
 	paid    boolean NOT NULL,
+	bill_address int,
 	PRIMARY KEY (billing_id)
 );
 

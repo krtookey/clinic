@@ -120,7 +120,7 @@ $prescription_text = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
 <h3>Prescription</h3>
 <p>$pharmacy</p>
-<h4>$firstname $lastname   $DOB  Sex: $sex</h4>
+<h4>Patient: $firstname $lastname   $DOB  Sex: $sex</h4>
 <p>$address_street $address_city $address_state, $address_zip</p>
 <p>Prescribing Doctor: $doctor_name</p>
 <p>$drugname $dosage - $route</p>

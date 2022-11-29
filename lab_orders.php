@@ -92,7 +92,7 @@ $lab_order_text1 = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
 <h3>Lab Order</h3>
 <p>$labdest</p>
-<h4>$firstname $lastname   $DOB  Sex: $sex</h4>
+<h4>Patient: $firstname $lastname   $DOB  Sex: $sex</h4>
 <p>$address_street
 $address_city $address_state, $address_zip</p>
 <p>Ordering Doctor: $doctor_name</p>
@@ -100,7 +100,7 @@ $address_city $address_state, $address_zip</p>
 
 PRESCRIPTIONTEXT;
 
-$lab_order_text2 = '<p>';
+$lab_order_text2 = '<p>Labs: ';
 foreach ($all_labs as $x => $val){ 
     if ($x > 0){
         $lab_order_text2 = $lab_order_text2 . ", " . $val;

@@ -15,7 +15,7 @@
                         if(!isset($_POST['histEdit']) || $_POST['histEdit'] != 'Add'){
                             $_POST['histEdit'] = '';
                         }
-                        if(!isset($_POST['histSave']) || $_POST['histSave'] != 'Save'){
+                        if(!isset($_POST['histSave']) || $_POST['histSave'] != 'New'){
                             $_POST['histSave'] = '';
                         }
                         if(!isset($_POST['memberDelete']) || $_POST['memberDelete'] != 'Delete'){
@@ -92,7 +92,7 @@
                             }
 
 
-                            if(isset($_POST['histSave']) && $_POST['histSave'] == 'Save'){
+                            if(isset($_POST['histSave']) && $_POST['histSave'] == 'New'){
 
                                 $i = 0;
                                 while($i < $num && $present != 'true'){
@@ -195,7 +195,7 @@
                     </div> <br>
                 <div class='saveButton'> 
                     <input type='submit' value='Add' name='histEdit' id='histEdit'>
-                    <input type='submit' value='Save' name='histSave' id='histSave' >
+                    <input type='submit' value='New' name='histSave' id='histSave' >
                     <input type='submit' value='Delete' name='memberDelete' id='memberDelete' >
                 </div>
                 <input type='hidden' name='patient_id' value='$patient_id'>

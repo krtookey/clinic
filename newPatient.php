@@ -118,6 +118,9 @@
         <h2>New Patient</h2>
 
     <?php
+    //billing variable
+    $baddress = '';
+    $bill_id = '';
 
     if(isset($_POST['npSave']) && $_POST['npSave'] == 'Save'){
         //New Patient.
@@ -301,6 +304,37 @@
             $result = $qselect->get_result();
             $row = $result->fetch_row();
             $_POST['patient_id'] = $row[0];
+            $patient_id = $row[0];
+            $result->free_result();
+
+            //Billing address
+            $baddress = $address;
+            $qstr = "INSERT INTO Billing (patient_id, appointment_id, note_id, bill_statement, amount_due, paid, bill_address) 
+                     VALUES ('$patient_id', '0', '0', 'new patient', '0', '1', '$baddress') ";
+            //Debug: echo $qstr;
+            $qinsert = $conn->prepare($qstr);
+            if(!$qinsert){
+                echo "<p>Error: could not execute query. <br> </p>";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                exit;
+            }
+            $qinsert->execute();
+            $qinsert->store_result();
+            $qinsert->free_result();
+
+            $qstr = "SELECT DISTINCT billing_id FROM Billing WHERE patient_id = '$patient_id' ";
+            $qselect = $conn->prepare($qstr);
+            if(! $qselect){
+                echo "<p>Error: could not execute query. <br> </p>";
+                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                exit;
+            }
+            $qselect->execute();
+            $result = $qselect->get_result();
+            $row = $result->fetch_row();
+            $bill_id = $row[0];
             $result->free_result();
         }
     }
@@ -512,6 +546,8 @@
     <div class="whiteCard" class="gridItem3"> 
         <h2>Billing Information</h2>
         <?php
+
+            // Code - Not Active.
             if(!isset($_POST['bSave']) || $_POST['bSave'] != 'Save'){
                 $_POST['bSave'] = '';
             }
@@ -535,6 +571,54 @@
             $bstate = $_POST['bstate'] ?? '';
             $bzip = $_POST['bzip'] ?? '';
             $bill = $_POST['bill'] ?? 'true';
+
+            if(isset($_POST['bSave']) && $_POST['bSave'] == 'Save'){
+                if(!$bill && $baddress === $address) {
+                    $qstr = "INSERT INTO Addresses (street, city, state, zip) VALUES (?, ?, ?, ?) ";
+                    echo $qstr;
+                    $qinsert = $conn->prepare($qstr);
+                    if(!$qinsert){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qinsert->bind_param("ssss", $bstreet, $bcity, $bstate, $bzip);
+                    $qinsert->execute();
+                    $qinsert->store_result();
+                    $qinsert->free_result();
+                    
+                    $qstr = "SELECT address_id FROM Addresses WHERE street = '$bstreet' AND city = '$bcity' AND state_abbr = '$bstate' AND zip = '$bzip' ";
+                    echo $qstr;
+                    $qselect = $conn->prepare($qstr);
+                    if(! $qselect){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qselect->execute();
+                    $result = $qselect->get_result();
+                    $row = $result->fetch_row();
+                    $baddress = $row[0];
+                    $result->free_result();
+                    $bill = 'false';
+
+                    $qstr = "UPDATE Billing SET bill_address = $baddress WHERE patient_id = $patient_id";
+                    echo $qstr;
+                    $qinsert = $conn->prepare($qstr);
+                    if(!$qinsert){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qinsert->execute();
+                    $qinsert->store_result();
+                    $qinsert->free_result();
+                }
+            }
+            
         ?>
         <iframe style="display: none; " name='billForm'></iframe>
         <form action="./newPatient.php" method="post" target="billForm">
@@ -579,9 +663,12 @@
             <div class="saveButton">
                 <input type="submit" name="bSave" value="Save">
             </div>
-            <?php echo "<input type='hidden' name='patient_id' value='$patient_id'>
-                        <input type='hidden' name='appointment_id' value='$appointment_id'>
-                        <input type='hidden' name='user_id' value='$user_id'>"; ?>
+            <?php
+             echo " <input type='hidden' name='patient_id' value='$patient_id'>
+                    <input type='hidden' name='appointment_id' value='$appointment_id'>
+                    <input type='hidden' name='user_id' value='$user_id'>
+                    <input type='hidden' name='baddress' value='$baddress'>"; 
+            ?>
         </form>
     </div>
     </div>

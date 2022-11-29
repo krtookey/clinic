@@ -77,8 +77,6 @@
             $sql = "UPDATE Note 
             SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?
             WHERE Note.patient_id = $patient_id AND Note.appointment_id = $appointment_id";
-            echo $_POST['demographics']. $_POST['chiefComplaint']. $_POST['histOfIllness'].$_POST['social'].$_POST['substanceHist'].$_POST['psychHist'].$_POST['medicalHist'].$_POST['assessment'].$_POST['treatmentPlan'].$_POST['generalComments'];
-            echo "patient id: " . $patient_id . " appointment id: " . $appointment_id;
             $stmt = $conn->prepare($sql);
             if(!$stmt){
                 echo "<p>Error: could not execute query. <br> </p>";
