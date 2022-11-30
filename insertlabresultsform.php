@@ -4,12 +4,12 @@
     <label for="lab_name">Lab Name</label> 
     <?php
         $patient_id = $_POST['patient_id'] ?? 1;
-        $note_id = $_POST['note_id'] ?? 1;
-        $sql = <<<LAB_IDS_FOR_PATIENT
-        SELECT laborder_id FROM Note WHERE note_id = '$note_id';
+        $appointment_id = $POST['appointment_id'] ?? 3;
+        $laborderid_sql = <<<LAB_IDS_FOR_PATIENT
+        SELECT laborder_id FROM Note WHERE patient_id = '$patient_id' AND appointment_id = '$appointment_id';
         LAB_IDS_FOR_PATIENT;
         // Grabbing laborder_id and lab_id from current note
-        $laborderid_result = $conn->query($sql);
+        $laborderid_result = $conn->query($laborderid_sql);
         if ($laborderid_row = $laborderid_result->fetch_assoc()){
             $laborder_id = $laborderid_row['laborder_id']; 
             $laborder_id_field = <<<LABORDERIDFIELD
@@ -45,7 +45,7 @@
                     
             }
         } else {
-            echo('Unable to retrieve medication list for this user.');
+            echo('Unable to retrieve lab results list for this user.');
         }
     ?>
     </select>
