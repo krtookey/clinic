@@ -158,7 +158,7 @@ VALUES ("$patient_id", "$user_id", "$pharmacy_id", "$drug_id", "$dosage", "$rout
 PRESCRIPTIONDATABASE;
 //##testdata
 //echo("Here is the sql insert statement: " . $scrip_database);
-
+echo("<br>");
 if($conn->query($scrip_database) === TRUE){
     echo("The data was inserted into the database correctly. All is well!");
 } else {

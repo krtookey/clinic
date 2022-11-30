@@ -5,18 +5,32 @@
             //#$orderlab
             $user_id = $POST['user_id'] ?? 1;
             $patient_id = $POST['patient_id'] ?? 1;
+            $appointment_id = $POST['appointment_id'] ?? 3;
             $idfields = <<<IDFIELDS
             <input type="text" id="patient_id" name="patient_id" value="$patient_id" hidden>
             <input type="text" id="user_id" name="user_id" value="$user_id" hidden>
+            <input type="text" id="appointment_id" name="appointment_id" value="$appointment_id" hidden>
             IDFIELDS;
             echo($idfields);
             //Need to get patient name and DOB from medical records views
             //$patient_name = "John Doe"; // PLACEHOLDER
             //$patient_dob = "10/12/1996"; // PLACEHOLDER
             echo("<b>". $patient_name . "</b>  <b>  " . $patient_dob . "</b>");
+
+            // Checking if a lab order has already been submitted as part of this note, and notifying the user if that is the case
+            $checkingorderid_sql = <<<ORDERIDSQL
+            SELECT laborder_id FROM Note WHERE patient_id = '$patient_id' AND appointment_id = '$appointment_id';
+            ORDERIDSQL;
+            $checkingorderid_result = $conn->query($checkingorderid_sql);
+            if ($result->num_rows > 0){
+                $orderid_row = $checkingorderid_result->fetch_assoc();
+                $patient_laborder_id = $orderid_row['laborder_id'];
+                if ($patient_laborder_id != 0){
+                    echo("<p style='color:blue;'>A lab order has already been submitted for this note. Submitting another lab order will overwrite the lab order within this note.</p>");
+                }
+            }
         ?>
     </div>
-    <br>
     <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
     <?php
         // Get labdest_id for patient

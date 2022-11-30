@@ -1,12 +1,15 @@
 <?php
 //#$labresults
-$note_id = $_POST['note_id'] ?? 1;
+//$note_id = $_POST['note_id'] ?? 1;
 $patient_id = $_POST['patient_id'] ?? 1;
-$laborderid_sql = <<<LAB_IDS_FOR_PATIENT
+/*$laborderid_sql = <<<LAB_IDS_FOR_PATIENT
 SELECT laborder_id FROM Note WHERE note_id = '$note_id';
+LAB_IDS_FOR_PATIENT;*/
+$laborderid_sql2 = <<<LAB_IDS_FOR_PATIENT
+SELECT laborder_id FROM Note WHERE patient_id = '$patient_id' AND appointment_id = '$appointment_id';
 LAB_IDS_FOR_PATIENT;
 // Grabbing laborder_id and lab_id from current note
-$laborderid_result = $conn->query($laborderid_sql);
+$laborderid_result = $conn->query($laborderid_sql2);
 if ($laborderid_row = $laborderid_result->fetch_assoc()){
     $laborder_id = $laborderid_row['laborder_id']; 
     //echo("Laborder_id: " . $laborder_id);

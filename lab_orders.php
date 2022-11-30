@@ -11,6 +11,7 @@ include_once 'testinput.php';
 
 $patient_id = test_input($_POST["patient_id"]) ?? 1;
 $user_id = test_input($_POST["user_id"]) ?? 1;
+$appointment_id = test_input($_POST["appointment_id"]) ?? 1;
 $labdest = test_input($_POST["labdest"]);
 $providers_to_cc = test_input($_POST["providers_to_cc"]);
 $diagnosis = test_input($_POST["diagnosis"]);
@@ -144,12 +145,9 @@ VALUES ("$patient_id", "$user_id", "$labdest_id", "$providers_to_cc", "$diagnosi
 LABDATABASE;
 //##testdata
 //echo("---Here is the laborders statement: " . $scrip_database . "   ----");
-
+$laborder_id = 0;
 if ($conn->query($scrip_database) === TRUE){
     // If lab order data was inserted into LabOrders correctly, grab the laborder_id that the database assigns
-    $laborderid_sql1 = <<<SELECTLABORDER
-    SELECT laborder_id FROM LabOrders WHERE patient_id='$patient_id' AND doctor_id='$user_id' AND diagnosis='$diagnosis' AND orderdate='$orderdate';
-    SELECTLABORDER;
     $laborderid_sql2 = <<<SELECTLABORDER2
     SELECT laborder_id FROM LabOrders WHERE laborder_id = (SELECT MAX(laborder_id) FROM LabOrders WHERE patient_id='$patient_id');
     SELECTLABORDER2;
@@ -173,6 +171,23 @@ if ($conn->query($scrip_database) === TRUE){
         }
     }
 }
+/*
+echo('patient_id = ' . $patient_id);
+echo('appointment_id = ' . $appointment_id);
+echo('laborder_id = ' . $laborder_id);
+*/
+if ($laborder_id > 0){
+    $laborderid_to_note_sql = <<<NOTEID
+    UPDATE Note SET laborder_id = '$laborder_id' WHERE patient_id = '$patient_id' AND appointment_id = '$appointment_id';
+    NOTEID;
+    echo("<br>");
+    if ($conn->query($laborderid_to_note_sql) == TRUE){
+        echo("laborder_id was added to the Note successfully!");
+    } else {
+        echo("Failed to add laborder_id to the Note.");
+    }
+}
+
 $conn->close();
 ?>
 
