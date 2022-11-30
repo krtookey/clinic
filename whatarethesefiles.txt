@@ -44,23 +44,24 @@ List of common drugs that were put into database, NOT NEEDED
 List of common drugs that were put into database, NOT NEEDED
 
 --- medicalProfile.php
-
+Page for filling out medical profile and review of systems 
 
 --- newPatient.php
-
+Page for creating a new patient
 
 --- noteHistory.php
-
+Shows all notes for a single patient. Notes a viewable but not editable
 
 --- orderfunctions.php
 Contains functions for getting patient data from patient_id and address data from address_id, not currently being used
 
 --- patient.js
-
+JS functionality behind the side menu expand/contract event listeners
 
 --- patient.php
 Shows currently open note for current patient, contains sidebar menus to show
     - Medication List (showmedicationlist.php)
+    - Problem List
     - Review of Systems
     - Lab Results (showlabresults.php)
     - Family History
@@ -68,6 +69,9 @@ Shows currently open note for current patient, contains sidebar menus to show
     - Order Lab (laborderform.php)
     - Lab Order History (viewlaborders.php)
     - Prescriptions (viewprescriptions.php)
+    - Add Pharmacy
+    - Add Lab Destination
+    - Add Drug to List
     - Note History
 
 --- pharma_lab_forms.php
