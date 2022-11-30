@@ -117,6 +117,36 @@
                         </div>
                     </div>
                 </div>
+                <!-- Problem List -->
+                <button
+                class="btn btn-primary patientSideMenuBtn"
+                type="button"
+                data-button-name='problemList'
+                aria-expanded="false"
+                aria-controls="problemListBox">
+                    Problem List
+                </button>
+                <div class="collapse hideContent patientMenuBox" id="problemListBox">
+                    <div class="problemList card card-body patientMenuItem">
+                        <?php
+                            $sql = "SELECT ProblemList.*
+                            FROM ProblemList
+                            WHERE ProblemList.patient_id = $patient_id
+                            ORDER BY ProblemList.problem_id
+                            DESC";
+
+                            $query = $conn->prepare($sql);
+                            $query->execute();
+                            $result = $query->get_result();
+                            echo "<table>";
+                            echo "<tr><th>Problem</th><th>Category</th><th>Timeframe</th></tr>";
+                            while ($row = mysqli_fetch_array($result)) {
+                                echo "<tr><td>" . $row['2'] . "</td><td>" . $row['3'] . "</td><td>" . $row['4'] . "</td></tr>";
+                            }
+                            echo "</table>";
+                        ?>
+                    </div>
+                </div>
                 <!-- Review Of Systems -->
                 <button
                 class="btn btn-primary patientSideMenuBtn"
@@ -152,7 +182,7 @@
                                     if ($rosFieldLabels[$i] == "last eye exam") {
                                         echo "<li>Last eye exam: $row[$i]</li>";
                                     }
-                                    if ($rosFieldLabels[$i] == "comments") {
+                                    else if ($rosFieldLabels[$i] == "comments") {
                                         echo "<li>Comments: $row[$i]</li>";
                                     }
                                     else if (isset($row[$i])) {
@@ -354,27 +384,37 @@
 
             <!-------------------------- Current patient Note ------------------------------>
             <?php
-                                $sql = "SELECT Note.appointment_id, Note.cc, Note.hist_illness, Note.ros_id, Note.med_profile_id, Note.social_hist, Note.med_hist, Note.psych_hist, Note.assessment, Note.plan, Note.laborder_id, Note.labdest_id, Note.demographics, Note.comments, Patient.prev_note_id, Note.substance_hist, Note.topics
-                                FROM Note
-                                INNER JOIN Patient
-                                ON Patient.patient_id = Note.patient_id
-                                WHERE Patient.patient_id = ?
-                                ORDER BY Note.note_id
-                                DESC LIMIT 1";
-                                //Prepare statment
-                                $stmt = $conn->prepare($sql);
-                                //Bind ? with the POST variable from the prvious page 
-                                $stmt->bind_param("i", $patient_id); //$_POST['patient_id']
-                                //Execute and get resutls from database
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                $row = $result->fetch_row();
-                            ?>
+                $sql = "SELECT Note.appointment_id, Note.cc, Note.hist_illness, Note.ros_id, Note.med_profile_id, Note.social_hist, Note.med_hist, Note.psych_hist, Note.assessment, Note.plan, Note.laborder_id, Note.labdest_id, Note.demographics, Note.comments, Patient.prev_note_id, Note.substance_hist, Note.topics, Appointment.date_time
+                FROM Note
+                INNER JOIN Patient
+                ON Patient.patient_id = Note.patient_id
+                INNER JOIN Appointment
+                ON Note.appointment_id = Appointment.appointment_id
+                WHERE Patient.patient_id = ?
+                ORDER BY Note.note_id
+                DESC LIMIT 1";
+                //Prepare statment
+                $stmt = $conn->prepare($sql);
+                //Bind ? with the POST variable from the prvious page 
+                $stmt->bind_param("i", $patient_id); //$_POST['patient_id']
+                //Execute and get resutls from database
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_row();
+            ?>
             <section class="patientNote">
                 <div class="card" id='patientFormCard'>
                     <div class="card-body">
                         <h3 class="card-title">
-                            Date from appointment table
+                            <?php
+                                if (!empty($row['17'])) {
+                                    $dateTime = new DateTime($row['17']);
+                                    $noteDate = date_format($dateTime,"m/d/Y");
+                                    echo $noteDate;
+                                } else {
+                                    echo 'No date attached to note';
+                                }
+                            ?>
                         </h3>
                         <form id="patientNoteForm" action="./patient.php" method="post">
                             

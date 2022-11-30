@@ -104,6 +104,7 @@ CREATE TABLE Note (
 	demographics TEXT,
 	comments    TEXT,
 	substance_hist TEXT,
+	topics TEXT, 
 	PRIMARY KEY (note_id)
 );
 
