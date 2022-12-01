@@ -1,4 +1,13 @@
-<form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform">
+<form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform" onSubmit="confirmOverwrite();">
+    <script>
+        function confirmOverwrite(){
+            if (document.getElementById("overwritetext")){
+                if(!confirm('Are you sure you want to overwrite the current lab order in this note?')){
+                    return false;
+                }
+            }
+        }
+    </script>
     <script src="checkboxes.js"></script>
     <div id="patient_info">
         <?php 
@@ -24,9 +33,9 @@
             $checkingorderid_result = $conn->query($checkingorderid_sql);
             if ($result->num_rows > 0){
                 $orderid_row = $checkingorderid_result->fetch_assoc();
-                $patient_laborder_id = $orderid_row['laborder_id'];
-                if ($patient_laborder_id != 0){
-                    echo("<p style='color:blue;'>A lab order has already been submitted for this note. Submitting another lab order will overwrite the lab order within this note.</p>");
+                $note_laborder_id = $orderid_row['laborder_id'];
+                if ($note_laborder_id != 0){
+                    echo("<p id='overwritetext' style='color:blue;'>A lab order has already been submitted for this note. Submitting another lab order will overwrite the lab order within this note.</p>");
                 }
             }
         ?>
