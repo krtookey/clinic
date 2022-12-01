@@ -85,6 +85,7 @@ if ($row = $labdestid_result->fetch_assoc()){
 }
 
 // Getting date of order
+date_default_timezone_set("America/New_York");
 $orderdate = date('Y-m-d');
 
 // Getting everything ready to be sent
@@ -92,6 +93,7 @@ $orderdate = date('Y-m-d');
 $lab_order_text1 = <<<PRESCRIPTIONTEXT
 <div id="pdf_text">
 <h3>Lab Order</h3>
+<p>Date: $orderdate</p> 
 <p>$labdest</p>
 <h4>Patient: $firstname $lastname   $DOB  Sex: $sex</h4>
 <p>$address_street

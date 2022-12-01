@@ -103,7 +103,9 @@ if ($row = $pharmaid_result->fetch_assoc()){
 
 
 // Getting date of order
+date_default_timezone_set("America/New_York");
 $orderdate = date('Y-m-d');
+echo($orderdate);
 
 // Getting everything ready to be sent
 
@@ -119,6 +121,7 @@ $prescription_text = <<<PRESCRIPTIONTEXT
 </style>
 <div id="pdf_text">
 <h3>Prescription</h3>
+<p>Date: $orderdate</p> 
 <p>$pharmacy</p>
 <h4>Patient: $firstname $lastname   $DOB  Sex: $sex</h4>
 <p>$address_street $address_city $address_state, $address_zip</p>
