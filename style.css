@@ -54,11 +54,16 @@ footer {
 a:link,
 a:visited {
     background-color: var(--orange);
+    border: none;
+    border-radius: 0.5em;
     color: var(--blue);
-    padding: 14px 25px;
+    font-size: 1.25em;
+    padding: 6px 12px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;;
     text-align: center;
     text-decoration: none;
-    border-radius: 0.5em;
     display: inline-block;
 }
 
@@ -89,7 +94,7 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    font-size: 1em;
+    font-size: 1.25em;
     gap: 3em;
     padding: 0.5em;
     justify-content: flex-end;
@@ -101,11 +106,16 @@ input[type="submit"] {
     border: none;
     border-radius: 0.5em;
     color: var(--blue);
-    font-size: 1.5em;
+    font-size: 1.25em;
     padding: 6px 12px;
     text-decoration: none;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+input[type="submit"]:hover,
+input[type="submit"]:active {
+    background-color: var(--offWhite);
 }
 
 input[type="text"] {
@@ -395,7 +405,7 @@ input.patientSideMenuLink:active,
 
 /********* End Index Page ************/
 
-/********* Begin New Patient Page ************/
+/********* Begin New Patient and Edit Patient Page ************/
 
 .newPGrid {
     border: 0;
@@ -428,6 +438,41 @@ input.patientSideMenuLink:active,
     padding: 0.5em;
     justify-content: flex-end;
     width: 100%;
+}
+
+.tableBill {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  
+.tableBill td, .tableBill th {
+    border: 1px solid var(--offWhite);
+    padding: 8px;
+}
+  
+.tableBill tr:nth-child(even){
+    background-color: white;
+}
+  
+.tableBill tr:hover {
+    background-color: var(--offWhite);
+}
+  
+.tableBill th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: var(--blue);
+    color: var(--orange);
+    margin-left: 6px;
+}
+
+#totalStr {
+    color: var(--blue);
+    margin-left: 24px;
 }
 
 /********* End New Patient Page ************/

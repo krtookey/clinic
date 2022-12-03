@@ -258,3 +258,15 @@ INSERT INTO Appointment VALUES ('1','2', '2022-12-06 10:15:00','20','1','1','Ell
 INSERT INTO Appointment VALUES ('2','1', '2022-12-07 12:00:00','30','1','1','Elliot','Nussbaum');
 INSERT INTO Appointment VALUES ('3','1', '2022-12-08 15:45:00','30','1','1','Elliot','Nussbaum');
 -- End of Update ---------------------------
+
+-- Add data to appointment table, for those using the data provided in clinicData.txt 
+-- Add default user with user_id of 999999 for when a patient does not have a selected provider. 
+-- December 2, 2022 ------------
+
+UPDATE Appointment SET patient_id ='2', date_time = '2022-12-06 10:15:00', duration ='20', status = '1', doctor_id = '1', doctor_first_name = 'Joey', doctor_last_name = 'Danger' WHERE appointment_id = '1';
+UPDATE Appointment SET patient_id ='1', date_time = '2022-12-07 12:00:00', duration ='30', status = '1', doctor_id = '1', doctor_first_name = 'Joey', doctor_last_name = 'Danger' WHERE appointment_id = '2';
+UPDATE Appointment SET patient_id ='1', date_time = '2022-12-08 15:45:00', duration ='30', status = '1', doctor_id = '1', doctor_first_name = 'Joey', doctor_last_name = 'Danger' WHERE appointment_id = '3';
+
+INSERT INTO Users VALUES('999999', 'default', '0', 'default', '000-000-0000', 'default', 'None Selected', '', 'default');
+
+-- End of Update ---------------------------

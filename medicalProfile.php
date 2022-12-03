@@ -25,6 +25,7 @@
             $appointment_id = $_POST['appointment_id'];
         }
         $appointment_id = $_POST['appointment_id'] ?? '';
+        echo $appointment_id;
         if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
             $user_id = $_POST['user_id'];
         }

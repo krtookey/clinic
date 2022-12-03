@@ -311,3 +311,5 @@ INSERT INTO Billing (patient_id, appointment_id, note_id, bill_statement, amount
     VALUES  ('1', '2', '2', 'General Check Up', '350.00', '1', '3'),
             ('1', '3', '3', 'Broken Foot', '500.82', '0', '3'),
             ('2', '1', '1', 'Virus', '200.00', '1', '4');
+
+INSERT INTO Users VALUES('999999', 'default', '0', 'default', '000-000-0000', 'default', 'None Selected', '', 'default');
