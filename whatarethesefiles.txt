@@ -34,6 +34,9 @@ Library file for jquery, DO NOT MODIFY!!
 --- lab_orders.php
 Script that handles the ordering of labs, called by #labform within laborderform.php
 
+--- labformfunctions.js
+JavaScript functions for "Toggle All" checkbox and for confirmation box for overwriting lab order in note
+
 --- laborderform.php
 Contains HTML and PHP for lab order form, calls lab_orders.php when submitted
 
