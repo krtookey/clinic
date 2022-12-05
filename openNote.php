@@ -11,7 +11,6 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
     crossorigin="anonymous"
     />
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,35 +56,22 @@
       ?>
   </header>
 
-
-
 <form method='post' action='openNote.php'>
 <section class= "openNote">
-  <div id="openNote">
-          <div class="card" id='patientFormCard'>
-              <div class="card-body">
-                  <form id='patientNoteForm'>
-                      <div class="mb-3 formField" id="noteContainer">
                         <?php
-                        $query = "SELECT Note.Demographics, Note.cc, Note.assessment, Note.plan, Note.comments, Appointment.date_time, Note.med_hist, Note.social_hist, Note.hist_illness, Note.psych_hist, Note.substance_hist
+                        $query = "SELECT Note.Demographics, Note.cc, Note.assessment, Note.plan, Note.comments, Appointment.date_time, Note.med_hist, Note.social_hist, Note.hist_illness, Note.psych_hist, Note.substance_hist, Note.topics
                         FROM Note
                         INNER JOIN Appointment
                         ON Note.appointment_id = Appointment.appointment_id
-                        WHERE Note.note_id = $note_id"; //This needs to grab $note_id from post
+                        WHERE Note.note_id = $note_id";
                         $stmt = $conn->prepare($query);
                         //Execute and get results from database
                         $stmt->execute();
                         //Store results in values
                         $stmt->store_result();
-                        $stmt->bind_result($demographics, $cc, $assessment, $plan, $comments, $date_time, $med_history, $social_hist, $illness_hist, $psych_hist, $substance_hist);
-                        while ($stmt->fetch()){
-                        }
+                        $stmt->bind_result($demographics, $cc, $assessment, $plan, $comments, $date_time, $med_history, $social_hist, $illness_hist, $psych_hist, $substance_hist, $topics);
+                        while ($stmt->fetch()){}
                         ?>
-                      </div>
-                  </form>
-              </div>
-          </div>
-  </div>
 </section>
 <section class="patientNote">
     <div class="card" id='patientFormCard'>
@@ -100,14 +86,11 @@
                 </div>
                 <!-- Chief Complaint -->
                 <div class="mb-3 formField" id="chiefComplaintContainer">
-                    <label
-                    for="chiefComplaint"
-                    id="chiefComplaintLabel">Chief Complaint</label>
-                    <p> <?php echo "$cc" ?> </p>
+                    <p> <?php echo "Chief Complaint: $cc" ?> </p>
                 </div>
                 <!-- History Of Illness -->
                 <div class="mb-3 formField" id="histOfIllnessContainer">
-                    <p> <?php echo "$illness_hist" ?> </p>
+                    <p> <?php echo "Illness History: $illness_hist" ?> </p>
                 </div>
                 <!-- Social -->
                 <div class="mb-3 formField" id="socialContainer">
@@ -128,7 +111,6 @@
                 <!-- Assessment/Formulation -->
                 <div class="mb-3 formField" id="assessmentContainer">
                     <p> <?php echo "$assessment" ?> </p>
-
                 </div>
                 <!-- Treatment Plan -->
                 <div class="mb-3 formField" id="treatmentPlanContainer">
@@ -140,14 +122,13 @@
                 </div>
                 <!-- Topics Discussed -->
                 <div class="mb-3 formField" id="topicsContainer">
-                    <label for="topics" id="topicsLabel">Topics Discussed With Patient</label>
-                    <p> <?php echo "No Column for topics Discussed" ?> </p>
+
+                    <p> <?php echo "$topics" ?> </p>
                 </div>
                 <div class="mb-3 formField" id="rosContainer">
                     <label for="ros" id="rosLabel">Review of Symptoms</label>
                     <p>
                     <?php
-                    //TODO This needs to be tested because there is no data in ROS
                         $sql = "SELECT ReviewOfSystem.*
                         FROM ReviewOfSystem
                         INNER JOIN Note ON ReviewOfSystem.ros_id = Note.ros_id
@@ -179,7 +160,6 @@
                         else {
                             echo "<p>No results found</p>";
                         }
-
                     ?>
                   </p>
                 </div>
@@ -187,11 +167,9 @@
         </div>
     </div>
 </section>
-  <footer>
-      <div>
-          <a href="./NoteHistory.php">Back to History</a>
+      <div id="footer">
+         <a href="./NoteHistory.php">Back to History</a>
       </div>
-  </footer>
   <?php
       $conn->close();
   ?>

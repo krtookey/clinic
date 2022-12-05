@@ -447,20 +447,20 @@ input.patientSideMenuLink:active,
     margin-top: 1em;
     margin-bottom: 1em;
   }
-  
+
 .tableBill td, .tableBill th {
     border: 1px solid var(--offWhite);
     padding: 8px;
 }
-  
+
 .tableBill tr:nth-child(even){
     background-color: white;
 }
-  
+
 .tableBill tr:hover {
     background-color: var(--offWhite);
 }
-  
+
 .tableBill th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -476,3 +476,24 @@ input.patientSideMenuLink:active,
 }
 
 /********* End New Patient Page ************/
+
+/********* Begin Note and Note History Page ************/
+
+#footer {
+  background-color: var(--blue);
+  border: 0;
+  color: var(--orange);
+  font-size: 1em;
+  bottom:0;
+  position: fixed;
+  padding: 1em;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1em;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/********* End Note and Note History Page ************/

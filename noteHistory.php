@@ -50,9 +50,6 @@
       <p>DOB: $patient_DOBFormatted</p>
       <p>$patientYears->y" . "y</p>
       <p>$patient_sex</p>";
-      //if(!isset($_POST['Open']) || $_POST['Open'] != 'Save'){
-                  //  $_POST['Open'] = '';
-              //  }
       if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
           $note_id = $_POST['note_id'];
       }
@@ -84,22 +81,19 @@
                         //Store results in values
                         $stmt->store_result();
                         $stmt->bind_result($cc, $assessment, $plan, $comments, $date_time, $note_id);
-                        echo "<table border='1'>";
+                        echo "<table class='tableBill' >";
                         ini_set('display_errors', 1);
                         ini_set('display_startup_errors', 1);
                         error_reporting(E_ALL);
                         while ($stmt->fetch()){
-                          //Needs formatting for each table
                           $_POST['note_id'] = $note_id;
-                          echo "<tr><td>$date_time</td>
-                          <td>$cc</td
-                          ><td>$assessment</td>
-                          <td>$plan</td>
-                          <td>$comments</td>
-                          <td>
-                          <a href='openNote.php?note_id=$note_id'>Open</a>
-                          </form>
-                          </td>
+                          echo "<tr>
+                                  <td>$date_time</td>
+                                  <td>$cc</td>
+                                  <td>$assessment</td>
+                                  <td>$plan</td>
+                                  <td>$comments</td>
+                                  <td><a href='openNote.php?note_id=$note_id'>Open</a></td>
                           </tr>";
                         }
                         echo "</table>";
@@ -110,12 +104,9 @@
           </div>
   </div>
 </section>
-  <footer> <!--Need footer at bottom of page-->
-
-      <div>
+        <div id="footer">
           <a href="./patient.php">Back to Patient Note</a>
-      </div>
-  </footer>
+        </div>
   <?php
       $conn->close();
   ?>
