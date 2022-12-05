@@ -89,6 +89,12 @@ Script that handles the ordering of prescriptions, called by #prescriptionform w
 --- prescriptionform.php
 Contains HTML and PHP for prescription order form, calls prescription_orders.php when submitted
 
+--- refreshelement.js (Depracated)
+Contains JS with the goal of refreshing parts of the page as they are updated, DOESN'T WORK!!
+
+--- register.php
+
+
 --- savedsnippets.txt
 Place to store code that was removed but may be needed in the future, currently just contains old SQL to insert lab names into database
 
