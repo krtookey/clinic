@@ -167,9 +167,9 @@
         </div>
     </div>
 </section>
-      <div id="footer">
+      <footer>
          <a href="./NoteHistory.php">Back to History</a>
-      </div>
+    </footer>
   <?php
       $conn->close();
   ?>

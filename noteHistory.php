@@ -104,9 +104,9 @@
           </div>
   </div>
 </section>
-        <div id="footer">
+<footer id="footer">
           <a href="./patient.php">Back to Patient Note</a>
-        </div>
+</footer>
   <?php
       $conn->close();
   ?>
