@@ -378,7 +378,6 @@
                         <input type='hidden' name='appointment_id' value='$appointment_id'>
                         <input type='hidden' name='user_id' value='$user_id'>";
                     ?>
-                    
                     <input type="submit" class="btn btn-primary patientSideMenuLink" value="Note History">
                 </form>
             </section>
