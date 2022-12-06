@@ -31,11 +31,11 @@
             if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
                 $appointment_id = $_POST['appointment_id'];
               }
-            $appointment_id = $_POST['appointment_id'] ?? '3';
+            $appointment_id = $_POST['appointment_id'] ?? '';
             if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
                 $user_id = $_POST['user_id'];
               }
-            $user_id = $_POST['user_id'] ?? '2';
+            $user_id = $_POST['user_id'] ?? '';
             $userPermission = 0;
             $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
             $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
@@ -75,6 +75,7 @@
         <?php
             //Save data
             //Test if values exist in post before saving them
+            // DEBUG echo "patient id: $patient_id appointment id: $appointment_id";
             if (!empty($_POST['noteSave'])) {
                 $sql = "UPDATE Note 
                 SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?, topics = ?
