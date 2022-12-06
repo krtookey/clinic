@@ -84,7 +84,7 @@
         //If Start Appointment button is clicked create a new note and billing statement tied to the patient's appointment.
         if(isset($_POST['start']) && $_POST['start'] == 'Start Appointment'){
             $patient_id = $id;
-            //Patient's must only have one appointment pre day.
+            //Patients must only have one appointment per day.
             $qstr = "SELECT appointment_id, status
                      FROM Appointment 
                      WHERE patient_id = $patient_id 

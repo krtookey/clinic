@@ -5,7 +5,7 @@ INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, l
 INSERT INTO Patient (first_name, last_name, middle_name, DOB, sex, gender, primary_phone, secondary_phone, email, address_id, insurance_id, pharmacy_id, labdest_id, minor, guardian, pcp_id, prev_note_id, emergency_contact1, emergency_contact2, preferred) VALUES 
   ('John', 'Doe', 'Bob', '1945-06-04', 'M', '1', '12809993300', '18025553333', 'catsrule@gmail.com', '3', '3', '3', '1', '0', '0', '1', '3', '1', '2', 'Jonny'),
 	('Jane', 'Dough', 'Jill', '1964-12-09', 'F', '2', '13014448998', '12409994444', 'dogsdrool@gmail.com', '4', '4', '4', '2', '0', '0', '2', '1', '3', '4', 'Jane'),
-	('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '3', '0', '0', '1', '1', '2', '10', '11', 'Nick'),
+	('Nick', 'Danger', 'Does', '1999-07-22', 'M', '1', '18027678888', '18023497898', 'nickdangeriscool@gmail.com', '1', '1', '3', '2', '0', '1', '1', '2', '10', '11', 'Nick'),
   ('Larry', 'Guy', 'The Cable', '1963-02-17', 'M', '1', '18889096789', '18023497898', 'contact@larrythecableguy.com', '10', '4', '2', '1', '0', '1', '1', '2', '10', '11', 'Larry');
 
 
@@ -41,8 +41,9 @@ INSERT INTO Prescriptions (patient_id, doctor_id, pharmacy_id, medication_id, do
   ("1", "1", "1", "52", "20mg Tablet", "Oral", "3 2 28", "168", "2", "Don't take them before driving or operating a forklift!!", "2022-11-11", "1");   
 
 INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis, orderdate) VALUES 
-("1", "1", "1", "Bob Duncan", "Some STI", "2022-11-17"),
-("1", "1", "2", "Jeff Dunham", "Copper Poisoning", "2022-11-17");
+("2", "1", "1", "Bob Duncan", "Some STI", "2022-11-17"),
+("1", "1", "2", "Jeff Dunham", "Copper Poisoning", "2022-11-21"),
+("1", "1", "2", "Jeff Dunham", "Vitamin Deficiency", "2022-11-30");
 
 INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES 
 ('1', '19'),
@@ -50,10 +51,14 @@ INSERT INTO OrderedLabs (laborder_id, lab_id) VALUES
 ('1', '21'),
 ('1', '22'),
 ('2', '12'), 
-('2', '14');
+('2', '14'),
+('3', '15'),
+('3', '16'),
+('3', '17'),
+('3', '18');
 
 INSERT INTO Note (patient_id, appointment_id, cc, hist_illness, ros_id, med_profile_id, social_hist, med_hist, psych_hist, assessment, plan, laborder_id, labdest_id, demographics, comments, substance_hist) VALUES 
-  ('2', '1', 'Headache', 'History of Illness: Has been getting bad headaches for a few weeks now.', '1', '1', 'Social History: former smoker.  Drink 8 cups of coffee a day.', 'Medical History: ...blah, blah, blah', 'Phych History: suffers from anxiety', 'Assessment: drinks too much coffee.', 'Plan: Reduce caffine intake. Return in a month if headaches have not subsided', '1', '2', 'Demographic: Married', 'Comments: Blah...', 'Substance history'),
+  ('2', '1', 'Headache', 'History of Illness: Has been getting bad headaches for a few weeks now.', '1', '1', 'Social History: former smoker.  Drink 8 cups of coffee a day.', 'Medical History: ...blah, blah, blah', 'Phych History: suffers from anxiety', 'Assessment: drinks too much coffee.', 'Plan: Reduce caffine intake. Return in a month if headaches have not subsided', '2', '2', 'Demographic: Married', 'Comments: Blah...', 'Substance history'),
 	('1', '2', 'Annual Physical', 'Feels fine.', '2', '2', 'Social History: drinks socially. 2-3 beers a week', 'Medical History: partial fracture to left tibia in June 2016', 'Phych History: Blah', 'Assessment: Healthy for age, but blah, blah, blah', 'Plan: Eat health and get at least 8 hours of sleep a night. Annual lab tests ordered.', '2', '1', 'Demographic: Blah', 'Comments: view lab results.', 'Substance history'),
   ('1', '3', 'Foot pain', 'stepped on a grill', '3', '3', 'Social History: drinks socially. 2-3 beers a week', 'Medical History: partial fracture to left tibia in June 2016', 'Phych History: Blah', 'Assessment: Healthy for age, but blah, blah, blah', 'Plan: Eat health and get at least 8 hours of sleep a night. Annual lab tests ordered.', '3', '2', 'Demographic: Blah', 'Comments: view lab results.', 'Substance history');
 
