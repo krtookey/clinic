@@ -23,6 +23,20 @@
 <body>
   <header id='patientHeader'>
       <?php
+        if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
+            $patient_id = $_POST['patient_id'];
+        } 
+        $patient_id = $_POST['patient_id'] ?? '';
+        if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
+            $appointment_id = $_POST['appointment_id'];
+        }
+        $appointment_id = $_POST['appointment_id'] ?? ''; 
+        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+            $user_id = $_POST['user_id'];
+        }
+        $user_id = $_POST['user_id'] ?? '';  
+
+
       //SQL
       $query = "SELECT Patient.first_name, Patient.last_name, Patient.DOB, Patient.sex, Patient.preferred
       FROM Patient
@@ -104,9 +118,32 @@
           </div>
   </div>
 </section>
+<<<<<<< HEAD
 <footer id="footer">
           <a href="./patient.php">Back to Patient Note</a>
 </footer>
+=======
+  <footer> <!--Need footer at bottom of page-->
+        <?php
+            echo "  <div>
+                        <form action='./patient.php' method='POST'>
+                            <input type='submit' name='submitP' value='Note'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>"; 
+            echo "  <div>
+                        <form action='./index.php' method='POST'>
+                            <input type='submit' name='submitI' value='Home'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>"; 
+        ?>
+  </footer>
+>>>>>>> cea4d9dc281a0c76c57604f63601dec8b5ce3c2c
   <?php
       $conn->close();
   ?>

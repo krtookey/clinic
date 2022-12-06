@@ -75,7 +75,7 @@
         <?php
             //Save data
             //Test if values exist in post before saving them
-            if (!empty($_POST['demographics']) && !empty($_POST['social']) && !empty($_POST['chiefComplaint'])) {
+            if (!empty($_POST['noteSave'])) {
                 $sql = "UPDATE Note 
                 SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?, topics = ?
                 WHERE Note.patient_id = $patient_id AND Note.appointment_id = $appointment_id";
@@ -576,6 +576,12 @@
                                 ?></textarea>
                             </div>
                             <!-- Save Note -->
+                            <?php
+                        
+                                echo "  <input type='hidden' name='patient_id' value='$patient_id'>
+                                <input type='hidden' name='appointment_id' value='$appointment_id'>
+                                <input type='hidden' name='user_id' value='$user_id'>";
+                            ?>
                             <input type="submit" value="Save Note" name="noteSave" class="btn btn-primary" id='patientFormSubmit'>
                         </form>
                     </div>
