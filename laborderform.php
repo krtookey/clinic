@@ -1,14 +1,5 @@
-<form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform" onSubmit="confirmOverwrite();">
-    <script>
-        function confirmOverwrite(){
-            if (document.getElementById("overwritetext")){
-                if(!confirm('Are you sure you want to overwrite the current lab order in this note?')){
-                    return false;
-                }
-            }
-        }
-    </script>
-    <script src="checkboxes.js"></script>
+<form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform" onSubmit='confirmOverwrite();'>
+    <script src="labformfunctions.js"></script>
     <div id="patient_info">
         <?php 
             //#$orderlab
@@ -16,6 +7,7 @@
             $patient_id = $POST['patient_id'] ?? 1;
             $appointment_id = $POST['appointment_id'] ?? 3;
             $idfields = <<<IDFIELDS
+            <input type="number" id="confirm_failed" name="confirm_failed" value="0" hidden>
             <input type="text" id="patient_id" name="patient_id" value="$patient_id" hidden>
             <input type="text" id="user_id" name="user_id" value="$user_id" hidden>
             <input type="text" id="appointment_id" name="appointment_id" value="$appointment_id" hidden>
@@ -35,7 +27,7 @@
                 $orderid_row = $checkingorderid_result->fetch_assoc();
                 $note_laborder_id = $orderid_row['laborder_id'];
                 if ($note_laborder_id != 0){
-                    echo("<p id='overwritetext' style='color:blue;'>A lab order has already been submitted for this note. Submitting another lab order will overwrite the lab order within this note.</p>");
+                    echo("<p id='overwritetext' style='color:blue;'>A lab order has already been submitted for this note. Submitting another lab order will replace the current lab order within this note, but the other lab order will remain untouched in the database.</p>");
                 }
             }
         ?>
@@ -159,6 +151,6 @@
     <label for="diagnosis">Diagnosis:</label>
     <input type="text" id="diagnosis" name="diagnosis" required>
     <br>
-    <input type="submit" value="Submit"">
+    <input type="submit" value="Submit">
     <iframe name="laborderlinkdisplay" class="results_iframe"></iframe>
 </form>
