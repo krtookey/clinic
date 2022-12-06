@@ -25,7 +25,7 @@
         if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
             $user_id = $_POST['user_id'];
         }
-        $user_id = $_POST['user_id'] ?? '';     //For Testing.
+        $user_id = $_POST['user_id'] ?? '';     
         $user_id = 1;                           //For Testing.
         $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
         $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
