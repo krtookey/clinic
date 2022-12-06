@@ -75,7 +75,6 @@
         <?php
             //Save data
             //Test if values exist in post before saving them
-            echo "demogrphics: " . $_POST['demographics'] . " social: " . $_POST['social'];
             if (!empty($_POST['noteSave'])) {
                 $sql = "UPDATE Note 
                 SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?, topics = ?
