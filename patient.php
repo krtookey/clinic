@@ -27,11 +27,11 @@
             if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
                 $patient_id = $_POST['patient_id'];
               }
-            $patient_id = $_POST['patient_id'] ?? '1';
+            $patient_id = $_POST['patient_id'] ?? '';
             if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
                 $appointment_id = $_POST['appointment_id'];
               }
-            $appointment_id = $_POST['appointment_id'] ?? '';
+            $appointment_id = $_POST['appointment_id'] ?? '99';
             if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
                 $user_id = $_POST['user_id'];
               }
@@ -75,7 +75,6 @@
         <?php
             //Save data
             //Test if values exist in post before saving them
-            // DEBUG echo "patient id: $patient_id appointment id: $appointment_id";
             if (!empty($_POST['noteSave'])) {
                 $sql = "UPDATE Note 
                 SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?, topics = ?

@@ -13,8 +13,8 @@
         <div id="patient_info">
             <?php 
                 //#$orderprescription
-                $user_id = $POST['user_id'] ?? 1;
-                $patient_id = $POST['patient_id'] ?? 1;
+                $user_id = $_POST['user_id'] ?? 1;
+                $patient_id = $_POST['patient_id'] ?? 1;
                 $idfields = <<<IDFIELDS
                 <input type="text" id="patient_id" name="patient_id" value="$patient_id" hidden>
                 <input type="text" id="user_id" name="user_id" value="$user_id" hidden>

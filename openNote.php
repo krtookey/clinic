@@ -29,7 +29,7 @@
       //Prepare statment
       $stmt = $conn->prepare($query);
       //Bind ? with the POST variable from the prvious page
-      $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
+      $patient_id = $_POST['patient_id'] ?? 1; //TODO remove after testing
       $stmt->bind_param("i", $patient_id);
       //Execute and get resutls from database
       $stmt->execute();
@@ -52,7 +52,7 @@
       if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
           $note_id = $_POST['note_id'];
       }
-      $note_id = $POST['note_id'] ?? 2;
+      $note_id = $_POST['note_id'] ?? 2;
       ?>
   </header>
 

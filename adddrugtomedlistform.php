@@ -2,7 +2,7 @@
     <b>Add Med To Medlist</b>
     <br>
     <?php
-        $patient_id = $POST['patient_id'] ?? 1;
+        $patient_id = $_POST['patient_id'] ?? 1;
         $idfields = <<<IDFIELDS
         <input type="text" id="patient_id" name="patient_id" value="$patient_id" hidden>
         IDFIELDS;
