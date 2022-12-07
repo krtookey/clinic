@@ -23,7 +23,7 @@
             SELECT laborder_id FROM Note WHERE patient_id = '$patient_id' AND appointment_id = '$appointment_id';
             ORDERIDSQL;
             $checkingorderid_result = $conn->query($checkingorderid_sql);
-            if ($result->num_rows > 0){
+            if ($checkingorderid_result->num_rows > 0){
                 $orderid_row = $checkingorderid_result->fetch_assoc();
                 $note_laborder_id = $orderid_row['laborder_id'];
                 if ($note_laborder_id != 0){
@@ -37,7 +37,7 @@
         // Get labdest_id for patient
         $sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
         $result = $conn->query($sql);
-        if (!isset($labdetails__result)){
+        if (!isset($result)){
             $labdestinput = <<<LABDEST_INPUT
             <input type="text" id="labdest" name="labdest" list="labdestlist" required>
             LABDEST_INPUT;

@@ -20,7 +20,6 @@ if ($laborderid_row = $laborderid_result->fetch_assoc()){
     $labdetails_result = $conn->query($labdetails_sql);
     if (!isset($labdetails__result)){
         echo ("Unable to retrieve lab results for this user");
-        exit(1);
     }
     if ($labdetails_result->num_rows > 0){
         while($labdetails_row = $labdetails_result->fetch_assoc()){
