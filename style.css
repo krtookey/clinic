@@ -383,6 +383,12 @@ input.patientSideMenuLink:active,
 
 /********* Start Index Page ************/
 
+#searchForm{
+    width: 575px;
+    border: solid 3px var(--blue);
+    padding-top: 36px;
+}
+
 #searchGrid {
     border: 0;
     color: var(--blue);
@@ -401,6 +407,12 @@ input.patientSideMenuLink:active,
     padding: 0.5em;
     justify-content: flex-end;
     width: 75%;
+}
+
+#noapp{
+    color: var(--blue);
+    margin-left: 12px;
+    font-size: 1em;
 }
 
 /********* End Index Page ************/

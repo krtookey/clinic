@@ -22,6 +22,19 @@
 <body>
   <header id='patientHeader'>
       <?php
+              if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
+                $patient_id = $_POST['patient_id'];
+            } 
+            $patient_id = $_GET['patient_id'] ?? '';
+            if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
+                $appointment_id = $_POST['appointment_id'];
+            }
+            $appointment_id = $_GET['appointment_id'] ?? ''; 
+            if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+                $user_id = $_POST['user_id'];
+            }
+            $user_id = $_GET['user_id'] ?? '';  
+
       //SQL
       $query = "SELECT Patient.first_name, Patient.last_name, Patient.DOB, Patient.sex, Patient.preferred
       FROM Patient
@@ -29,7 +42,6 @@
       //Prepare statment
       $stmt = $conn->prepare($query);
       //Bind ? with the POST variable from the prvious page
-      $patient_id = $_POST['patient_id'] ?? 1; //TODO remove after testing
       $stmt->bind_param("i", $patient_id);
       //Execute and get resutls from database
       $stmt->execute();
@@ -52,7 +64,7 @@
       if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
           $note_id = $_POST['note_id'];
       }
-      $note_id = $_POST['note_id'] ?? 2;
+      $note_id = $_GET['note_id'] ?? 2;
       ?>
   </header>
 
@@ -94,31 +106,31 @@
                 </div>
                 <!-- Social -->
                 <div class="mb-3 formField" id="socialContainer">
-                    <p> <?php echo "$social_hist" ?> </p>
+                    <p> <?php echo "Social History: $social_hist" ?> </p>
                 </div>
                 <!-- Substance History -->
                 <div class="mb-3 formField" id="substanceHistContainer">
-                    <p> <?php echo "$substance_hist" ?> </p>
+                    <p> <?php echo "Substance History: $substance_hist" ?> </p>
                 </div>
                 <!-- Psychological History -->
                 <div class="mb-3 formField" id="psychHistContainer">
-                    <p> <?php echo "$psych_hist" ?> </p>
+                    <p> <?php echo "Phychological History: $psych_hist" ?> </p>
                 </div>
                 <!-- Medical History -->
                 <div class="mb-3 formField" id="medicalHistContainer">
-                    <p> <?php echo "$med_history" ?> </p>
+                    <p> <?php echo "Medical History: $med_history" ?> </p>
                 </div>
                 <!-- Assessment/Formulation -->
                 <div class="mb-3 formField" id="assessmentContainer">
-                    <p> <?php echo "$assessment" ?> </p>
+                    <p> <?php echo "Assessment: $assessment" ?> </p>
                 </div>
                 <!-- Treatment Plan -->
                 <div class="mb-3 formField" id="treatmentPlanContainer">
-                    <p> <?php echo "Treatment $plan" ?> </p>
+                    <p> <?php echo "Treatment: $plan" ?> </p>
                 </div>
                 <!-- General Comments -->
                 <div class="mb-3 formField" id="generalCommentsContainer">
-                    <p> <?php echo "General $comments" ?> </p>
+                    <p> <?php echo "General: $comments" ?> </p>
                 </div>
                 <!-- Topics Discussed -->
                 <div class="mb-3 formField" id="topicsContainer">
@@ -168,7 +180,16 @@
     </div>
 </section>
       <footer>
-         <a href="./NoteHistory.php">Back to History</a>
+        <?php
+            echo "  <div>
+                        <form action='./noteHistory.php' method='POST'>
+                            <input type='submit' name='submitNH' value='Note History'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>"; 
+        ?>
     </footer>
   <?php
       $conn->close();
