@@ -35,23 +35,24 @@
     <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
     <?php
         // Get labdest_id for patient
-        $sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
-        $result = $conn->query($sql);
-        if (!isset($result)){
+        $labdestid_sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
+        $labdestid_result = $conn->query($sql);
+        if (!isset($labdestid_result)){
             $labdestinput = <<<LABDEST_INPUT
             <input type="text" id="labdest" name="labdest" list="labdestlist" required>
             LABDEST_INPUT;
             echo $labdestinput;
         }
-        if ($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            $patient_labdest_id = $row["labdest_id"]; 
+        if ($labdestid_result->num_rows > 0){
+            $labdestid_row = $labdestid_result->fetch_assoc();
+            $patient_labdest_id = $labdestid_row["labdest_id"]; 
             // Get labdest_name for labdest_id
             $sql = "SELECT labdest_name FROM LabDest where labdest_id = '" . $patient_labdest_id . "';";
             $result = $conn->query($sql);
             if ($result->num_rows > 0){
                 $row = $result->fetch_assoc();
                 $labdest_name = $row["labdest_name"]; 
+                $labdest_name = $labdestname_row["labdest_name"]; 
                 $labdestinput = <<<LABDEST_INPUT
                 <input type="text" id="labdest" name="labdest" list="labdestlist" value="$labdest_name" required>
                 LABDEST_INPUT;
