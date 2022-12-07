@@ -1,0 +1,59 @@
+Clinic Bill for John Doe as of 2022/12/03 07:37 pm
+ 
+On 2022/12/07 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: General Check Up. 
+ 
+The final bill came to $ 350, and has been paid. 
+ 
+ 
+On 2022/12/08 03:45 PM, John was seen by Joey Danger for a 30 minute appointment concerning: Broken Foot. 
+ 
+The final bill came to $ 500.82, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+On 2022/12/03 12:00 PM, John was seen by Joey Danger for a 30 minute appointment concerning: new visit. 
+ 
+The final bill came to $ 250, and has NOT been paid. 
+ 
+ 
+Total amount due: $ 2750.82
+ 

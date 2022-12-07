@@ -1,12 +1,13 @@
-<form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform">
-    <script src="checkboxes.js"></script>
+<form action="lab_orders.php" method="post" target="laborderlinkdisplay" id="labform" onSubmit='confirmOverwrite();'>
+    <script src="labformfunctions.js"></script>
     <div id="patient_info">
         <?php 
             //#$orderlab
-            $user_id = $POST['user_id'] ?? 1;
-            $patient_id = $POST['patient_id'] ?? 1;
-            $appointment_id = $POST['appointment_id'] ?? 3;
+            $user_id = $_POST['user_id'] ?? 1;
+            $patient_id = $_POST['patient_id'] ?? 1;
+            $appointment_id = $_POST['appointment_id'] ?? 3;
             $idfields = <<<IDFIELDS
+            <input type="number" id="confirm_failed" name="confirm_failed" value="0" hidden>
             <input type="text" id="patient_id" name="patient_id" value="$patient_id" hidden>
             <input type="text" id="user_id" name="user_id" value="$user_id" hidden>
             <input type="text" id="appointment_id" name="appointment_id" value="$appointment_id" hidden>
@@ -22,11 +23,11 @@
             SELECT laborder_id FROM Note WHERE patient_id = '$patient_id' AND appointment_id = '$appointment_id';
             ORDERIDSQL;
             $checkingorderid_result = $conn->query($checkingorderid_sql);
-            if ($result->num_rows > 0){
+            if ($checkingorderid_result->num_rows > 0){
                 $orderid_row = $checkingorderid_result->fetch_assoc();
-                $patient_laborder_id = $orderid_row['laborder_id'];
-                if ($patient_laborder_id != 0){
-                    echo("<p style='color:blue;'>A lab order has already been submitted for this note. Submitting another lab order will overwrite the lab order within this note.</p>");
+                $note_laborder_id = $orderid_row['laborder_id'];
+                if ($note_laborder_id != 0){
+                    echo("<p id='overwritetext' style='color:blue;'>A lab order has already been submitted for this note. Submitting another lab order will replace the current lab order within this note, but the other lab order will remain untouched in the database.</p>");
                 }
             }
         ?>
@@ -34,17 +35,23 @@
     <label for="labdest">Lab Destination:</label> <!-- Should automatically be filled by patient default lab dest-->
     <?php
         // Get labdest_id for patient
-        $sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            $patient_labdest_id = $row["labdest_id"]; 
+        $labdestid_sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
+        $labdestid_result = $conn->query($sql);
+        if (!isset($labdestid_result)){
+            $labdestinput = <<<LABDEST_INPUT
+            <input type="text" id="labdest" name="labdest" list="labdestlist" required>
+            LABDEST_INPUT;
+            echo $labdestinput;
+        }
+        if ($labdestid_result->num_rows > 0){
+            $labdestid_row = $labdestid_result->fetch_assoc();
+            $patient_labdest_id = $labdestid_row["labdest_id"]; 
             // Get labdest_name for labdest_id
-            $sql = "SELECT labdest_name FROM LabDest where labdest_id = '" . $patient_labdest_id . "';";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                $labdest_name = $row["labdest_name"]; 
+            $labdestname_sql = "SELECT labdest_name FROM LabDest where labdest_id = '" . $patient_labdest_id . "';";
+            $labdestname_result = $conn->query($labdestname_sql);
+            if ($labdestname_result->num_rows > 0){
+                $labdestname_row = $labdestname_result->fetch_assoc();
+                $labdest_name = $labdestname_row["labdest_name"]; 
                 $labdestinput = <<<LABDEST_INPUT
                 <input type="text" id="labdest" name="labdest" list="labdestlist" value="$labdest_name" required>
                 LABDEST_INPUT;
@@ -150,6 +157,6 @@
     <label for="diagnosis">Diagnosis:</label>
     <input type="text" id="diagnosis" name="diagnosis" required>
     <br>
-    <input type="submit" value="Submit"">
+    <input type="submit" value="Submit">
     <iframe name="laborderlinkdisplay" class="results_iframe"></iframe>
 </form>

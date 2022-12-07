@@ -11,7 +11,6 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
     crossorigin="anonymous"
     />
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,6 +22,19 @@
 <body>
   <header id='patientHeader'>
       <?php
+              if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
+                $patient_id = $_POST['patient_id'];
+            } 
+            $patient_id = $_GET['patient_id'] ?? '';
+            if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
+                $appointment_id = $_POST['appointment_id'];
+            }
+            $appointment_id = $_GET['appointment_id'] ?? ''; 
+            if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+                $user_id = $_POST['user_id'];
+            }
+            $user_id = $_GET['user_id'] ?? '';  
+
       //SQL
       $query = "SELECT Patient.first_name, Patient.last_name, Patient.DOB, Patient.sex, Patient.preferred
       FROM Patient
@@ -30,7 +42,6 @@
       //Prepare statment
       $stmt = $conn->prepare($query);
       //Bind ? with the POST variable from the prvious page
-      $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
       $stmt->bind_param("i", $patient_id);
       //Execute and get resutls from database
       $stmt->execute();
@@ -53,39 +64,26 @@
       if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
           $note_id = $_POST['note_id'];
       }
-      $note_id = $POST['note_id'] ?? 2;
+      $note_id = $_GET['note_id'] ?? 2;
       ?>
   </header>
 
-
-
 <form method='post' action='openNote.php'>
 <section class= "openNote">
-  <div id="openNote">
-          <div class="card" id='patientFormCard'>
-              <div class="card-body">
-                  <form id='patientNoteForm'>
-                      <div class="mb-3 formField" id="noteContainer">
                         <?php
-                        $query = "SELECT Note.Demographics, Note.cc, Note.assessment, Note.plan, Note.comments, Appointment.date_time, Note.med_hist, Note.social_hist, Note.hist_illness, Note.psych_hist, Note.substance_hist
+                        $query = "SELECT Note.Demographics, Note.cc, Note.assessment, Note.plan, Note.comments, Appointment.date_time, Note.med_hist, Note.social_hist, Note.hist_illness, Note.psych_hist, Note.substance_hist, Note.topics
                         FROM Note
                         INNER JOIN Appointment
                         ON Note.appointment_id = Appointment.appointment_id
-                        WHERE Note.note_id = $note_id"; //This needs to grab $note_id from post
+                        WHERE Note.note_id = $note_id";
                         $stmt = $conn->prepare($query);
                         //Execute and get results from database
                         $stmt->execute();
                         //Store results in values
                         $stmt->store_result();
-                        $stmt->bind_result($demographics, $cc, $assessment, $plan, $comments, $date_time, $med_history, $social_hist, $illness_hist, $psych_hist, $substance_hist);
-                        while ($stmt->fetch()){
-                        }
+                        $stmt->bind_result($demographics, $cc, $assessment, $plan, $comments, $date_time, $med_history, $social_hist, $illness_hist, $psych_hist, $substance_hist, $topics);
+                        while ($stmt->fetch()){}
                         ?>
-                      </div>
-                  </form>
-              </div>
-          </div>
-  </div>
 </section>
 <section class="patientNote">
     <div class="card" id='patientFormCard'>
@@ -100,54 +98,49 @@
                 </div>
                 <!-- Chief Complaint -->
                 <div class="mb-3 formField" id="chiefComplaintContainer">
-                    <label
-                    for="chiefComplaint"
-                    id="chiefComplaintLabel">Chief Complaint</label>
-                    <p> <?php echo "$cc" ?> </p>
+                    <p> <?php echo "Chief Complaint: $cc" ?> </p>
                 </div>
                 <!-- History Of Illness -->
                 <div class="mb-3 formField" id="histOfIllnessContainer">
-                    <p> <?php echo "$illness_hist" ?> </p>
+                    <p> <?php echo "Illness History: $illness_hist" ?> </p>
                 </div>
                 <!-- Social -->
                 <div class="mb-3 formField" id="socialContainer">
-                    <p> <?php echo "$social_hist" ?> </p>
+                    <p> <?php echo "Social History: $social_hist" ?> </p>
                 </div>
                 <!-- Substance History -->
                 <div class="mb-3 formField" id="substanceHistContainer">
-                    <p> <?php echo "$substance_hist" ?> </p>
+                    <p> <?php echo "Substance History: $substance_hist" ?> </p>
                 </div>
                 <!-- Psychological History -->
                 <div class="mb-3 formField" id="psychHistContainer">
-                    <p> <?php echo "$psych_hist" ?> </p>
+                    <p> <?php echo "Phychological History: $psych_hist" ?> </p>
                 </div>
                 <!-- Medical History -->
                 <div class="mb-3 formField" id="medicalHistContainer">
-                    <p> <?php echo "$med_history" ?> </p>
+                    <p> <?php echo "Medical History: $med_history" ?> </p>
                 </div>
                 <!-- Assessment/Formulation -->
                 <div class="mb-3 formField" id="assessmentContainer">
-                    <p> <?php echo "$assessment" ?> </p>
-
+                    <p> <?php echo "Assessment: $assessment" ?> </p>
                 </div>
                 <!-- Treatment Plan -->
                 <div class="mb-3 formField" id="treatmentPlanContainer">
-                    <p> <?php echo "Treatment $plan" ?> </p>
+                    <p> <?php echo "Treatment: $plan" ?> </p>
                 </div>
                 <!-- General Comments -->
                 <div class="mb-3 formField" id="generalCommentsContainer">
-                    <p> <?php echo "General $comments" ?> </p>
+                    <p> <?php echo "General: $comments" ?> </p>
                 </div>
                 <!-- Topics Discussed -->
                 <div class="mb-3 formField" id="topicsContainer">
-                    <label for="topics" id="topicsLabel">Topics Discussed With Patient</label>
-                    <p> <?php echo "No Column for topics Discussed" ?> </p>
+
+                    <p> <?php echo "$topics" ?> </p>
                 </div>
                 <div class="mb-3 formField" id="rosContainer">
                     <label for="ros" id="rosLabel">Review of Symptoms</label>
                     <p>
                     <?php
-                    //TODO This needs to be tested because there is no data in ROS
                         $sql = "SELECT ReviewOfSystem.*
                         FROM ReviewOfSystem
                         INNER JOIN Note ON ReviewOfSystem.ros_id = Note.ros_id
@@ -179,7 +172,6 @@
                         else {
                             echo "<p>No results found</p>";
                         }
-
                     ?>
                   </p>
                 </div>
@@ -187,11 +179,18 @@
         </div>
     </div>
 </section>
-  <footer>
-      <div>
-          <a href="./NoteHistory.php">Back to History</a>
-      </div>
-  </footer>
+      <footer>
+        <?php
+            echo "  <div>
+                        <form action='./noteHistory.php' method='POST'>
+                            <input type='submit' name='submitNH' value='Note History'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>"; 
+        ?>
+    </footer>
   <?php
       $conn->close();
   ?>

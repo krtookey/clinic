@@ -23,6 +23,20 @@
 <body>
   <header id='patientHeader'>
       <?php
+        if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
+            $patient_id = $_POST['patient_id'];
+        } 
+        $patient_id = $_POST['patient_id'] ?? '';
+        if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
+            $appointment_id = $_POST['appointment_id'];
+        }
+        $appointment_id = $_POST['appointment_id'] ?? ''; 
+        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+            $user_id = $_POST['user_id'];
+        }
+        $user_id = $_POST['user_id'] ?? '';  
+
+
       //SQL
       $query = "SELECT Patient.first_name, Patient.last_name, Patient.DOB, Patient.sex, Patient.preferred
       FROM Patient
@@ -30,7 +44,6 @@
       //Prepare statment
       $stmt = $conn->prepare($query);
       //Bind ? with the POST variable from the prvious page
-      $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
       $stmt->bind_param("i", $patient_id);
       //Execute and get resutls from database
       $stmt->execute();
@@ -50,13 +63,10 @@
       <p>DOB: $patient_DOBFormatted</p>
       <p>$patientYears->y" . "y</p>
       <p>$patient_sex</p>";
-      //if(!isset($_POST['Open']) || $_POST['Open'] != 'Save'){
-                  //  $_POST['Open'] = '';
-              //  }
       if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
           $note_id = $_POST['note_id'];
       }
-      $note_id = $POST['note_id'] ?? 2; //TODO remove after testing
+      $note_id = $_POST['note_id'] ?? ''; //TODO remove after testing
       ?>
   </header>
 
@@ -77,29 +87,25 @@
                         ON Note.appointment_id = Appointment.appointment_id
                         WHERE Note.patient_id = ?";
                         $stmt = $conn->prepare($query);
-                        $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
                         $stmt->bind_param("i", $patient_id);
                         //Execute and get results from database
                         $stmt->execute();
                         //Store results in values
                         $stmt->store_result();
                         $stmt->bind_result($cc, $assessment, $plan, $comments, $date_time, $note_id);
-                        echo "<table border='1'>";
+                        echo "<table class='tableBill' >";
                         ini_set('display_errors', 1);
                         ini_set('display_startup_errors', 1);
                         error_reporting(E_ALL);
                         while ($stmt->fetch()){
-                          //Needs formatting for each table
                           $_POST['note_id'] = $note_id;
-                          echo "<tr><td>$date_time</td>
-                          <td>$cc</td
-                          ><td>$assessment</td>
-                          <td>$plan</td>
-                          <td>$comments</td>
-                          <td>
-                          <a href='openNote.php?note_id=$note_id'>Open</a>
-                          </form>
-                          </td>
+                          echo "<tr>
+                                  <td>$date_time</td>
+                                  <td>$cc</td>
+                                  <td>$assessment</td>
+                                  <td>$plan</td>
+                                  <td>$comments</td>
+                                  <td><a href='openNote.php?note_id=$note_id&patient_id=$patient_id&user_id=$user_id&appointment_id=$appointment_id'>Open</a></td>
                           </tr>";
                         }
                         echo "</table>";
@@ -111,10 +117,24 @@
   </div>
 </section>
   <footer> <!--Need footer at bottom of page-->
-
-      <div>
-          <a href="./patient.php">Back to Patient Note</a>
-      </div>
+        <?php
+            echo "  <div>
+                        <form action='./patient.php' method='POST'>
+                            <input type='submit' name='submitP' value='Note'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>"; 
+            echo "  <div>
+                        <form action='./index.php' method='POST'>
+                            <input type='submit' name='submitI' value='Home'>
+                            <input type='hidden' name='patient_id' value='$patient_id'>
+                            <input type='hidden' name='appointment_id' value='$appointment_id'>
+                            <input type='hidden' name='user_id' value='$user_id'>
+                        </form>
+                    </div>"; 
+        ?>
   </footer>
   <?php
       $conn->close();

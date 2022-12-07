@@ -26,7 +26,7 @@
     $patient_id = $_POST['patient_id'] ?? ''; 
     $appointment_id = $_POST['appointment_id'] ?? '';
     $user_id = $_POST['user_id'] ?? '';
-    $userPermission = 0;         //Permission Level of User.
+    $userPermission = 0;                    //Permission Level of User.
 
     //Get User's Permission Level.
     if ($user_id !== '' ){
@@ -79,8 +79,8 @@
     $lname = $_POST['lname'] ?? '';
     $preferred = $_POST['pname'] ?? '';
     $dob = $_POST['dob'] ?? '';
-    $sex = $_POST['sex'] ?? '';
-    $gender = $_POST['gender'] ?? '';
+    $sex = $_POST['sex'] ?? 'O';
+    $gender = $_POST['gender'] ?? '3';
     $phone1 = $_POST['phone1'] ?? '';
     $phone2 = $_POST['phone2'] ?? '';
     $email = $_POST['email'] ?? '';
@@ -88,7 +88,7 @@
     $city = $_POST['city'] ?? '';
     $state = $_POST['state'] ?? '';
     $zip = $_POST['zip'] ?? '';
-    $minor = $_POST['minor'] ?? '';
+    $minor = $_POST['minor'] ?? 'false';
     $guardian = $_POST['guardian'] ?? '';
     $pcp = $_POST['pcp'] ?? '';
     $ecName1 = $_POST['ecName1'] ?? '';
@@ -97,6 +97,12 @@
     $ecName2 = $_POST['ecName2'] ?? '';
     $ecRelationship2 = $_POST['ecRelationship2'] ?? '';
     $ecPhone2 = $_POST['ecPhone2'] ?? '';
+    $bstreet = $_POST['bstreet'] ?? '';
+    $bcity = $_POST['bcity'] ?? '';
+    $bstate = $_POST['bstate'] ?? '';
+    $bzip = $_POST['bzip'] ?? '';
+    $baddress = $_POST['baddress'] ?? '';
+    $bill = $_POST['bill'] ?? 'true';
     $pharm = 0;
     $insurance = 0;
     $address = 0;
@@ -118,9 +124,6 @@
         <h2>New Patient</h2>
 
     <?php
-    //billing variable
-    $baddress = '';
-    $bill_id = '';
 
     if(isset($_POST['npSave']) && $_POST['npSave'] == 'Save'){
         //New Patient.
@@ -271,6 +274,8 @@
                 $row = $result->fetch_row();
                 $pcp_id = $row[0];
                 $result->free_result();
+            } else {
+                $pcp_id = -1;
             }
 
             $dob = validateDate($dob);
@@ -290,6 +295,7 @@
             $qinsert->execute();
             $qinsert->store_result();
             $qinsert->free_result();
+            
             //Get New Patient Id.
             $qstr = "SELECT DISTINCT patient_id FROM Patient WHERE first_name = ? AND last_name = ? AND DOB = ? ";
             $qselect = $conn->prepare($qstr);
@@ -308,7 +314,39 @@
             $result->free_result();
 
             //Billing address
-            $baddress = $address;
+            if($bill === 'false'){
+                if($bstreet !== ''){
+                    $qstr = "INSERT INTO Addresses (street, city, state_abbr, zip) VALUES (?, ?, ?, ?) ";
+                    $qinsert = $conn->prepare($qstr);
+                    if(!$qinsert){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qinsert->bind_param("ssss", $bstreet, $bcity, $bstate, $bzip);
+                    $qinsert->execute();
+                    $qinsert->store_result();
+                    $qinsert->free_result();
+                    //Get new billing address_id.
+                    $qstr = "SELECT DISTINCT address_id FROM Addresses WHERE street = '$bstreet' AND city = '$bcity' AND state_abbr = '$bstate' AND zip = '$bzip' ";
+                    $qselect = $conn->prepare($qstr);
+                    if(! $qselect){
+                        echo "<p>Error: could not execute query. <br> </p>";
+                        echo "<pre> Error Number: " .$conn -> errno. "\n";
+                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                        exit;
+                    }
+                    $qselect->execute();
+                    $result = $qselect->get_result();
+                    $row = $result->fetch_row();
+                    $baddress = $row[0];
+                    $result->free_result();
+                }
+            } else {
+                $baddress = $address;
+            }
+
             $qstr = "INSERT INTO Billing (patient_id, appointment_id, note_id, bill_statement, amount_due, paid, bill_address) 
                      VALUES ('$patient_id', '0', '0', 'new patient', '0', '1', '$baddress') ";
             //Debug: echo $qstr;
@@ -322,20 +360,6 @@
             $qinsert->execute();
             $qinsert->store_result();
             $qinsert->free_result();
-
-            $qstr = "SELECT DISTINCT billing_id FROM Billing WHERE patient_id = '$patient_id' ";
-            $qselect = $conn->prepare($qstr);
-            if(! $qselect){
-                echo "<p>Error: could not execute query. <br> </p>";
-                echo "<pre> Error Number: " .$conn -> errno. "\n";
-                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                exit;
-            }
-            $qselect->execute();
-            $result = $qselect->get_result();
-            $row = $result->fetch_row();
-            $bill_id = $row[0];
-            $result->free_result();
         }
     }
     ?>
@@ -497,6 +521,37 @@
                     <input type="text" placeholder="000-000-0000" maxlength="20" name="ecPhone2" value="<?php echo $ecPhone2; ?>">
                 </div>
             </div>
+            <div class="newPItem">
+                <h3>Billing Address</h3>
+                <div class="newItem">
+                    <fieldset>
+                        <legend>Same as Home Address:</legend>
+                        <input type="radio" id="yes" name="bill" value="true"
+                            <?php if($bill == 'true') echo "checked"; ?>>
+                        <label for="yes">Yes</label>        
+                        <input type="radio" id="no" name="bill" value="false"
+                            <?php if($bill == 'false') echo "checked"; ?>>
+                        <label for="no">No</label>
+                    </fieldset>
+                </div>
+                <p>If not home address, please, enter the billing address below:</p>
+                <div class="newItem">
+                    <label>Street:</label>
+                    <input type='text' maxlength='40' name='bstreet' value="<?php if($bill === 'false'){ echo $bstreet; } else { echo $street; } ?>" >
+                </div>
+                <div class="newItem">
+                    <label>City:</label>
+                    <input type='text' maxlength='30' name='bcity' value="<?php if($bill === 'false'){ echo $bcity; } else { echo $city; } ?>">
+                </div>
+                <div class="newItem">
+                    <label>State:</label>
+                    <input type='text' maxlength='2' placeholder='VT' name='bstate' value="<?php if($bill === 'false'){ echo $bstate; } else { echo $state; } ?>">
+                </div>
+                <div class="newItem">
+                    <label>Zip Code:</label>
+                    <input type='text' maxlength='5' placeholder='00000' name='bzip' value="<?php if($bill === 'false'){ echo $bzip; } else { echo $zip; } ?>">
+                </div>
+            </div>
         </div>
         <div class="saveButton">
             <input type="submit" name="npSave" value="Save">
@@ -542,135 +597,6 @@
                         <input type='hidden' name='appointment_id' value='$appointment_id'>
                         <input type='hidden' name='user_id' value='$user_id'>"; ?>
         </form>
-    </div>
-    <div class="whiteCard" class="gridItem3"> 
-        <h2>Billing Information</h2>
-        <?php
-
-            // Code - Not Active.
-            if(!isset($_POST['bSave']) || $_POST['bSave'] != 'Save'){
-                $_POST['bSave'] = '';
-            }
-            if(isset($_POST['bill']) && $_POST['bill'] !== ''){
-                $bill = $_POST['bill'];
-            }
-            if(isset($_POST['bstreet']) && $_POST['bstreet'] !== ''){
-                $bstreet = $_POST['bstreet'];
-            }
-            if(isset($_POST['bcity']) && $_POST['bcity'] !== ''){
-                $bcity = $_POST['bcity'];
-            }
-            if(isset($_POST['bstate']) && $_POST['bstate'] !== ''){
-                $bstate = $_POST['bstate'];
-            }
-            if(isset($_POST['bzip']) && $_POST['bzip'] !== ''){
-                $bzip = $_POST['bzip'];
-            }
-            $bstreet = $_POST['bstreet'] ?? '';
-            $bcity = $_POST['bcity'] ?? '';
-            $bstate = $_POST['bstate'] ?? '';
-            $bzip = $_POST['bzip'] ?? '';
-            $bill = $_POST['bill'] ?? 'true';
-
-            if(isset($_POST['bSave']) && $_POST['bSave'] == 'Save'){
-                if(!$bill && $baddress === $address) {
-                    $qstr = "INSERT INTO Addresses (street, city, state, zip) VALUES (?, ?, ?, ?) ";
-                    echo $qstr;
-                    $qinsert = $conn->prepare($qstr);
-                    if(!$qinsert){
-                        echo "<p>Error: could not execute query. <br> </p>";
-                        echo "<pre> Error Number: " .$conn -> errno. "\n";
-                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                        exit;
-                    }
-                    $qinsert->bind_param("ssss", $bstreet, $bcity, $bstate, $bzip);
-                    $qinsert->execute();
-                    $qinsert->store_result();
-                    $qinsert->free_result();
-                    
-                    $qstr = "SELECT address_id FROM Addresses WHERE street = '$bstreet' AND city = '$bcity' AND state_abbr = '$bstate' AND zip = '$bzip' ";
-                    echo $qstr;
-                    $qselect = $conn->prepare($qstr);
-                    if(! $qselect){
-                        echo "<p>Error: could not execute query. <br> </p>";
-                        echo "<pre> Error Number: " .$conn -> errno. "\n";
-                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                        exit;
-                    }
-                    $qselect->execute();
-                    $result = $qselect->get_result();
-                    $row = $result->fetch_row();
-                    $baddress = $row[0];
-                    $result->free_result();
-                    $bill = 'false';
-
-                    $qstr = "UPDATE Billing SET bill_address = $baddress WHERE patient_id = $patient_id";
-                    echo $qstr;
-                    $qinsert = $conn->prepare($qstr);
-                    if(!$qinsert){
-                        echo "<p>Error: could not execute query. <br> </p>";
-                        echo "<pre> Error Number: " .$conn -> errno. "\n";
-                        echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                        exit;
-                    }
-                    $qinsert->execute();
-                    $qinsert->store_result();
-                    $qinsert->free_result();
-                }
-            }
-            
-        ?>
-        <iframe style="display: none; " name='billForm'></iframe>
-        <form action="./newPatient.php" method="post" target="billForm">
-            <div class="npItem">
-                <fieldset>
-                    <legend>Same as Home Address:</legend>
-                    <input type="radio" id="yes" name="bill" value="true"
-                        <?php if($bill == 'true') echo "checked"; ?>>
-                    <label for="yes">Yes</label>        
-                    <input type="radio" id="no" name="bill" value="false"
-                        <?php if($bill == 'false') echo "checked"; ?>>
-                    <label for="no">No</label>
-                </fieldset>
-            </div>
-            <div class="npItem">
-                <?php
-                if($bill == 'true'){
-                    echo "
-                    <h3>Address:</h3><br>
-                    <label>Street:</label>
-                    <input type='text' maxlength='40' name='street' value='$street'>
-                    <label>City:</label>
-                    <input type='text' maxlength='30' name='city' value='$city'>
-                    <label>State:</label>
-                    <input type='text' maxlength='2' placeholder='VT' name='state' value='$state'>
-                    <label>Zip Code:</label>
-                    <input type='text' maxlength='5' placeholder='00000' name='zip' value='$zip'>";
-                } else {
-                    echo "
-                    <h3>Address:</h3><br>
-                    <label>Street:</label>
-                    <input type='text' maxlength='40' name='bstreet' value='$bstreet'>
-                    <label>City:</label>
-                    <input type='text' maxlength='30' name='bcity' value='$bcity'>
-                    <label>State:</label>
-                    <input type='text' maxlength='2' placeholder='VT' name='bstate' value='$bstate'>
-                    <label>Zip Code:</label>
-                    <input type='text' maxlength='5' placeholder='00000' name='bzip' value='$bzip'>";
-                }
-                ?>
-            </div>
-            <div class="saveButton">
-                <input type="submit" name="bSave" value="Save">
-            </div>
-            <?php
-             echo " <input type='hidden' name='patient_id' value='$patient_id'>
-                    <input type='hidden' name='appointment_id' value='$appointment_id'>
-                    <input type='hidden' name='user_id' value='$user_id'>
-                    <input type='hidden' name='baddress' value='$baddress'>"; 
-            ?>
-        </form>
-    </div>
     </div>
     <footer>
         <div>

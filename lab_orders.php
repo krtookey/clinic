@@ -8,7 +8,11 @@ echo($addscript);
 
 include_once 'dbConnection.php';
 include_once 'testinput.php';
-
+$confirm_failed = test_input($_POST["confirm_failed"]) ?? 0;
+if ($confirm_failed == 1){
+    echo("Submission was cancelled.");
+    exit(1);
+}
 $patient_id = test_input($_POST["patient_id"]) ?? 1;
 $user_id = test_input($_POST["user_id"]) ?? 1;
 $appointment_id = test_input($_POST["appointment_id"]) ?? 1;

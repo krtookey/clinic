@@ -27,15 +27,15 @@
             if(isset($_POST['patient_id']) && $_POST['patient_id'] !== ''){
                 $patient_id = $_POST['patient_id'];
               }
-            $patient_id = $_POST['patient_id'] ?? '1';
+            $patient_id = $_POST['patient_id'] ?? '';
             if(isset($_POST['appointment_id']) && $_POST['appointment_id'] !== ''){
                 $appointment_id = $_POST['appointment_id'];
               }
-            $appointment_id = $_POST['appointment_id'] ?? '3';
+            $appointment_id = $_POST['appointment_id'] ?? '99';
             if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
                 $user_id = $_POST['user_id'];
               }
-            $user_id = $_POST['user_id'] ?? '2';
+            $user_id = $_POST['user_id'] ?? '';
             $userPermission = 0;
             $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
             $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
@@ -75,7 +75,7 @@
         <?php
             //Save data
             //Test if values exist in post before saving them
-            if (!empty($_POST['demographics']) && !empty($_POST['social']) && !empty($_POST['chiefComplaint'])) {
+            if (!empty($_POST['noteSave'])) {
                 $sql = "UPDATE Note 
                 SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?, topics = ?
                 WHERE Note.patient_id = $patient_id AND Note.appointment_id = $appointment_id";
@@ -377,7 +377,6 @@
                         <input type='hidden' name='appointment_id' value='$appointment_id'>
                         <input type='hidden' name='user_id' value='$user_id'>";
                     ?>
-                    
                     <input type="submit" class="btn btn-primary patientSideMenuLink" value="Note History">
                 </form>
             </section>
@@ -576,6 +575,12 @@
                                 ?></textarea>
                             </div>
                             <!-- Save Note -->
+                            <?php
+                        
+                                echo "  <input type='hidden' name='patient_id' value='$patient_id'>
+                                <input type='hidden' name='appointment_id' value='$appointment_id'>
+                                <input type='hidden' name='user_id' value='$user_id'>";
+                            ?>
                             <input type="submit" value="Save Note" name="noteSave" class="btn btn-primary" id='patientFormSubmit'>
                         </form>
                     </div>
