@@ -72,6 +72,9 @@
         if(!isset($_POST['start']) || $_POST['start'] != 'Start Appointment'){
             $_POST['start'] = '';
         }
+        if(!isset($_POST['end']) || $_POST['end'] != 'End Appointment'){
+            $_POST['end'] = '';
+        }
         if(isset($_POST['pid']) && $_POST['pid'] !== ''){
             $id = $_POST['pid'];
         }
@@ -82,9 +85,13 @@
         }
 
         //If Start Appointment button is clicked create a new note and billing statement tied to the patient's appointment.
-        if(isset($_POST['start']) && $_POST['start'] == 'Start Appointment'){
+        if(isset($_POST['start']) && $_POST['start'] == 'Start Appointment' && $id !== ''){
             $patient_id = $id;
+<<<<<<< Updated upstream
             //Patients must only have one appointment per day.
+=======
+            //Patients must only have one appointment pre day.
+>>>>>>> Stashed changes
             $qstr = "SELECT appointment_id, status
                      FROM Appointment 
                      WHERE patient_id = $patient_id 
@@ -265,6 +272,54 @@
         }
         //End of Start Appointment.
 
+        if(isset($_POST['end']) && $_POST['end'] == 'End Appointment' && $id !== ''){
+            if($appointment_id !== 0){
+                $qstr = "SELECT cc FROM Note 
+                         WHERE appointment_id = $appointment_id "; 
+                $qselect = $conn->prepare($qstr);
+                if(! $qselect){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qselect->execute();
+                $result = $qselect->get_result();
+                $row = $result->fetch_row();
+                $cc = $row[0];
+                $result->free_result();
+
+                $qstr = "   UPDATE Billing 
+                            SET bill_statement = '$cc'  
+                            WHERE appointment_id = $appointment_id ";
+                $qupdate = $conn->prepare($qstr);
+                if(!$qupdate){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qupdate->execute();
+                $qupdate->store_result();
+                $qupdate->free_result();
+
+                $qstr = "   UPDATE Appointment 
+                            SET status = 3  
+                            WHERE appointment_id = $appointment_id ";
+                $qupdate = $conn->prepare($qstr);
+                if(!$qupdate){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qupdate->execute();
+                $qupdate->store_result();
+                $qupdate->free_result();
+            }
+        }
+        //End of End Appointment.
+
         //Start of Patient Search.
     
         //Make sure the submitted dob contains a valid date string.
@@ -435,6 +490,7 @@
                         <tbody>";
                 $i = 0;
                 while($qselect->fetch()){
+                    $i = $i + 1;
                     $qstr = "SELECT first_name, last_name, dob
                              FROM Patient 
                              WHERE patient_id = $id ";
@@ -470,9 +526,11 @@
                     echo "  </td>
                             <td>";
                             if($status == 1){
-                                echo "Upcomming";
+                                echo "Upcoming";
                             } else if ($status == 2){
                                 echo "Started";
+                            } else if ($status == 3){
+                                echo "Ended";
                             }
                     echo "  </td>        
                             <td>";
@@ -480,12 +538,16 @@
                             </td>";
                 }
                 echo "</tbody>
-                    </table>";                    
+                    </table>";
+                if($i === 0){
+                    echo "<p id='noapp'>You have no appointments scheduled for today.</p>";
+                }                    
             ?>
             </div>
             <div class="saveButton">
                 <input type="submit" name="select" value="Select" >
                 <input type="submit" name="start" value="Start Appointment" >
+                <input type="submit" name="end" value="End Appointment" >
             </div>
             <?php echo "<input type='hidden' name='patient_id' value='$patient_id'>
                         <input type='hidden' name='appointment_id' value='$appointment_id'>
