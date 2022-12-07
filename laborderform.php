@@ -47,11 +47,10 @@
             $labdestid_row = $labdestid_result->fetch_assoc();
             $patient_labdest_id = $labdestid_row["labdest_id"]; 
             // Get labdest_name for labdest_id
-            $sql = "SELECT labdest_name FROM LabDest where labdest_id = '" . $patient_labdest_id . "';";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                $labdest_name = $row["labdest_name"]; 
+            $labdestname_sql = "SELECT labdest_name FROM LabDest where labdest_id = '" . $patient_labdest_id . "';";
+            $labdestname_result = $conn->query($labdestname_sql);
+            if ($labdestname_result->num_rows > 0){
+                $labdestname_row = $labdestname_result->fetch_assoc();
                 $labdest_name = $labdestname_row["labdest_name"]; 
                 $labdestinput = <<<LABDEST_INPUT
                 <input type="text" id="labdest" name="labdest" list="labdestlist" value="$labdest_name" required>
