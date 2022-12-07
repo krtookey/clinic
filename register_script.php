@@ -1,7 +1,7 @@
 <?php
 include_once "dbConnection.php";
 include_once 'testinput.php';
-echo("We are in the fun zone");
+//echo("We are in the fun zone");
 $fname = $_POST['fname'];
 $lname = $_POST['lname'];
 $uname = $_POST['uname'];

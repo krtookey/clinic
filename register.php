@@ -36,12 +36,13 @@
             <div class="col-md-6 col-lg-5 d-none d-md-block">
               <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
                 alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                <br>
+                <iframe name="registerdisplay" class="results_iframe"></iframe>
             </div>
-              <iframe name="registerdisplay" class="results_iframe"></iframe>
             <div class="col-md-6 col-lg-7 d-flex align-items-center">
               <div class="card-body p-4 p-lg-5 text-black">
 
-                <form action="register_script.php" method="post" id="registerform">
+                <form action="register_script.php" method="post" id="registerform" target="registerdisplay">
 
                   <div class="d-flex align-items-center mb-3 pb-1">
                     <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
