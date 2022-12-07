@@ -37,6 +37,12 @@
         // Get labdest_id for patient
         $sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
         $result = $conn->query($sql);
+        if (!isset($labdetails__result)){
+            $labdestinput = <<<LABDEST_INPUT
+            <input type="text" id="labdest" name="labdest" list="labdestlist" required>
+            LABDEST_INPUT;
+            echo $labdestinput;
+        }
         if ($result->num_rows > 0){
             $row = $result->fetch_assoc();
             $patient_labdest_id = $row["labdest_id"]; 
