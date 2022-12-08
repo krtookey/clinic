@@ -4,7 +4,7 @@
     <label for="lab_name">Lab Name</label> 
     <?php
         $patient_id = $_POST['patient_id'] ?? 1;
-        $appointment_id = $POST['appointment_id'] ?? 3;
+        $appointment_id = $_POST['appointment_id'] ?? 3;
         $laborderid_sql = <<<LAB_IDS_FOR_PATIENT
         SELECT laborder_id FROM Note WHERE patient_id = '$patient_id' AND appointment_id = '$appointment_id';
         LAB_IDS_FOR_PATIENT;

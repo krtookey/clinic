@@ -18,6 +18,9 @@ if ($laborderid_row = $laborderid_result->fetch_assoc()){
     RESULTS;
     // Grabbing lab id and results for specific labs based on laborder_id of current note
     $labdetails_result = $conn->query($labdetails_sql);
+    if (!isset($labdetails__result)){
+        echo ("Unable to retrieve lab results for this user");
+    }
     if ($labdetails_result->num_rows > 0){
         while($labdetails_row = $labdetails_result->fetch_assoc()){
             $lab_id = $labdetails_row['lab_id'];

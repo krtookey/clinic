@@ -675,7 +675,7 @@
             $qupdate->free_result();
 
             //Change Primary Care Provider.
-            if($pcp !== ''){
+            if($pcp !== '' && $pcp !== 'None Selected '){
                 $tpcp = explode(" ", $pcp, 2); //Problematic if user's first name has any spaces. 
                 $pcp_first = $tpcp[0];
                 $pcp_last = $tpcp[1];

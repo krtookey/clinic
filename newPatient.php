@@ -275,7 +275,7 @@
                 $pcp_id = $row[0];
                 $result->free_result();
             } else {
-                $pcp_id = 999999;
+                $pcp_id = -1;
             }
 
             $dob = validateDate($dob);

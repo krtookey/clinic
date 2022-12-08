@@ -44,7 +44,6 @@
       //Prepare statment
       $stmt = $conn->prepare($query);
       //Bind ? with the POST variable from the prvious page
-      $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
       $stmt->bind_param("i", $patient_id);
       //Execute and get resutls from database
       $stmt->execute();
@@ -67,7 +66,7 @@
       if(isset($_POST['note_id']) && $_POST['note_id'] !== ''){
           $note_id = $_POST['note_id'];
       }
-      $note_id = $POST['note_id'] ?? 2; //TODO remove after testing
+      $note_id = $_POST['note_id'] ?? ''; //TODO remove after testing
       ?>
   </header>
 
@@ -88,7 +87,6 @@
                         ON Note.appointment_id = Appointment.appointment_id
                         WHERE Note.patient_id = ?";
                         $stmt = $conn->prepare($query);
-                        $patient_id = $POST['patient_id'] ?? 1; //TODO remove after testing
                         $stmt->bind_param("i", $patient_id);
                         //Execute and get results from database
                         $stmt->execute();
@@ -107,7 +105,7 @@
                                   <td>$assessment</td>
                                   <td>$plan</td>
                                   <td>$comments</td>
-                                  <td><a href='openNote.php?note_id=$note_id'>Open</a></td>
+                                  <td><a href='openNote.php?note_id=$note_id&patient_id=$patient_id&user_id=$user_id&appointment_id=$appointment_id'>Open</a></td>
                           </tr>";
                         }
                         echo "</table>";
@@ -118,11 +116,6 @@
           </div>
   </div>
 </section>
-<<<<<<< HEAD
-<footer id="footer">
-          <a href="./patient.php">Back to Patient Note</a>
-</footer>
-=======
   <footer> <!--Need footer at bottom of page-->
         <?php
             echo "  <div>
@@ -143,7 +136,6 @@
                     </div>"; 
         ?>
   </footer>
->>>>>>> cea4d9dc281a0c76c57604f63601dec8b5ce3c2c
   <?php
       $conn->close();
   ?>
