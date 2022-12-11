@@ -438,12 +438,12 @@
             <div class="newPItem">
                 <fieldset>
                     <legend>Minor:</legend>
-                    <input type="radio" id="yes" name="minor" value="true"
+                    <input type="radio" id="true" name="minor" value="true"
                         <?php if($minor == 'true') echo "checked"; ?>>
-                    <label for="yes">Yes</label>        
-                    <input type="radio" id="no" name="minor" value="false"
+                    <label for="true">Yes</label>        
+                    <input type="radio" id="false" name="minor" value="false"
                         <?php if($minor == 'false') echo "checked"; ?>>
-                    <label for="no">No</label>
+                    <label for="false">No</label>
                 </fieldset>
                 <div class="newItem">
                     <label>Guardian:</label>
@@ -456,7 +456,7 @@
                 <datalist id="pcplist" name="pcp">
                     <?php
                         //Get List of Primary Care Providers.
-                        $qstr = "SELECT first_name, last_name FROM Users WHERE permission = 2 ";
+                        $qstr = "SELECT first_name, last_name FROM Users WHERE permission >= 2 ";
                         $qselect = $conn->prepare($qstr);
                         if(! $qselect){
                             echo "<p>Error: could not execute query. <br> </p>";
