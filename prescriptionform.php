@@ -36,7 +36,7 @@
                 //$patient_dob = "10/12/1996"; // PLACEHOLDER
                 
                 echo("<b>". $patient_name . "</b>  <b>  " . $patient_dob . "</b>");
-                echo("<br><br>");
+                echo("<br>");
                 echo('<label for="pharmacy">Pharmacy: </label>');
                 
                 // Get pharmacy_id for patient

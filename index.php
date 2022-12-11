@@ -577,7 +577,7 @@
         <div>
             <?php
                 if($userPermission >= $managmentPermission){
-                echo "  <form action='new user' method='POST'>
+                echo "  <form action='./register.php' method='POST'>
                             <input type='submit' name='submitNU' value='New User'>
                             <input type='hidden' name='user_id' value='$user_id'>
                         </form>";

@@ -1,7 +1,4 @@
 <form action="insertlabresults.php" method="post" target="insertlabresultsframe" id="insertlabresultsform">
-    <b>Insert Lab Results</b>
-    <br>
-    <label for="lab_name">Lab Name</label> 
     <?php
         $patient_id = $_POST['patient_id'] ?? 1;
         $appointment_id = $_POST['appointment_id'] ?? 3;
@@ -12,6 +9,11 @@
         $laborderid_result = $conn->query($laborderid_sql);
         if ($laborderid_row = $laborderid_result->fetch_assoc()){
             $laborder_id = $laborderid_row['laborder_id']; 
+            echo('
+            <b>Insert Lab Results</b>
+            <br>
+            <label for="lab_name">Lab Name</label> 
+            ');
             $laborder_id_field = <<<LABORDERIDFIELD
             <input type="text" id="laborder_id" name="laborder_id" value="$laborder_id" hidden>
             <select id="lab_name" name="lab_name">
@@ -44,17 +46,22 @@
                 
                     
             }
+            $bottom_fields = <<<BOTTOMFIELDS
+            </select>
+            <label for="urgent">Urgent?</label>
+            <input type="checkbox" id="urgent" name="urgent" value="1">
+            <br>
+            <label for="enter_results">Enter Results</label>
+            <br>
+            <textarea rows="6" cols="30" id="enter_results" name="enter_results" maxlength="4900"></textarea>   
+            <input type="submit" value="Submit">
+            <iframe name="insertlabresultsframe" class="results_iframe"></iframe>
+            BOTTOMFIELDS;
+            echo($bottom_fields);
         } else {
-            echo('Unable to retrieve lab results list for this user.');
+            //echo('Unable to retrieve lab results list for this user.');
+
         }
     ?>
-    </select>
-    <label for="urgent">Urgent?</label>
-    <input type="checkbox" id="urgent" name="urgent" value="1">
-    <br>
-    <label for="enter_results">Enter Results</label>
-    <br>
-    <textarea rows="6" cols="30" id="enter_results" name="enter_results" maxlength="4900"></textarea>   
-    <input type="submit" value="Submit">
-    <iframe name="insertlabresultsframe" class="results_iframe"></iframe>
+    
 </form>
