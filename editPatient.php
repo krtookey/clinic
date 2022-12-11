@@ -1006,6 +1006,7 @@
         <?php
             $fp = fopen("./bills/bill.txt", 'w') or die("Unable to open billing file!");
             flock($fp, LOCK_SH);
+            date_default_timezone_set('America/New_York');
             $now = date("Y/m/d h:i a");
             $txt="Clinic Bill for ".$fname." ".$lname." as of ".$now."\n \n";
             fwrite($fp, $txt);
