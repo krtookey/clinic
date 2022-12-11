@@ -94,7 +94,7 @@
             <form id='patientNoteForm'>
                 <!-- Demographics  -->
                 <div class="mb-3 formField" id="demographicsContainer">
-                    <p> <?php echo "$demographics" ?> </p>
+                    <p> <?php echo "Demographics: $demographics" ?> </p>
                 </div>
                 <!-- Chief Complaint -->
                 <div class="mb-3 formField" id="chiefComplaintContainer">
@@ -126,7 +126,7 @@
                 </div>
                 <!-- Treatment Plan -->
                 <div class="mb-3 formField" id="treatmentPlanContainer">
-                    <p> <?php echo "Treatment: $plan" ?> </p>
+                    <p> <?php echo "Treatment Plan: $plan" ?> </p>
                 </div>
                 <!-- General Comments -->
                 <div class="mb-3 formField" id="generalCommentsContainer">
@@ -135,7 +135,7 @@
                 <!-- Topics Discussed -->
                 <div class="mb-3 formField" id="topicsContainer">
 
-                    <p> <?php echo "$topics" ?> </p>
+                    <p> <?php echo "Topics: $topics" ?> </p>
                 </div>
                 <div class="mb-3 formField" id="rosContainer">
                     <label for="ros" id="rosLabel">Review of Symptoms</label>
