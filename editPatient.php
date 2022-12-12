@@ -247,7 +247,9 @@
         if(!$minor){
             $guard_id = 0;
             $guardian = '';
+            $minor = 'false';
         } else {
+            $minor = 'true';
             if($guard_id === $ec1){
                 $guardian = $ecName1;
             } elseif ($guard_id === $ec2){
