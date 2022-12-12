@@ -75,7 +75,7 @@
         <?php
             //Save data
             //Test if values exist in post before saving them
-            if (!empty($_POST['noteSave'])) {
+            if (!empty($_POST['noteSave']) && $appointment_id !== '') {
                 $sql = "UPDATE Note 
                 SET demographics = ?, cc = ?, hist_illness = ?, social_hist = ?, substance_hist = ?, psych_hist = ?, med_hist = ?, assessment = ?, plan = ?, comments = ?, topics = ?
                 WHERE Note.patient_id = $patient_id AND Note.appointment_id = $appointment_id";
