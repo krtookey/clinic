@@ -247,7 +247,9 @@
         if(!$minor){
             $guard_id = 0;
             $guardian = '';
+            $minor = 'false';
         } else {
+            $minor = 'true';
             if($guard_id === $ec1){
                 $guardian = $ecName1;
             } elseif ($guard_id === $ec2){
@@ -1004,8 +1006,9 @@
         <form action="./editPatient.php" method="post">
         <div>
         <?php
-            $fp = fopen("./bills/".$patient_id.".txt", 'w') or die("Unable to open billing file!");
+            $fp = fopen("./bills/bill.txt", 'w') or die("Unable to open billing file!");
             flock($fp, LOCK_SH);
+            date_default_timezone_set('America/New_York');
             $now = date("Y/m/d h:i a");
             $txt="Clinic Bill for ".$fname." ".$lname." as of ".$now."\n \n";
             fwrite($fp, $txt);
@@ -1107,7 +1110,7 @@
             </div>
             <div class="saveButton">
                 <input type="submit" name="bSave" value="Update">
-                <a href="./bills/<?php echo $patient_id; ?>.txt" download>Download</a>
+                <a href="./bills/bill.txt" download>Download</a>
             </div>
 
             <?php echo "<input type='hidden' name='patient_id' value='$patient_id'>

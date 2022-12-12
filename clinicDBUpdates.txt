@@ -270,3 +270,12 @@ UPDATE Appointment SET patient_id ='1', date_time = '2022-12-08 15:45:00', durat
 INSERT INTO Users VALUES('-1', 'default', '0', 'default', '000-000-0000', 'default', 'None Selected', '', 'default');
 
 -- End of Update ---------------------------
+
+-- Appointment data for demos and testing -- December 11, 2022---------
+
+INSERT INTO Appointment (patient_id, date_time, duration, status, doctor_id, doctor_first_name, doctor_last_name) 
+	VALUES 	('2', '2022-12-15 10:15:00','20','1','1','Joey','Danger'),
+			('1', '2022-12-15 12:00:00','30','1','1','Joey','Danger'),
+			('1', '2022-12-11 15:45:00','30','1','1','Joey','Danger');
+
+-- End of Update ----------------------
