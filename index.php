@@ -51,7 +51,11 @@
             $row = $result->fetch_row();
             $userPermission = $row[0];
             $qselect->free_result();
-        } 
+        } else {
+            echo "<p>User not found.  Return to Login.</p>
+                    <a href='./login.php'>Login</a>";
+            exit;
+        }
 
         //Variables.
         $fname = $_POST['firstname'] ?? '';
