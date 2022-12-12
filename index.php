@@ -602,7 +602,14 @@
             </form>
         </div>
         <div>
-            <a href="appointments">Appointments</a> 
+             <form action="./appointments.php" method="POST">
+                <input type="submit" name="submitAF" value="Appointment">
+                <?php
+                    //Store patient_id, appointment_id, user_id in POST buffer.
+                    echo "  <input type='hidden' name='patient_id' value=''>
+                            <input type='hidden' name='user_id' value='$user_id'>";
+                ?>
+            </form>
         </div>
         <div>
             <form action="./newPatient.php" method="POST">
