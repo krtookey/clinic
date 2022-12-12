@@ -576,6 +576,7 @@
                 </div>
             </div>
             <div class="saveButton">
+                <?php echo "<input type='hidden' name='user_id' value='$user_id'>" ?>
                 <input type="submit" name="search" value="Search" >
             </div>
         </form>
