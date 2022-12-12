@@ -604,8 +604,8 @@
         <div>
             <?php
             if($patient_id !== ''){
-             echo "<form action="./appointments.php" method="POST">
-                <input type="submit" name="submitAF" value="Appointment">
+             echo "<form action='./appointments.php' method='POST'>
+                <input type='submit' name='submitAF' value='Appointment'>
                 <input type='hidden' name='patient_id' value='$patient_id'>
                 <input type='hidden' name='user_id' value='$user_id'>";
             }
