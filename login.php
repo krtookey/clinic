@@ -89,7 +89,7 @@
                       }
                     ?>
                   <div class="pt-1 mb-4">
-                    <input class="btn btn-dark btn-lg btn-block" type="submit" name="submitbutton" value="Login"L>
+                    <input class="btn btn-dark btn-lg btn-block" type="submit" name="submitbutton" value="Login">
                   </div>
 
                   <input type="text" id="user_id" name="user_id" value="" hidden>
