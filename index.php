@@ -22,10 +22,14 @@
             $appointment_id = $_POST['appointment_id'];
         }
         $appointment_id = $_POST['appointment_id'] ?? ''; 
-        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
-            $user_id = $_POST['user_id'];
+        if(isset($_GET['user_id']) && $_GET['user_id'] !== ''){
+            $user_id = $_GET['user_id'] ?? '';
+            $_POST['user_id'] = $_GET['user_id'] ?? '';
         }
-        $user_id = $_POST['user_id'] ?? '';     
+        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+            $user_id = $_POST['user_id'] ?? '';
+        }
+        $user_id = $_POST['user_id'] ?? '';
         //$user_id = 1;                           //For Testing.
         $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
         $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
