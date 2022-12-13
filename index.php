@@ -186,7 +186,7 @@
 
                 //Create new note.
                 $qstr = "INSERT INTO Note (patient_id, appointment_id, cc, hist_illness, ros_id, med_profile_id, social_hist, med_hist, psych_hist, assessment, plan, laborder_id, labdest_id, demographics, comments, substance_hist) 
-                        VALUES ('$patient_id', '$appointment_id', '$cc', '$hist_ill', '0', '0', '$hist_social', '$hist_med', '$hist_psych', '$assess', '$plan', '$lab_order', '$lab_dest', '$demo', '$comment', '$hist_sub') ";
+                        VALUES ('$patient_id', '$appointment_id', ?, ?, '0', '0', ?, ?, ?, ?, ?, '$lab_order', '$lab_dest', ?, ?, ?) ";
                 $qinsert = $conn->prepare($qstr);
                 if(!$qinsert){
                     echo "<p>Error: could not execute query. <br> </p>";
@@ -194,6 +194,7 @@
                     echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                     exit;
                 }
+                $qinsert->bind_param("ssssssssss", $cc, $hist_ill, $hist_social, $hist_med, $hist_psych, $assess, $plan, $demo, $comment, $hist_sub);
                 $qinsert->execute();
                 $qinsert->store_result();
                 $qinsert->free_result();
