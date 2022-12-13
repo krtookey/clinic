@@ -105,7 +105,7 @@ if ($row = $pharmaid_result->fetch_assoc()){
 // Getting date of order
 date_default_timezone_set("America/New_York");
 $orderdate = date('Y-m-d');
-echo($orderdate);
+//echo($orderdate);
 
 // Getting everything ready to be sent
 

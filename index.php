@@ -576,6 +576,7 @@
                 </div>
             </div>
             <div class="saveButton">
+                <?php echo "<input type='hidden' name='user_id' value='$user_id'>" ?>
                 <input type="submit" name="search" value="Search" >
             </div>
         </form>
@@ -601,7 +602,15 @@
             </form>
         </div>
         <div>
-            <a href="appointments">Appointments</a> 
+            <?php
+            if($patient_id !== ''){
+             echo "<form action='./appointments.php' method='POST'>
+                <input type='submit' name='submitAF' value='Appointment'>
+                <input type='hidden' name='patient_id' value='$patient_id'>
+                <input type='hidden' name='user_id' value='$user_id'>";
+            }
+                ?>
+            </form>
         </div>
         <div>
             <form action="./newPatient.php" method="POST">

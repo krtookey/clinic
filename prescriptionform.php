@@ -55,7 +55,11 @@
                         <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" value="$pharmacy_name" required>
                         PHARM_INPUT;
                         echo $pharmacyinput;
+                    } else {
+                        echo ('<input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required>');
                     }
+                } else {
+                    echo ('<input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required>');
                 }
 
             ?>
