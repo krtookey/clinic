@@ -36,27 +36,34 @@ if(isset($_POST['submitbutton']) && ($_POST['submitbutton'] == 'Add Appointment'
 }
 ?>
 
-<style>
-    * {
-        font-size:25px;
-    }
-    input {
-        border: 2px solid var(--orange);
-        border-radius: 5px;
-        padding: 5px;
-    }
-</style>
-<form id="appointmentsform" method="post">
-    <label for="appt_date_time">Date and Time</label>
-    <input type="datetime-local" id="appt_date_time" name="appt_date_time">
-    <br>
-    <label for="duration">Duration</label>
-    <input type="number" id="duration" name="duration">
-    <br>
-    <input type="submit" name="submitbutton" value="Add Appointment">
-    <?php 
-    echo "
-    <input type='hidden' name='patient_id' value='$patient_id'>
-    <input type='hidden' name='user_id' value='$user_id'>
-    "?>
-</form>
+<div id="appointmentsformdiv">
+    <style>
+        * {
+            font-size:25px;
+        }
+
+        #appointmentsformdiv {
+            padding: 30px 0 0 30px;
+        }
+
+        input {
+            border: 2px solid var(--orange);
+            border-radius: 5px;
+            padding: 5px;
+        }
+    </style>
+    <form id="appointmentsform" method="post">
+        <label for="appt_date_time">Date and Time</label>
+        <input type="datetime-local" id="appt_date_time" name="appt_date_time">
+        <br>
+        <label for="duration">Duration</label>
+        <input type="number" id="duration" name="duration">
+        <br>
+        <input type="submit" name="submitbutton" value="Add Appointment">
+        <?php 
+        echo "
+        <input type='hidden' name='patient_id' value='$patient_id'>
+        <input type='hidden' name='user_id' value='$user_id'>
+        "?>
+    </form>
+</div>
