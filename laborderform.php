@@ -56,7 +56,11 @@
                 <input type="text" id="labdest" name="labdest" list="labdestlist" value="$labdest_name" required>
                 LABDEST_INPUT;
                 echo $labdestinput;
+            } else {
+                echo ('<input type="text" id="labdest" name="labdest" list="labdestlist" required>');
             }
+        } else {
+            echo ('<input type="text" id="labdest" name="labdest" list="labdestlist" required>');
         }
     ?>
     <datalist id="labdestlist">

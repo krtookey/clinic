@@ -102,11 +102,11 @@
     $bstate = $_POST['bstate'] ?? '';
     $bzip = $_POST['bzip'] ?? '';
     $bill = $_POST['bill'] ?? '';
-    $pharm = 0;
+    $pharm = $_POST['pharm'] ?? '';
     $insurance = 0;
     $address = 0;
     $baddress = 0;
-    $lab = 0;
+    $lab = $_POST['pharm'] ?? '';
     $note = 0;
     $ec1 = 0;
     $ec2 = 0;
@@ -146,8 +146,8 @@
         $email = $row[9];
         $address = $row[10];
         $insurance = $row[11];
-        $pharm = $row[12];
-        $lab = $row[13];
+        $pharmacy_id = $row[12];
+        $labdest_id = $row[13];
         $minor = $row[14];
         $guard_id = $row[15];
         $pcp_id = $row[16];
@@ -269,6 +269,37 @@
                 $guardian = $row[0];
             }
         }
+ 
+        // Get pharmacy_name for pharmacy_id
+        $qstr = "SELECT pharmacy_name FROM Pharmacy WHERE pharmacy_id = $pharmacy_id ";
+        $qselect = $conn->prepare($qstr);
+        if(! $qselect){
+            echo "<p>Error: could not execute query. <br> </p>";
+            echo "<pre> Error Number: " .$conn -> errno. "\n";
+            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+            exit;
+        }
+        $qselect->execute();
+        $result = $qselect->get_result();
+        $row = $result->fetch_row();
+        $pharm = $row[0];
+        $result->free_result();
+
+        // Get lab_name for labdest_id
+        $qstr = "SELECT labdest_name FROM LabDest WHERE labdest_id = $labdest_id ";
+        $qselect = $conn->prepare($qstr);
+        if(! $qselect){
+            echo "<p>Error: could not execute query. <br> </p>";
+            echo "<pre> Error Number: " .$conn -> errno. "\n";
+            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+            exit;
+        }
+        $qselect->execute();
+        $result = $qselect->get_result();
+        $row = $result->fetch_row();
+        $lab = $row[0];
+        $result->free_result();
+
 
         //Get billing address
         $qstr = "SELECT bill_address FROM Billing 
@@ -381,6 +412,12 @@
     }
     if(isset($_POST['pcp']) && $_POST['pcp'] !== ''){
         $pcp = $_POST['pcp'];
+    }
+    if(isset($_POST['pharm']) && $_POST['pharm'] !== ''){
+        $pharm = $_POST['pharm'];
+    }
+    if(isset($_POST['lab']) && $_POST['lab'] !== ''){
+        $lab = $_POST['lab'];
     }
     if(isset($_POST['ecName1']) && $_POST['ecName1'] !== ''){
         $ecName1 = $_POST['ecName1'];
@@ -698,11 +735,46 @@
                 $result->free_result();
             }
 
+            // Changing pharmacy_id for pharmacy
+            if ($pharm !== '' && $pharm !== 'None Selected '){
+                $qstr = "SELECT DISTINCT pharmacy_id FROM Pharmacy WHERE pharmacy_name = '$pharm' ";
+                $qselect = $conn->prepare($qstr);
+                if(! $qselect){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qselect->execute();
+                $result = $qselect->get_result();
+                $row = $result->fetch_row();
+                $pharmacy_id = $row[0];
+                $result->free_result();
+            }
+
+            // Get labdest_id for LabDest
+            if ($lab !== '' && $lab !== 'None Selected '){
+                $qstr = "SELECT DISTINCT labdest_id FROM LabDest WHERE labdest_name = '$lab' ";
+                $qselect = $conn->prepare($qstr);
+                if(! $qselect){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qselect->execute();
+                $result = $qselect->get_result();
+                $row = $result->fetch_row();
+                $labdest_id = $row[0];
+                $result->free_result();
+            }
+
+            
             $dob = validateDate($dob);
 
             //Update Patient.
             $qstr = "UPDATE Patient 
-                    SET gender = $gender, preferred = ?, first_name = ?, middle_name = ? , last_name = ? , DOB = '$dob', sex = '$sex', primary_phone = ? , secondary_phone = ? , email = ? , address_id = $address, insurance_id = $insurance, pharmacy_id = $pharm, labdest_id = $lab, pcp_id = $pcp_id, minor = $minor, guardian = $guard_id, emergency_contact1 = $ec1, emergency_contact2 = $ec2
+                    SET gender = $gender, preferred = ?, first_name = ?, middle_name = ? , last_name = ? , DOB = '$dob', sex = '$sex', primary_phone = ? , secondary_phone = ? , email = ? , address_id = $address, insurance_id = $insurance, pharmacy_id = $pharmacy_id, labdest_id = $labdest_id, pcp_id = $pcp_id, minor = $minor, guardian = $guard_id, emergency_contact1 = $ec1, emergency_contact2 = $ec2
                     WHERE patient_id = $patient_id ";
             //Debug: echo $qstr;
             $qupdate = $conn->prepare($qstr);
@@ -827,6 +899,54 @@
 
                         while($qselect->fetch()){
                             echo "<option value='$first $last'>$first $last<option>";
+                        }
+
+                        $qselect->free_result();
+                    ?>
+                </datalist>    
+                <label>Default Pharmacy:</label>
+                <input list="pharmacylist" maxlength="50" name="pharm" value="<?php echo $pharm ?>">
+                <datalist id="pharmacylist" name="pharm">
+                    <?php
+                        //Get List of Primary Care Providers.
+                        $qstr = "SELECT pharmacy_name FROM Pharmacy ";
+                        $qselect = $conn->prepare($qstr);
+                        if(! $qselect){
+                            echo "<p>Error: could not execute query. <br> </p>";
+                            echo "<pre> Error Number: " .$conn -> errno. "\n";
+                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                            exit;
+                        }
+                        $qselect->execute();
+                        $qselect->store_result();
+                        $qselect->bind_result($pharmacy_name);
+
+                        while($qselect->fetch()){
+                            echo "<option value='$pharmacy_name'>$pharmacy_name<option>";
+                        }
+
+                        $qselect->free_result();
+                    ?>
+                </datalist>
+                <label>Default LabDest:</label>
+                <input list="labdestlist" maxlength="50" name="lab" value="<?php echo $lab ?>">
+                <datalist id="labdestlist" name="lab">
+                    <?php
+                        //Get List of Primary Care Providers.
+                        $qstr = "SELECT labdest_name FROM LabDest ";
+                        $qselect = $conn->prepare($qstr);
+                        if(! $qselect){
+                            echo "<p>Error: could not execute query. <br> </p>";
+                            echo "<pre> Error Number: " .$conn -> errno. "\n";
+                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                            exit;
+                        }
+                        $qselect->execute();
+                        $qselect->store_result();
+                        $qselect->bind_result($labdest_name);
+
+                        while($qselect->fetch()){
+                            echo "<option value='$labdest_name'>$labdest_name<option>";
                         }
 
                         $qselect->free_result();
