@@ -490,78 +490,84 @@
                 </div>
             </div>
             <div class="newPItem">
-                <label>Principal Care Provider:</label>
-                <input list="pcplist" maxlength="50" name="pcp" value="<?php echo $pcp ?>">
-                <datalist id="pcplist" name="pcp">
-                    <?php
-                        //Get List of Primary Care Providers.
-                        $qstr = "SELECT first_name, last_name FROM Users WHERE permission >= 2 ";
-                        $qselect = $conn->prepare($qstr);
-                        if(! $qselect){
-                            echo "<p>Error: could not execute query. <br> </p>";
-                            echo "<pre> Error Number: " .$conn -> errno. "\n";
-                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                            exit;
-                        }
-                        $qselect->execute();
-                        $qselect->store_result();
-                        $qselect->bind_result($first, $last);
+                <div class="newItem">
+                    <label>Principal Care Provider:</label>
+                    <input list="pcplist" maxlength="50" name="pcp" value="<?php echo $pcp ?>">
+                    <datalist id="pcplist" name="pcp">
+                        <?php
+                            //Get List of Primary Care Providers.
+                            $qstr = "SELECT first_name, last_name FROM Users WHERE permission >= 2 ";
+                            $qselect = $conn->prepare($qstr);
+                            if(! $qselect){
+                                echo "<p>Error: could not execute query. <br> </p>";
+                                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                exit;
+                            }
+                            $qselect->execute();
+                            $qselect->store_result();
+                            $qselect->bind_result($first, $last);
 
-                        while($qselect->fetch()){
-                            echo "<option value='$first $last'>$first $last<option>";
-                        }
+                            while($qselect->fetch()){
+                                echo "<option value='$first $last'>$first $last<option>";
+                            }
 
-                        $qselect->free_result();
-                    ?>
-                </datalist>
-                <label>Default Pharmacy:</label>
-                <input list="pharmacylist" maxlength="50" name="pharm" value="<?php echo $pharm ?>">
-                <datalist id="pharmacylist" name="pharm">
-                    <?php
-                        //Get List of Primary Care Providers.
-                        $qstr = "SELECT pharmacy_name FROM Pharmacy ";
-                        $qselect = $conn->prepare($qstr);
-                        if(! $qselect){
-                            echo "<p>Error: could not execute query. <br> </p>";
-                            echo "<pre> Error Number: " .$conn -> errno. "\n";
-                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                            exit;
-                        }
-                        $qselect->execute();
-                        $qselect->store_result();
-                        $qselect->bind_result($pharmacy_name);
+                            $qselect->free_result();
+                        ?>
+                    </datalist>
+                </div>
+                <div class="newItem">
+                    <label>Default Pharmacy:</label>
+                    <input list="pharmacylist" maxlength="50" name="pharm" value="<?php echo $pharm ?>">
+                    <datalist id="pharmacylist" name="pharm">
+                        <?php
+                            //Get List of Primary Care Providers.
+                            $qstr = "SELECT pharmacy_name FROM Pharmacy ";
+                            $qselect = $conn->prepare($qstr);
+                            if(! $qselect){
+                                echo "<p>Error: could not execute query. <br> </p>";
+                                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                exit;
+                            }
+                            $qselect->execute();
+                            $qselect->store_result();
+                            $qselect->bind_result($pharmacy_name);
 
-                        while($qselect->fetch()){
-                            echo "<option value='$pharmacy_name'>$pharmacy_name<option>";
-                        }
+                            while($qselect->fetch()){
+                                echo "<option value='$pharmacy_name'>$pharmacy_name<option>";
+                            }
 
-                        $qselect->free_result();
-                    ?>
-                </datalist>
-                <label>Default LabDest:</label>
-                <input list="labdestlist" maxlength="50" name="lab" value="<?php echo $lab ?>">
-                <datalist id="labdestlist" name="lab">
-                    <?php
-                        //Get List of Primary Care Providers.
-                        $qstr = "SELECT labdest_name FROM LabDest ";
-                        $qselect = $conn->prepare($qstr);
-                        if(! $qselect){
-                            echo "<p>Error: could not execute query. <br> </p>";
-                            echo "<pre> Error Number: " .$conn -> errno. "\n";
-                            echo "Error: "  .$conn -> error. "\n <pre><br>\n";
-                            exit;
-                        }
-                        $qselect->execute();
-                        $qselect->store_result();
-                        $qselect->bind_result($labdest_name);
+                            $qselect->free_result();
+                        ?>
+                    </datalist>
+                </div>
+                <div class="newItem">
+                    <label>Default LabDest:</label>
+                    <input list="labdestlist" maxlength="50" name="lab" value="<?php echo $lab ?>">
+                    <datalist id="labdestlist" name="lab">
+                        <?php
+                            //Get List of Primary Care Providers.
+                            $qstr = "SELECT labdest_name FROM LabDest ";
+                            $qselect = $conn->prepare($qstr);
+                            if(! $qselect){
+                                echo "<p>Error: could not execute query. <br> </p>";
+                                echo "<pre> Error Number: " .$conn -> errno. "\n";
+                                echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                                exit;
+                            }
+                            $qselect->execute();
+                            $qselect->store_result();
+                            $qselect->bind_result($labdest_name);
 
-                        while($qselect->fetch()){
-                            echo "<option value='$labdest_name'>$labdest_name<option>";
-                        }
+                            while($qselect->fetch()){
+                                echo "<option value='$labdest_name'>$labdest_name<option>";
+                            }
 
-                        $qselect->free_result();
-                    ?>
-                </datalist>
+                            $qselect->free_result();
+                        ?>
+                    </datalist>
+                </div>
             </div>
             <div class="newPItem">
                 <div class="newItem">
