@@ -879,7 +879,7 @@
                     <input type="text" maxlength="50" name="guardian" value="<?php if($minor == 'true'){ echo $guardian; } ?>">
                 </div>
             </div>
-            <div class="newPItem">
+            <div class="newPItem" style="grid-area: 3 / 2 / span 2 / span 1; margin-bottom: 20px">
                 <div class="newItem">
                     <label>Principal Care Provider:</label>
                     <input list="pcplist" maxlength="50" name="pcp" value="<?php echo $pcp ?>">
@@ -973,7 +973,6 @@
                     <input type="text" maxlength="40" name="email" value="<?php echo $email; ?>">
                 </div>
             </div>
-            <div class="newPItem"></div>
             <div class="newPItem">
                 <h3>Emegency Contact 1</h3>
                 <div class="newItem">
