@@ -130,6 +130,8 @@ if(isset($_POST['delappt']) && $_POST['delappt'] == 'Delete Appointment' && $pat
     }
 }
 
+
+
 ?>
 
 
@@ -144,91 +146,67 @@ if(isset($_POST['delappt']) && $_POST['delappt'] == 'Delete Appointment' && $pat
     <div id="allview">
         <form action="./appointments.php" method="post">
             <input type="submit" name="delappt" value="Delete Appointment" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="yearview" type="submit" name="yearview" value="Year" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="monthview" type="submit" name="monthview" value="Month" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="weekview" type="submit" name="weekview" value="Week" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="dayview" type="submit" name="dayview" value="Day" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <style>
+                .selectedview {
+                    background-color: #FFBF69 !important;
+                    border: 2px black solid !important;
+                }
+            </style>
                 <?php
                     $patient_id = $_POST['patient_id'] ?? '';
                     //echo "Patient_id = " . $patient_id;
-                    $user_id = $_POST['user_id'] ?? '';
-                    //echo "User_id = " . $user_id;
-                    // Create date variables to handle stuff
+                    $user_id = $_POST['user_id'] ?? ''; 
+
                     date_default_timezone_set('America/New_York');
                     $today = date("Y-m-d");
                     $today = date_create($today);
                     $today = date_format($today, "Y/m/d H:i:s");
-                    $oneyear = new DateTime('today + 1 year');
-                    $oneyear = date_format($oneyear, "Y/m/d H:i:s");
-                    printappts($conn, $user_id, $patient_id, $today, $oneyear);              
+                    
+                    if(isset($_POST['dayview']) && $_POST['dayview'] == 'Day' && $patient_id !== ''){
+                        $enddate = new DateTime('today + 1 day');
+                        echo "<script>
+                        let viewbutton = document.getElementById('dayview');
+                        viewbutton.classList.add('selectedview');
+                        </script>";
+                    } else if (isset($_POST['weekview']) && $_POST['weekview'] == 'Week' && $patient_id !== ''){
+                        $enddate = new DateTime('today + 1 week');
+                        echo "<script>
+                        let viewbutton = document.getElementById('weekview');
+                        viewbutton.classList.add('selectedview');
+                        </script>";
+                    } else if (isset($_POST['monthview']) && $_POST['monthview'] == 'Month' && $patient_id !== ''){
+                        $enddate = new DateTime('today + 1 month');
+                        echo "<script>
+                        let viewbutton = document.getElementById('monthview');
+                        viewbutton.classList.add('selectedview');
+                        </script>";
+                    } else if (isset($_POST['yearview']) && $_POST['yearview'] == 'Year' && $patient_id !== ''){
+                        $enddate = new DateTime('today + 1 year');
+                        echo "<script>
+                        let viewbutton = document.getElementById('yearview');
+                        viewbutton.classList.add('selectedview');
+                        </script>";
+                    } else {
+                        $enddate = new DateTime('today + 1 week');
+                        echo "<script>
+                        let viewbutton = document.getElementById('weekview');
+                        viewbutton.classList.add('selectedview');
+                        </script>";
+                    }
+                    //echo "User_id = " . $user_id;
+                    // Create date variables to handle stuff
+                    $enddate = date_format($enddate, "Y/m/d H:i:s");
+                    printappts($conn, $user_id, $patient_id, $today, $enddate);              
                 ?>
                 
                 <?php echo "<input type='hidden' name='patient_id' value='$patient_id'>
                             <input type='hidden' name='user_id' value='$user_id'>"; ?>
         </form>
     </div>
-    <!--
-    <div id="dayview">
-        <table id="dayviewtable">
-        <?php
-        /*
-                $patient_id = $_POST['patient_id'] ?? '';
-                //echo "Patient_id = " . $patient_id;
-                $user_id = $_POST['user_id'] ?? '';
-                //echo "User_id = " . $user_id;
-                // Create date variables to handle stuff
-                date_default_timezone_set('America/New_York');
-                $today = date("Y-m-d");
-                $today = date_create($today);
-                $today = date_format($today, "Y/m/d H:i:s");
-                $tomorrow = new DateTime('tomorrow');
-                $tomorrow = date_format($tomorrow, "Y/m/d H:i:s");
-                printappts($conn, $user_id, $patient_id, $today, $tomorrow);
-                */              
-            ?>
-        </table>
-    </div>
-    <div id="weekview">
-        <table id="weekviewtable">
-            <?php
-            /*
-                $patient_id = $_POST['patient_id'] ?? '';
-                //echo "Patient_id = " . $patient_id;
-                $user_id = $_POST['user_id'] ?? '';
-                //echo "User_id = " . $user_id;
-                // Create date variables to handle stuff
-                date_default_timezone_set('America/New_York');
-                $today = date("Y-m-d");
-                $today = date_create($today);
-                $today = date_format($today, "Y/m/d H:i:s");
-                $aweek = strtotime("+1 week");
-                $aweek = date($aweek);
-                $aweek = date_create($aweek);
-                $aweek = date_format($aweek, "Y/m/d H:i:s");
-                printappts($conn, $user_id, $patient_id, $today, $aweek);              
-                */
-            ?>
-        </table>
-    </div>
-    <div id="monthview">
-        <table id="monthviewtable">
-            <?php
-            /*
-                $patient_id = $_POST['patient_id'] ?? '';
-                //echo "Patient_id = " . $patient_id;
-                $user_id = $_POST['user_id'] ?? '';
-                //echo "User_id = " . $user_id;
-                // Create date variables to handle stuff
-                date_default_timezone_set('America/New_York');
-                $today = date("Y-m-d");
-                $today = date_create($today);
-                $today = date_format($today, "Y/m/d H:i:s");
-                $amonth = strtotime('+1 month');
-                $amonth = date($amonth);
-                $amonth = date_create($aweek);
-                $amonth = date_format($amonth, "Y/m/d H:i:s");
-                printappts($conn, $user_id, $patient_id, $today, $amonth);              
-                */
-            ?>
-        </table>
-    </div>
--->
 </div>
 
 
