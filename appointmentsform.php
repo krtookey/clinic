@@ -10,8 +10,8 @@ if(isset($_POST['submitbutton']) && ($_POST['submitbutton'] == 'Add Appointment'
     $_POST['submitbutton'] = '';
     $appt_date_time = $_POST['appt_date_time'];
     $duration = $_POST['duration'];
-    echo ($appt_date_time);
-    echo ($duration);
+    //echo ($appt_date_time);
+    //echo ($duration);
     // Grabbing doctor name based on doctor_id
     $drname_sql = "SELECT first_name, last_name FROM Users WHERE user_id='" . $user_id . "';";
     $drname_result = $conn->query($drname_sql);
@@ -28,8 +28,18 @@ if(isset($_POST['submitbutton']) && ($_POST['submitbutton'] == 'Add Appointment'
     VALUES ('$patient_id', '$appt_date_time','$duration','$status','$user_id','$user_first_name','$user_last_name');
     INSERTUSER;
     if($addappt_result = $conn->query($addappt_query)){
-        header("Location: ./index.php?user_id=" . $user_id);
-        exit();
+        echo("
+        <form name='homeafterappt' id='homeafterappt' action='./index.php' method='POST'>
+            <input type='submit' name='submitI' value='Home' hidden>
+            <input type='hidden' name='patient_id' value='$patient_id'>
+            <input type='hidden' name='user_id' value='$user_id'>
+        </form>
+        <script type='text/javascript'>
+            document.forms['homeafterappt'].submit();
+        </script>
+        ");
+        //header("Location: ./index.php?user_id=" . $user_id);
+        //exit();
     } else {
         echo("Appointment info was not added to database correctly. Please contact an administrator.");
     }
