@@ -61,7 +61,7 @@ a:visited {
     padding: 6px 12px;
     text-decoration: none;
     margin: 4px 2px;
-    cursor: pointer;;
+    cursor: pointer;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -383,7 +383,7 @@ input.patientSideMenuLink:active,
 
 /********* Start Index Page ************/
 
-#searchForm{
+#searchForm {
     width: 575px;
     border: solid 3px var(--blue);
     padding-top: 36px;
@@ -409,7 +409,7 @@ input.patientSideMenuLink:active,
     width: 75%;
 }
 
-#noapp{
+#noapp {
     color: var(--blue);
     margin-left: 12px;
     font-size: 1em;
@@ -458,14 +458,15 @@ input.patientSideMenuLink:active,
     width: 100%;
     margin-top: 1em;
     margin-bottom: 1em;
-  }
+}
 
-.tableBill td, .tableBill th {
+.tableBill td,
+.tableBill th {
     border: 1px solid var(--offWhite);
     padding: 8px;
 }
 
-.tableBill tr:nth-child(even){
+.tableBill tr:nth-child(even) {
     background-color: white;
 }
 
@@ -491,21 +492,21 @@ input.patientSideMenuLink:active,
 
 /********* Begin Note and Note History Page ************/
 
-#footer, footer {
-  background-color: var(--blue);
-  border: 0;
-  color: var(--orange);
-  font-size: 1em;
-  bottom:0;
-  position: fixed;
-  padding: 1em;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 1em;
-  align-items: flex-start;
-  justify-content: flex-start;
+#footer {
+    background-color: var(--blue);
+    border: 0;
+    color: var(--orange);
+    font-size: 1em;
+    bottom: 0;
+    position: fixed;
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 1em;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 /********* End Note and Note History Page ************/
