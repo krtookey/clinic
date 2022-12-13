@@ -61,7 +61,7 @@
         $fname = $_POST['firstname'] ?? '';
         $lname = $_POST['lastname'] ?? '';
         $dob = $_POST['dob'] ?? '';
-        $id = $_POST['pid'] ?? '';
+
         //Get Today's and Tomorrow's dates. Each with time set to 00:00:00 and formatted for mySQL queries.
         date_default_timezone_set('America/New_York');
         $today = date("Y-m-d");
@@ -86,6 +86,15 @@
         if(isset($_POST['pid']) && $_POST['pid'] !== ''){
             $id = $_POST['pid'];
         }
+        $pid = $_POST['pid'] ?? '';
+        $ex = explode(" ",$pid);
+        $c = count($ex);
+        $app = '';
+        $id = '';
+        if($c === 2){
+            $app = $ex[0];
+            $id = $ex[1];
+        }
 
         //If Select button is clicked reset patient_id.
         if(isset($_POST['select']) && $_POST['select'] == 'Select'){
@@ -93,15 +102,13 @@
         }
 
         //If Start Appointment button is clicked create a new note and billing statement tied to the patient's appointment.
-        if(isset($_POST['start']) && $_POST['start'] == 'Start Appointment' && $id !== ''){
+        if(isset($_POST['start']) && $_POST['start'] == 'Start Appointment' && $id !== '' && $app !== ''){
             $patient_id = $id;
-            //Patients must only have one appointment pre day.
-            $qstr = "SELECT appointment_id, status
+            $appointment_id = $app;
+
+            $qstr = "SELECT status
                      FROM Appointment 
-                     WHERE patient_id = $patient_id 
-                     AND date_time BETWEEN '$today' AND '$tomorrow' 
-                     ORDER BY date_time ASC
-                     LIMIT 1";
+                     WHERE appointment_id = $appointment_id ";
             $qselect = $conn->prepare($qstr);
             if(! $qselect){
                 echo "<p>Error: could not execute query. <br> </p>";
@@ -112,10 +119,8 @@
             $qselect->execute();
             $result = $qselect->get_result();
             $row = $result->fetch_row();
-            $app = $row[0];
-            $stat = $row[1];
+            $stat = $row[0];
             $result->free_result();
-            $appointment_id = $app;
             
             //Start new note.
             if($stat === 1){
@@ -464,7 +469,7 @@
         <form action="./index.php" method="post">
             <div>
             <?php
-                $qstr = "SELECT patient_id, date_time, duration, status
+                $qstr = "SELECT appointment_id, patient_id, date_time, duration, status
                          FROM Appointment 
                          WHERE doctor_id = $user_id 
                          AND date_time BETWEEN '$today' AND '$tomorrow' 
@@ -477,7 +482,7 @@
                     exit;
                 }
                 $qselect->execute();
-                $qselect->bind_result($id, $date, $duration, $status);
+                $qselect->bind_result($app, $id, $date, $duration, $status);
                 $qselect->store_result();
 
                 echo "<table class='tableBill' >
@@ -538,7 +543,7 @@
                             }
                     echo "  </td>        
                             <td>";
-                                echo "<input type='radio' name='pid' value='{$id}'>         
+                                echo "<input type='radio' name='pid' value='$app $id'>         
                             </td>";
                 }
                 echo "</tbody>
