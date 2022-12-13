@@ -491,7 +491,7 @@ input.patientSideMenuLink:active,
 
 /********* Begin Note and Note History Page ************/
 
-#footer {
+#footer, footer {
   background-color: var(--blue);
   border: 0;
   color: var(--orange);

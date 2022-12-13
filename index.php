@@ -35,7 +35,8 @@
         $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
         $nursePermission = 1;                   // Permission Level for nurses - access to limited patient information.
         $userPermission = 0;
-    
+        //echo("Appointment id = " . $appointment_id);
+
         //Get User's Permission Level.
         if ($user_id !== '' ){
             $qstr = "SELECT DISTINCT permission FROM Users WHERE user_id = '" . $user_id . "';";
@@ -283,9 +284,11 @@
         //End of Start Appointment.
 
         if(isset($_POST['end']) && $_POST['end'] == 'End Appointment' && $id !== ''){
+            $appointment_id = $app;
             if($appointment_id !== 0){
                 $qstr = "SELECT cc FROM Note 
-                         WHERE appointment_id = $appointment_id "; 
+                         WHERE appointment_id = $appointment_id"; 
+                //echo($qstr);
                 $qselect = $conn->prepare($qstr);
                 if(! $qselect){
                     echo "<p>Error: could not execute query. <br> </p>";
