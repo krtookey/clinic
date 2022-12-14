@@ -92,7 +92,7 @@ if ($row = $drugid_result->fetch_assoc()){
 
 // Getting pharmacy_id for pharmacy
 $pharmacy_id = 0;
-$pharmaid_sql = 'SELECT pharmacy_id FROM pharmacy WHERE pharmacy_name="' . $pharmacy . '";';
+$pharmaid_sql = 'SELECT pharmacy_id FROM Pharmacy WHERE pharmacy_name="' . $pharmacy . '";';
 $pharmaid_result = $conn->query($pharmaid_sql);
 if ($row = $pharmaid_result->fetch_assoc()){
     $pharmacy_id = $row["pharmacy_id"];

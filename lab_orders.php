@@ -5,7 +5,7 @@ $addscript = <<<ADDSCRIPT
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 ADDSCRIPT;
 echo($addscript);
-
+ 
 include_once 'dbConnection.php';
 include_once 'testinput.php';
 $confirm_failed = test_input($_POST["confirm_failed"]) ?? 0;
@@ -24,7 +24,7 @@ if (!isset($_POST["labs"])){
     exit(1);
 }
 $all_labs = $_POST["labs"];
-
+$status = 0;
 // Getting patient_id from Medical Records page
 //$patient_id = "1"; // PLACEHOLDER
 
@@ -140,14 +140,14 @@ function createPDF(){
 </script>
 <button onclick='createPDF()'>Create PDF</button>
 PRESCRIPTIONLINK;
-
+$status = 1;
 //<p>Quantity Per Dose: $qtyperdose -- Frequency: $frequency per day  Duration: $duration days </p>
 echo "<br><br>" . $laborder_pdf_link;
 
 // Adding the data into the Prescriptions table
 $scrip_database = <<<LABDATABASE
-INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis, orderdate)
-VALUES ("$patient_id", "$user_id", "$labdest_id", "$providers_to_cc", "$diagnosis", "$orderdate");
+INSERT INTO LabOrders (patient_id, doctor_id, labdest_id, cc_recipients, diagnosis, orderdate, status)
+VALUES ("$patient_id", "$user_id", "$labdest_id", "$providers_to_cc", "$diagnosis", "$orderdate", "$status");
 LABDATABASE;
 //##testdata
 //echo("---Here is the laborders statement: " . $scrip_database . "   ----");
