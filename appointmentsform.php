@@ -131,7 +131,7 @@ if(isset($_POST['submitbutton']) && ($_POST['submitbutton'] == 'Add Appointment'
         <input type="datetime-local" id="appt_date_time" name="appt_date_time">
         <br>
         <label for="duration">Duration</label>
-        <input type="number" id="duration" name="duration">
+        <input type="number" id="duration" name="duration" value="30">
         <br>
         <input type="submit" name="submitbutton" value="Add Appointment">
         <?php 
