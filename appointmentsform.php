@@ -137,7 +137,7 @@ if(isset($_POST['submitbutton']) && ($_POST['submitbutton'] == 'Add Appointment'
         <?php 
         echo "
         <input type='hidden' name='patient_id' value='$patient_id'>
-        <input type='hidden' name='user_id' value='$user_id'>
-        "?>
+        <input type='hidden' name='user_id' value='$user_id'>";
+        ?>
     </form>
 </div>

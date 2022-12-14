@@ -24,7 +24,7 @@ function printappts($conn, $user_id, $patient_id, $startdate, $enddate) {
     $qselect->bind_result($appointment_id, $date, $duration, $status);
     $qselect->store_result();
 
-    echo "<div id='appointmentstable' style='height:532px;'>
+    echo "<div id='appointmentstable'>
     <table class='tableBill'>
     <thead>
         <tr>
@@ -90,7 +90,7 @@ function printappts($conn, $user_id, $patient_id, $startdate, $enddate) {
     echo "</tbody>
         </table></div>";
     if($i === 0){
-        echo "<p id='noapp'>You have no appointments scheduled for this year for this patient.</p>";
+        echo "<p id='noapp'>You have no appointments scheduled for the selected period for this patient.</p>";
     }
 
 }
@@ -146,10 +146,11 @@ if(isset($_POST['delappt']) && $_POST['delappt'] == 'Delete Appointment' && $pat
     <div id="allview">
         <form action="./appointments.php" method="post">
             <input type="submit" name="delappt" value="Delete Appointment" style="float:right; margin:0 20px 20px 0;font-size:25px;">
-            <input id="yearview" type="submit" name="yearview" value="Year" style="float:right; margin:0 20px 20px 0;font-size:25px;">
-            <input id="monthview" type="submit" name="monthview" value="Month" style="float:right; margin:0 20px 20px 0;font-size:25px;">
-            <input id="weekview" type="submit" name="weekview" value="Week" style="float:right; margin:0 20px 20px 0;font-size:25px;">
-            <input id="dayview" type="submit" name="dayview" value="Day" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="pastview" type="submit" name="view" value="Past" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="yearview" type="submit" name="view" value="Year" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="monthview" type="submit" name="view" value="Month" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="weekview" type="submit" name="view" value="Week" style="float:right; margin:0 20px 20px 0;font-size:25px;">
+            <input id="dayview" type="submit" name="view" value="Day" style="float:right; margin:0 20px 20px 0;font-size:25px;">
             <style>
                 .selectedview {
                     background-color: #FFBF69 !important;
@@ -166,28 +167,34 @@ if(isset($_POST['delappt']) && $_POST['delappt'] == 'Delete Appointment' && $pat
                     $today = date_create($today);
                     $today = date_format($today, "Y/m/d H:i:s");
                     
-                    if(isset($_POST['dayview']) && $_POST['dayview'] == 'Day' && $patient_id !== ''){
+                    if(isset($_POST['view']) && $_POST['view'] == 'Day' && $patient_id !== ''){
                         $enddate = new DateTime('today + 1 day');
                         echo "<script>
                         let viewbutton = document.getElementById('dayview');
                         viewbutton.classList.add('selectedview');
                         </script>";
-                    } else if (isset($_POST['weekview']) && $_POST['weekview'] == 'Week' && $patient_id !== ''){
+                    } else if (isset($_POST['view']) && $_POST['view'] == 'Week' && $patient_id !== ''){
                         $enddate = new DateTime('today + 1 week');
                         echo "<script>
                         let viewbutton = document.getElementById('weekview');
                         viewbutton.classList.add('selectedview');
                         </script>";
-                    } else if (isset($_POST['monthview']) && $_POST['monthview'] == 'Month' && $patient_id !== ''){
+                    } else if (isset($_POST['view']) && $_POST['view'] == 'Month' && $patient_id !== ''){
                         $enddate = new DateTime('today + 1 month');
                         echo "<script>
                         let viewbutton = document.getElementById('monthview');
                         viewbutton.classList.add('selectedview');
                         </script>";
-                    } else if (isset($_POST['yearview']) && $_POST['yearview'] == 'Year' && $patient_id !== ''){
+                    } else if (isset($_POST['view']) && $_POST['view'] == 'Year' && $patient_id !== ''){
                         $enddate = new DateTime('today + 1 year');
                         echo "<script>
                         let viewbutton = document.getElementById('yearview');
+                        viewbutton.classList.add('selectedview');
+                        </script>";
+                    } else if (isset($_POST['view']) && $_POST['view'] == 'Past' && $patient_id !== ''){
+                        $enddate = new DateTime('today - 1 year');
+                        echo "<script>
+                        let viewbutton = document.getElementById('pastview');
                         viewbutton.classList.add('selectedview');
                         </script>";
                     } else {
@@ -200,7 +207,11 @@ if(isset($_POST['delappt']) && $_POST['delappt'] == 'Delete Appointment' && $pat
                     //echo "User_id = " . $user_id;
                     // Create date variables to handle stuff
                     $enddate = date_format($enddate, "Y/m/d H:i:s");
-                    printappts($conn, $user_id, $patient_id, $today, $enddate);              
+                    if (isset($_POST['view']) && $_POST['view'] == 'Past' && $patient_id !== ''){
+                        printappts($conn, $user_id, $patient_id, $enddate, $today);              
+                    } else {
+                        printappts($conn, $user_id, $patient_id, $today, $enddate);              
+                    }
                 ?>
                 
                 <?php echo "<input type='hidden' name='patient_id' value='$patient_id'>
