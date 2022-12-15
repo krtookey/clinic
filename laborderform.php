@@ -36,7 +36,7 @@
     <?php
         // Get labdest_id for patient
         $labdestid_sql = "SELECT labdest_id FROM Patient where patient_id = '" . $patient_id . "';";
-        $labdestid_result = $conn->query($sql);
+        $labdestid_result = $conn->query($labdestid_sql);
         if (!isset($labdestid_result)){
             $labdestinput = <<<LABDEST_INPUT
             <input type="text" id="labdest" name="labdest" list="labdestlist" required>
@@ -56,7 +56,11 @@
                 <input type="text" id="labdest" name="labdest" list="labdestlist" value="$labdest_name" required>
                 LABDEST_INPUT;
                 echo $labdestinput;
+            } else {
+                echo ('<input type="text" id="labdest" name="labdest" list="labdestlist" required>');
             }
+        } else {
+            echo ('<input type="text" id="labdest" name="labdest" list="labdestlist" required>');
         }
     ?>
     <datalist id="labdestlist">

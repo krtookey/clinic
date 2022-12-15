@@ -70,9 +70,6 @@ UPDATE Appointment SET patient_id ='2', date_time = '2022-12-06 10:15:00', durat
 UPDATE Appointment SET patient_id ='1', date_time = '2022-12-07 12:00:00', duration ='30', status = '1', doctor_id = '1', doctor_first_name = 'Joey', doctor_last_name = 'Danger' WHERE appointment_id = '2';
 UPDATE Appointment SET patient_id ='1', date_time = '2022-12-08 15:45:00', duration ='30', status = '1', doctor_id = '1', doctor_first_name = 'Joey', doctor_last_name = 'Danger' WHERE appointment_id = '3';
 
-INSERT INTO Users VALUES('999999', 'default', '0', 'default', '000-000-0000', 'default', 'None Selected', '', 'default');
-
-
 INSERT INTO FamilyHistory VALUES 	
   ('2', 'Father', 'Hypertension'),
 	('2', 'Mother', 'Type 2 Diabetes');

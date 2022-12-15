@@ -25,23 +25,23 @@
     <link rel="stylesheet" href="./style.css">
   </head>
 
-  <body>
+  <body style="background-color: #9A616D;">
 
-    <section class="vh-100" style="background-color: #9A616D;">
+    <section class="vh-100">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-xl-10">
         <div class="card" style="border-radius: 1rem;">
           <div class="row g-0">
             <div class="col-md-6 col-lg-5 d-none d-md-block">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+              <img src="/inc/img/doctor.png"
                 alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                <br>
             </div>
-              <iframe name="registerdisplay" class="results_iframe"></iframe>
             <div class="col-md-6 col-lg-7 d-flex align-items-center">
               <div class="card-body p-4 p-lg-5 text-black">
 
-                <form action="register_script.php" method="post" id="registerform">
+                <form action="register.php" method="post" id="registerform">
 
                   <div class="d-flex align-items-center mb-3 pb-1">
                     <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
@@ -49,7 +49,40 @@
                   </div>
 
                   <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Register your new account</h5>
-
+                  <?php
+                    include_once "dbConnection.php";
+                    include_once 'testinput.php';
+                    //echo("We are in the fun zone");
+                    if(isset($_POST['submitbutton']) && ($_POST['submitbutton'] == 'Register')){
+                      $_POST['submitbutton'] = '';
+                      $fname = $_POST['fname'];
+                      $lname = $_POST['lname'];
+                      $uname = $_POST['uname'];
+                      $title = $_POST['title'];
+                      $phone = $_POST['phone'];
+                      $email = $_POST['email'];
+                      $permlevel = '3';
+                      $password=$_POST['password'];
+                      $query = <<<INSERTUSER
+                      INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, last_name, pwd) 
+                      VALUES ("$uname", "$permlevel", "$title", "$phone", "$email", "$fname", "$lname", "$password");
+                      INSERTUSER;
+                      if($conn->query($query) === TRUE){
+                          echo("User successfully created");
+                          header("Location: ./login.php");
+                          exit();
+                      } else {
+                        echo("<span style='color:red'>The data was not inserted into the database correctly. Please contact an administrator.</span>");
+                        $fname = "";
+                        $lname = "";
+                        $uname = "";
+                        $title = "";
+                        $phone = "";
+                        $email = "";
+                        $password= "";
+                      }
+                    }
+                  ?>
                   <div class="form-outline mb-4">
                     <input type="text" name="fname" id="form2Example27" class="form-control form-control-lg" required/>
                     <label class="form-label" for="form2Example27">First Name</label>
@@ -79,7 +112,7 @@
                     <label class="form-label" for="form2Example27">Password</label>
                   </div>
                   <div class="pt-1 mb-4">
-                    <button class="btn btn-dark btn-lg btn-block" type="submit">Register</button>
+                    <input class="btn btn-dark btn-lg btn-block" type="submit" name="submitbutton" value="Register">
                   </div>
                 </form>
               </div>

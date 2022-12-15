@@ -12,7 +12,7 @@ if ($prescriptions_result->num_rows > 0) {
         $user_id = $prescriptions_row['doctor_id'];
 
         $pharmacy_id = $prescriptions_row['pharmacy_id'];
-        $pharmaid_sql = 'SELECT pharmacy_name FROM pharmacy WHERE pharmacy_id="' . $pharmacy_id . '";';
+        $pharmaid_sql = 'SELECT pharmacy_name FROM Pharmacy WHERE pharmacy_id="' . $pharmacy_id . '";';
         $pharmaid_result = $conn->query($pharmaid_sql);
         $row = $pharmaid_result->fetch_assoc();
         if ($pharmaid_result->num_rows == 1){

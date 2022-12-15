@@ -52,6 +52,15 @@ Page for filling out medical profile and review of systems
 --- newPatient.php
 Page for creating a new patient
 
+--- editPatient.php
+Page for editing a patient and billing.
+
+--- familyHistory.php
+Family History form. Used in the patient.php sidebar and at the bottom of medicalProfile.php
+
+--- ./Bills/bill.txt
+Downloadable text file containing the patient's latest bill. 
+
 --- noteHistory.php
 Shows all notes for a single patient. Notes a viewable but not editable
 
@@ -67,7 +76,7 @@ Shows currently open note for current patient, contains sidebar menus to show
     - Problem List
     - Review of Systems
     - Lab Results (showlabresults.php)
-    - Family History
+    - Family History (familyHistory.php)
     - Order Pharmacy (prescriptionform.php)
     - Order Lab (laborderform.php)
     - Lab Order History (viewlaborders.php)

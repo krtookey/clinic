@@ -36,7 +36,7 @@
                 //$patient_dob = "10/12/1996"; // PLACEHOLDER
                 
                 echo("<b>". $patient_name . "</b>  <b>  " . $patient_dob . "</b>");
-                echo("<br><br>");
+                echo("<br>");
                 echo('<label for="pharmacy">Pharmacy: </label>');
                 
                 // Get pharmacy_id for patient
@@ -55,7 +55,11 @@
                         <input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" value="$pharmacy_name" required>
                         PHARM_INPUT;
                         echo $pharmacyinput;
+                    } else {
+                        echo ('<input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required>');
                     }
+                } else {
+                    echo ('<input type="text" id="pharmacy" name="pharmacy" list="pharmacy_list" required>');
                 }
 
             ?>

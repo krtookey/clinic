@@ -22,16 +22,21 @@
             $appointment_id = $_POST['appointment_id'];
         }
         $appointment_id = $_POST['appointment_id'] ?? ''; 
-        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
-            $user_id = $_POST['user_id'];
+        if(isset($_GET['user_id']) && $_GET['user_id'] !== ''){
+            $user_id = $_GET['user_id'] ?? '';
+            $_POST['user_id'] = $_GET['user_id'] ?? '';
         }
-        $user_id = $_POST['user_id'] ?? '';     
-        $user_id = 1;                           //For Testing.
+        if(isset($_POST['user_id']) && $_POST['user_id'] !== ''){
+            $user_id = $_POST['user_id'] ?? '';
+        }
+        $user_id = $_POST['user_id'] ?? '';
+        //$user_id = 1;                           //For Testing.
         $managmentPermission = 3;               // Top Permission Level for adding users and managing system.
         $doctorPermission = 2;                  // Permission Level for doctor and NPs - access to patient infomation.
         $nursePermission = 1;                   // Permission Level for nurses - access to limited patient information.
         $userPermission = 0;
-    
+        //echo("Appointment id = " . $appointment_id);
+
         //Get User's Permission Level.
         if ($user_id !== '' ){
             $qstr = "SELECT DISTINCT permission FROM Users WHERE user_id = '" . $user_id . "';";
@@ -47,13 +52,17 @@
             $row = $result->fetch_row();
             $userPermission = $row[0];
             $qselect->free_result();
-        } 
+        } else {
+            echo "<p>User not found.  Return to Login.</p>
+                    <a href='./login.php'>Login</a>";
+            exit;
+        }
 
         //Variables.
         $fname = $_POST['firstname'] ?? '';
         $lname = $_POST['lastname'] ?? '';
         $dob = $_POST['dob'] ?? '';
-        $id = $_POST['pid'] ?? '';
+
         //Get Today's and Tomorrow's dates. Each with time set to 00:00:00 and formatted for mySQL queries.
         date_default_timezone_set('America/New_York');
         $today = date("Y-m-d");
@@ -72,8 +81,20 @@
         if(!isset($_POST['start']) || $_POST['start'] != 'Start Appointment'){
             $_POST['start'] = '';
         }
+        if(!isset($_POST['end']) || $_POST['end'] != 'End Appointment'){
+            $_POST['end'] = '';
+        }
         if(isset($_POST['pid']) && $_POST['pid'] !== ''){
             $id = $_POST['pid'];
+        }
+        $pid = $_POST['pid'] ?? '';
+        $ex = explode(" ",$pid);
+        $c = count($ex);
+        $app = '';
+        $id = '';
+        if($c === 2){
+            $app = $ex[0];
+            $id = $ex[1];
         }
 
         //If Select button is clicked reset patient_id.
@@ -82,15 +103,13 @@
         }
 
         //If Start Appointment button is clicked create a new note and billing statement tied to the patient's appointment.
-        if(isset($_POST['start']) && $_POST['start'] == 'Start Appointment'){
+        if(isset($_POST['start']) && $_POST['start'] == 'Start Appointment' && $id !== '' && $app !== ''){
             $patient_id = $id;
-            //Patient's must only have one appointment pre day.
-            $qstr = "SELECT appointment_id, status
+            $appointment_id = $app;
+
+            $qstr = "SELECT status
                      FROM Appointment 
-                     WHERE patient_id = $patient_id 
-                     AND date_time BETWEEN '$today' AND '$tomorrow' 
-                     ORDER BY date_time ASC
-                     LIMIT 1";
+                     WHERE appointment_id = $appointment_id ";
             $qselect = $conn->prepare($qstr);
             if(! $qselect){
                 echo "<p>Error: could not execute query. <br> </p>";
@@ -101,10 +120,8 @@
             $qselect->execute();
             $result = $qselect->get_result();
             $row = $result->fetch_row();
-            $app = $row[0];
-            $stat = $row[1];
+            $stat = $row[0];
             $result->free_result();
-            $appointment_id = $app;
             
             //Start new note.
             if($stat === 1){
@@ -170,7 +187,7 @@
 
                 //Create new note.
                 $qstr = "INSERT INTO Note (patient_id, appointment_id, cc, hist_illness, ros_id, med_profile_id, social_hist, med_hist, psych_hist, assessment, plan, laborder_id, labdest_id, demographics, comments, substance_hist) 
-                        VALUES ('$patient_id', '$appointment_id', '$cc', '$hist_ill', '0', '0', '$hist_social', '$hist_med', '$hist_psych', '$assess', '$plan', '$lab_order', '$lab_dest', '$demo', '$comment', '$hist_sub') ";
+                        VALUES ('$patient_id', '$appointment_id', ?, ?, '0', '0', ?, ?, ?, ?, ?, '$lab_order', '$lab_dest', ?, ?, ?) ";
                 $qinsert = $conn->prepare($qstr);
                 if(!$qinsert){
                     echo "<p>Error: could not execute query. <br> </p>";
@@ -178,6 +195,7 @@
                     echo "Error: "  .$conn -> error. "\n <pre><br>\n";
                     exit;
                 }
+                $qinsert->bind_param("ssssssssss", $cc, $hist_ill, $hist_social, $hist_med, $hist_psych, $assess, $plan, $demo, $comment, $hist_sub);
                 $qinsert->execute();
                 $qinsert->store_result();
                 $qinsert->free_result();
@@ -265,6 +283,56 @@
         }
         //End of Start Appointment.
 
+        if(isset($_POST['end']) && $_POST['end'] == 'End Appointment' && $id !== ''){
+            $appointment_id = $app;
+            if($appointment_id !== 0){
+                $qstr = "SELECT cc FROM Note 
+                         WHERE appointment_id = $appointment_id"; 
+                //echo($qstr);
+                $qselect = $conn->prepare($qstr);
+                if(! $qselect){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qselect->execute();
+                $result = $qselect->get_result();
+                $row = $result->fetch_row();
+                $cc = $row[0];
+                $result->free_result();
+
+                $qstr = "   UPDATE Billing 
+                            SET bill_statement = '$cc'  
+                            WHERE appointment_id = $appointment_id ";
+                $qupdate = $conn->prepare($qstr);
+                if(!$qupdate){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qupdate->execute();
+                $qupdate->store_result();
+                $qupdate->free_result();
+
+                $qstr = "   UPDATE Appointment 
+                            SET status = 3  
+                            WHERE appointment_id = $appointment_id ";
+                $qupdate = $conn->prepare($qstr);
+                if(!$qupdate){
+                    echo "<p>Error: could not execute query. <br> </p>";
+                    echo "<pre> Error Number: " .$conn -> errno. "\n";
+                    echo "Error: "  .$conn -> error. "\n <pre><br>\n";
+                    exit;
+                }
+                $qupdate->execute();
+                $qupdate->store_result();
+                $qupdate->free_result();
+            }
+        }
+        //End of End Appointment.
+
         //Start of Patient Search.
     
         //Make sure the submitted dob contains a valid date string.
@@ -303,7 +371,7 @@
         if(isset($_POST['search']) && $_POST['search'] == 'Search'){
             
             $qstr = "SELECT DISTINCT gender, preferred, patient_id, sex FROM Patient WHERE first_name = ? && last_name = ? && DOB = ? ";
-            echo $qstr;
+            //echo $qstr;
             $qsearch = $conn->prepare($qstr);
             if(!$qsearch){
                 echo "<p>Error: could not execute query. <br> </p>";
@@ -405,7 +473,7 @@
         <form action="./index.php" method="post">
             <div>
             <?php
-                $qstr = "SELECT patient_id, date_time, duration, status
+                $qstr = "SELECT appointment_id, patient_id, date_time, duration, status
                          FROM Appointment 
                          WHERE doctor_id = $user_id 
                          AND date_time BETWEEN '$today' AND '$tomorrow' 
@@ -418,7 +486,7 @@
                     exit;
                 }
                 $qselect->execute();
-                $qselect->bind_result($id, $date, $duration, $status);
+                $qselect->bind_result($app, $id, $date, $duration, $status);
                 $qselect->store_result();
 
                 echo "<table class='tableBill' >
@@ -435,6 +503,7 @@
                         <tbody>";
                 $i = 0;
                 while($qselect->fetch()){
+                    $i = $i + 1;
                     $qstr = "SELECT first_name, last_name, dob
                              FROM Patient 
                              WHERE patient_id = $id ";
@@ -470,22 +539,28 @@
                     echo "  </td>
                             <td>";
                             if($status == 1){
-                                echo "Upcomming";
+                                echo "Upcoming";
                             } else if ($status == 2){
                                 echo "Started";
+                            } else if ($status == 3){
+                                echo "Ended";
                             }
                     echo "  </td>        
                             <td>";
-                                echo "<input type='radio' name='pid' value='{$id}'>         
+                                echo "<input type='radio' name='pid' value='$app $id'>         
                             </td>";
                 }
                 echo "</tbody>
-                    </table>";                    
+                    </table>";
+                if($i === 0){
+                    echo "<p id='noapp'>You have no appointments scheduled for today.</p>";
+                }                    
             ?>
             </div>
             <div class="saveButton">
                 <input type="submit" name="select" value="Select" >
                 <input type="submit" name="start" value="Start Appointment" >
+                <input type="submit" name="end" value="End Appointment" >
             </div>
             <?php echo "<input type='hidden' name='patient_id' value='$patient_id'>
                         <input type='hidden' name='appointment_id' value='$appointment_id'>
@@ -510,6 +585,7 @@
                 </div>
             </div>
             <div class="saveButton">
+                <?php echo "<input type='hidden' name='user_id' value='$user_id'>" ?>
                 <input type="submit" name="search" value="Search" >
             </div>
         </form>
@@ -519,7 +595,7 @@
         <div>
             <?php
                 if($userPermission >= $managmentPermission){
-                echo "  <form action='new user' method='POST'>
+                echo "  <form action='./register.php' method='POST'>
                             <input type='submit' name='submitNU' value='New User'>
                             <input type='hidden' name='user_id' value='$user_id'>
                         </form>";
@@ -535,7 +611,15 @@
             </form>
         </div>
         <div>
-            <a href="appointments">Appointments</a> 
+            <?php
+            if($patient_id !== ''){
+             echo "<form action='./appointments.php' method='POST'>
+                <input type='submit' name='submitAF' value='Appointment'>
+                <input type='hidden' name='patient_id' value='$patient_id'>
+                <input type='hidden' name='user_id' value='$user_id'>";
+            }
+                ?>
+            </form>
         </div>
         <div>
             <form action="./newPatient.php" method="POST">

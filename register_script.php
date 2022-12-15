@@ -1,7 +1,7 @@
 <?php
 include_once "dbConnection.php";
 include_once 'testinput.php';
-echo("We are in the fun zone");
+//echo("We are in the fun zone");
 $fname = $_POST['fname'];
 $lname = $_POST['lname'];
 $uname = $_POST['uname'];
@@ -11,7 +11,7 @@ $email = $_POST['email'];
 $permlevel = '3';
 $password=$_POST['password'];
 $query = <<<INSERTUSER
-INSERT INTO users (user_name, permission, job_title, phone, email, first_name, last_name, pwd) 
+INSERT INTO Users (user_name, permission, job_title, phone, email, first_name, last_name, pwd) 
 VALUES ("$uname", "$permlevel", "$title", "$phone", "$email", "$fname", "$lname", "$password");
 INSERTUSER;
 if($conn->query($query) === TRUE){
