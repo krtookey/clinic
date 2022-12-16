@@ -26,3 +26,6 @@ $username = "root";
 $password = '';
 $dbname = "Clinic";
 ```
+6. Once the password is set in those 2 files, enter this URL into your browser: `localhost`. The following page should appear:
+
+<img src=".\readmeassets\firefox_licJcInCRV.png">
